@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cours Windows - La Souris</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="page-cours">
+
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour à l'accueil</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="contenu-cours">
+        <section class="entete-cours">
+            <h1><i class="fab fa-windows"></i> Apprendre à cliquer</h1>
+            <p class="introduction">Pratiquez le clic gauche, le clic droit et le double-clic ci-dessous.</p>
+        </section>
+<p id="consigne-jeu">Étape 1 : Amenez la flèche sur la cible rouge !</p>
+<section class="etape-cours">
+    <h2><i class="fas fa-gamepad"></i> Apprivoiser la souris</h2>
+    <p id="consigne-jeu" style="font-weight: bold; color: #3498db; font-size: 1.2rem;">
+        Étape 1 : Amenez la flèche sur la cible rouge !
+    </p>
+    
+    <div class="score-board">
+        Objectifs : <span id="score-valeur">0</span> / 20
+    </div>
+
+    <div class="zone-exercice-souris">
+        <div id="souris-visuelle">
+            <div id="clic-gauche" class="bouton-souris"></div>
+            <div id="clic-droit" class="bouton-souris"></div>
+        </div>
+        
+        <div id="ecran-test">
+            <p id="message-souris">Chargement du jeu...</p>
+            </div>
+    </div>
+</section>
+
+        <div class="actions-cours">
+            <button class="btn-cours" onclick="validerCours('informatique')" style="background-color: #27ae60;">
+    J'ai terminé, valider mon badge !
+</button>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

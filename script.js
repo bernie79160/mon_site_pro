@@ -17,7 +17,7 @@ function validerCours(nomDuCours) {
 // =========================================================
 
 function mettreAJourProgression() {
-    const cours = ['windows', 'internet', 'word', 'excel', 'powerpoint'];
+    const cours = ['informatique', 'internet', 'word', 'excel', 'powerpoint'];
     let valides = 0;
 
     cours.forEach(c => {
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (ecran) {
         let score = 0;
-        const typesDeClics = ["GAUCHE", "DROIT", "DOUBLE"];
+        const typesDeClics = ["CLIC GAUCHE", "CLIC DROIT", "DOUBLE CLIC GAUCHE"];
         let objectifActuel = "";
         let clickTimer = null; // Pour distinguer clic simple et double
 
@@ -106,11 +106,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.detail === 1) {
                 // On attend 250ms pour être sûr que ce n'est pas un début de double-clic
                 clickTimer = setTimeout(() => {
-                    verifierAction("GAUCHE");
+                    verifierAction("CLIC GAUCHE");
                 }, 250);
             } else if (e.detail === 2) {
                 clearTimeout(clickTimer); // Annule l'action "GAUCHE" prévue
-                verifierAction("DOUBLE");
+                verifierAction("DOUBLE CLIC GAUCHE");
             }
         });
 
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
             visuelDroit.style.backgroundColor = "#e74c3c";
             setTimeout(() => visuelDroit.style.backgroundColor = "white", 200);
             
-            verifierAction("DROIT");
+            verifierAction("CLIC DROIT");
         });
 
         genererNouvelObjectif();

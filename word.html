@@ -3,42 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cours Word - Écrire un document</title>
+    <title>Cours Word - Écrire ses premiers textes</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="page-cours">
+
     <header>
         <nav>
-            <ul><li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a></li></ul>
+            <ul>
+                <li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour à l'accueil</a></li>
+            </ul>
         </nav>
     </header>
 
     <main class="contenu-cours">
         <section class="entete-cours">
-            <h1><i class="fas fa-file-word"></i> Utiliser Word</h1>
-            <p class="introduction">Word est votre machine à écrire moderne.</p>
+            <h1><i class="fas fa-file-word"></i> Écrire avec Word</h1>
+            <p class="introduction">Word est votre papier et votre stylo numérique. On l'utilise pour faire des lettres, des listes ou des CV.</p>
         </section>
 
         <section class="etape-cours">
-            <h2>1. La Zone de texte</h2>
-            <p>Le curseur qui clignote est l'endroit où les lettres vont apparaître. Utilisez la touche <strong>Entrée</strong> pour aller à la ligne.</p>
+            <h2>1. Le Ruban (votre trousse à outils)</h2>
+            <p>Tout en haut de Word se trouve le <strong>Ruban</strong>. C'est là que vous choisirez vos outils comme on choisit un feutre ou un surligneur.</p>
+            <ul>
+                <li><strong>G (Gras) :</strong> Pour écrire plus épais.</li>
+                <li><em>I (Italique) :</em> Pour pencher le texte.</li>
+                <li><u>S (Souligné) :</u> Pour souligner les mots importants.</li>
+            </ul>
         </section>
 
         <section class="etape-cours">
-            <h2>2. Mettre en forme</h2>
-            <p>Pour mettre en <strong>Gras</strong> ou changer la couleur, vous devez d'abord "surligner" (sélectionner) votre texte avec la souris.</p>
+            <h2>2. Changer l'apparence</h2>
+            <p>Vous pouvez modifier votre texte même après l'avoir écrit :</p>
+            <div class="comparaison">
+                <p><i class="fas fa-font"></i> <strong>La Police :</strong> C'est le style d'écriture (élégant, moderne, classique).</p>
+                <p><i class="fas fa-text-height"></i> <strong>La Taille :</strong> Pour écrire en plus gros (idéal pour les titres).</p>
+                <p><i class="fas fa-palette"></i> <strong>La Couleur :</strong> Pour mettre de la vie dans vos documents.</p>
+            </div>
         </section>
 
         <section class="etape-cours">
-            <h2>3. Enregistrer</h2>
-            <p>N'oubliez jamais de cliquer sur la petite disquette ou "Fichier > Enregistrer" pour ne pas perdre votre travail.</p>
+            <h2>3. Ne pas perdre son travail</h2>
+            <p>L'étape la plus importante ! Il faut toujours <strong>Enregistrer</strong> votre document pour le retrouver demain.</p>
+            <p><i class="fas fa-save"></i> Allez dans <strong>Fichier > Enregistrer</strong> et donnez-lui un nom clair (ex: "Ma Lettre à la Mairie").</p>
         </section>
 
         <div class="actions-cours">
-            <button onclick="validerCours()">Leçon terminée !</button>
+            <button class="btn-validation" onclick="validerCours('word')">J'ai terminé le cours Word !</button>
         </div>
     </main>
+
     <script src="script.js"></script>
 </body>
 </html>
