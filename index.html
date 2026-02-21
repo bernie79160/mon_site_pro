@@ -5,61 +5,111 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Site Professionnel</title>
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <header>
-<nav>
-    <ul>
-        <li><a href="#accueil">Accueil</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#contact">Contact</a></li>
-        <li><button id="theme-toggle">🌙 Mode Sombre</button></li>
-    </ul>
-</nav>
+        <nav>
+            <ul>
+                <li><a href="#accueil"><i class="fas fa-home"></i> Accueil</a></li>
+                <li><a href="#services"><i class="fas fa-graduation-cap"></i> Cours</a></li>
+                <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+                <li><button id="theme-toggle">🌙 Mode Sombre</button></li>
+            </ul>
+        </nav>
     </header>
 
     <main>
         <section id="accueil">
-            <h1>Bienvenue sur mon site pro</h1>
+            <h1>Bienvenue sur mon site pro en construction</h1>
             <p>Ceci est le début de mon projet web développé avec mon Partenaire de code.</p>
-            <button>En savoir plus</button>
+            <button id="btn-felicitation">En savoir plus</button>
         </section>
 
         <section id="services">
-            <h2>Mes Services</h2>
-            <div class="service-card">
-                <h3>Design Web</h3>
-                <p>Création d'interfaces modernes et intuitives.</p>
+            <h2><i class="fas fa-graduation-cap"></i> Nos Cours</h2>
+            
+            <div class="progress-container">
+                <p>Votre progression : <span id="progress-text">0%</span></p>
+                <div class="progress-bar-bg">
+                    <div id="progress-fill"></div>
+                </div>
+            </div> <div class="cours-container">
+                <div class="cours-card theme-windows">
+                    <span id="badge-windows" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
+                    <div class="cours-icon"><i class="fab fa-windows"></i></div>
+                    <h3>Découvrir Windows</h3>
+                    <p>Apprenez à utiliser le bureau, la souris et à organiser vos fichiers.</p>
+                    <button class="btn-cours" onclick="ouvrirCours('windows')">Continuer</button>
+                    <button onclick="validerCours('windows')">J'ai tout compris, je valide !</button>
+                </div>
+
+                <div class="cours-card theme-internet">
+                    <span id="badge-internet" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
+                    <div class="cours-icon"><i class="fas fa-globe"></i></div>
+                    <h3>Internet et Emails</h3>
+                    <p>Naviguez en toute sécurité et apprenez à envoyer des messages à vos proches.</p>
+                    <button class="btn-cours" onclick="ouvrirCours('internet')">Commencer</button>
+                </div>
+
+                <div class="cours-card theme-word">
+                    <span id="badge-word" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
+                    <div class="cours-icon"><i class="fas fa-file-word"></i></div>
+                    <h3>Écrire avec Word</h3>
+                    <p>Créez vos courriers, changez la taille du texte et apprenez à imprimer.</p>
+                    <button class="btn-cours" onclick="ouvrirCours('word')">Découvrir</button>
+                </div>
+
+                <div class="cours-card theme-excel">
+                    <span id="badge-excel" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
+                    <div class="cours-icon"><i class="fas fa-file-excel"></i></div>
+                    <h3>Calculer avec Excel</h3>
+                    <p>Créez des tableaux simples pour gérer votre budget ou vos listes.</p>
+                    <button class="btn-cours" onclick="ouvrirCours('excel')">Découvrir</button>
+                </div>
+
+                <div class="cours-card theme-powerpoint">
+                    <span id="badge-powerpoint" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
+                    <div class="cours-icon"><i class="fas fa-file-powerpoint"></i></div>
+                    <h3>Présenter avec PowerPoint</h3>
+                    <p>Réalisez des diaporamas avec des photos pour vos souvenirs.</p>
+                    <button class="btn-cours" onclick="ouvrirCours('powerpoint')">Découvrir</button>
+                </div>
             </div>
         </section>
     </main>
+
     <section id="contact">
-    <h2>Me Contacter</h2>
-    <form id="monFormulaire">
-        <div class="form-group">
-            <label for="nom">Nom :</label>
-            <input type="text" id="nom" name="nom" placeholder="Ton nom complet" required>
-        </div>
+        <h2>Me Contacter</h2>
+        <form id="monFormulaire">
+            <div class="form-group">
+                <label for="nom"><i class="fas fa-user"></i> Nom :</label>
+                <input type="text" id="nom" name="nom" placeholder="Ton nom complet" required>
+            </div>
 
-        <div class="form-group">
-            <label for="email">Email :</label>
-            <input type="email" id="email" name="email" placeholder="ton@email.com" required>
-        </div>
+            <div class="form-group">
+                <label for="email"><i class="fas fa-at"></i> Email :</label>
+                <input type="email" id="email" name="email" placeholder="ton@email.com" required>
+            </div>
 
-        <div class="form-group">
-            <label for="message">Message :</label>
-            <textarea id="message" name="message" rows="5" placeholder="Comment puis-je t'aider ?" required></textarea>
-        </div>
-
-        <button type="submit" id="btnEnvoyer">Envoyer le message</button>
-    </form>
-</section>
+            <div class="form-group">
+                <label for="message"><i class="fas fa-comment"></i> Message :</label>
+                <textarea id="message" name="message" rows="5" placeholder="Comment puis-je t'aider ?" required></textarea>
+            </div>
+            
+            <button type="submit">Envoyer le message</button>
+        </form>
+    </section>
 
     <footer>
         <p>&copy; 2024 Mon Entreprise - Tous droits réservés.</p>
     </footer>
-<script src="script.js"></script>
+
+    <script src="script.js"></script>
 </body>
 </html>
