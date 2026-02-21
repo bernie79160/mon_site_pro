@@ -6,18 +6,9 @@ function ouvrirCours(nomDuCours) {
     window.location.href = nomDuCours + '.html';
 }
 
-/**
- * Cette fonction est appelée quand on clique sur "Valider" dans un cours.
- * On lui donne le nom du cours (ex: 'windows') pour qu'elle le note comme fini.
- */
 function validerCours(nomDuCours) {
-    // 1. On enregistre dans la mémoire du navigateur
     localStorage.setItem('cours-' + nomDuCours, 'done');
-    
-    // 2. On affiche un message sympa
     alert("Bravo ! Vous avez obtenu le badge " + nomDuCours.toUpperCase() + " !");
-    
-    // 3. On repart à l'accueil pour voir la médaille
     window.location.href = 'index.html';
 }
 
@@ -29,19 +20,16 @@ function mettreAJourProgression() {
     const cours = ['windows', 'internet', 'word', 'excel', 'powerpoint'];
     let valides = 0;
 
-    // Pour chaque cours, on vérifie s'il est terminé
     cours.forEach(c => {
+        const badge = document.getElementById('badge-' + c);
         if (localStorage.getItem('cours-' + c) === 'done') {
             valides++;
-            // On cherche le badge correspondant (ex: id="badge-windows")
-            const badge = document.getElementById('badge-' + c);
-            if (badge) {
-                badge.style.display = 'block'; // On l'affiche !
-            }
+            if (badge) badge.style.display = 'block';
+        } else {
+            if (badge) badge.style.display = 'none'; 
         }
     });
 
-    // Calcul du pourcentage de la barre
     const pourcentage = (valides / cours.length) * 100;
     const fill = document.getElementById('progress-fill');
     const text = document.getElementById('progress-text');
@@ -51,7 +39,6 @@ function mettreAJourProgression() {
         text.textContent = Math.round(pourcentage) + "%";
     }
 
-    // Alerte finale si 100%
     if (valides === cours.length && valides > 0) {
         setTimeout(() => {
             alert("🏆 INCROYABLE ! Vous avez terminé tous les modules !");
@@ -60,20 +47,85 @@ function mettreAJourProgression() {
 }
 
 // =========================================================
-// 3. LE DÉMARRAGE (Quand la page s'affiche)
+// 3. LE DÉMARRAGE ET INTERACTIONS
 // =========================================================
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // Au démarrage, on calcule la barre et on affiche les badges
     mettreAJourProgression();
 
-    // Bouton de félicitations (Accueil)
-    const btnFelicitation = document.getElementById('btn-felicitation');
-    if(btnFelicitation) {
-        btnFelicitation.addEventListener('click', () => {
-            alert("Félicitations ! Vous apprenez vite.");
+    const ecran = document.getElementById('ecran-test');
+    const message = document.getElementById('message-souris');
+    const visuelGauche = document.getElementById('clic-gauche');
+    const visuelDroit = document.getElementById('clic-droit');
+
+    if (ecran) {
+        let score = 0;
+        const typesDeClics = ["GAUCHE", "DROIT", "DOUBLE"];
+        let objectifActuel = "";
+        let clickTimer = null; // Pour distinguer clic simple et double
+
+        function genererNouvelObjectif() {
+            objectifActuel = typesDeClics[Math.floor(Math.random() * typesDeClics.length)];
+            message.innerHTML = `Action demandée : <br><span style="font-size: 2rem; color: #f1c40f;">${objectifActuel}</span>`;
+        }
+
+        function verifierAction(typeRealise) {
+            if (objectifActuel === "FINI") return;
+
+            if (typeRealise === objectifActuel) {
+                score++;
+                document.getElementById('score-valeur').textContent = score;
+                message.innerHTML = "✅ Bien joué !";
+                
+                if (score >= 20) {
+                    message.innerHTML = "🏆 Défi réussi ! <br> Vous maîtrisez les clics de souris.";
+                    objectifActuel = "FINI";
+                } else {
+                    setTimeout(genererNouvelObjectif, 1000);
+                }
+            } else {
+                message.innerHTML = "❌ Essayez encore !";
+                setTimeout(() => {
+                    if(objectifActuel !== "FINI") {
+                        message.innerHTML = `Action demandée : <br><span style="font-size: 2rem; color: #f1c40f;">${objectifActuel}</span>`;
+                    }
+                }, 800);
+            }
+        }
+
+        // --- GESTION DES CLICS ---
+
+        ecran.addEventListener('click', (e) => {
+            if (objectifActuel === "FINI") return;
+            
+            // Animation visuelle bouton gauche
+            visuelGauche.style.backgroundColor = "#3498db";
+            setTimeout(() => visuelGauche.style.backgroundColor = "white", 200);
+
+            if (e.detail === 1) {
+                // On attend 250ms pour être sûr que ce n'est pas un début de double-clic
+                clickTimer = setTimeout(() => {
+                    verifierAction("GAUCHE");
+                }, 250);
+            } else if (e.detail === 2) {
+                clearTimeout(clickTimer); // Annule l'action "GAUCHE" prévue
+                verifierAction("DOUBLE");
+            }
         });
+
+        ecran.addEventListener('contextmenu', (e) => {
+            e.preventDefault(); // Bloque le menu contextuel du navigateur
+            if (objectifActuel === "FINI") return;
+
+            // Animation visuelle bouton droit
+            visuelDroit.style.backgroundColor = "#e74c3c";
+            setTimeout(() => visuelDroit.style.backgroundColor = "white", 200);
+            
+            verifierAction("DROIT");
+        });
+
+        genererNouvelObjectif();
     }
 
     // Gestion du Mode Sombre

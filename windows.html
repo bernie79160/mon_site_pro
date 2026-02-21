@@ -3,10 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cours Windows - Les Bases</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <title>Cours Windows - La Souris</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -20,48 +17,36 @@
         </nav>
     </header>
 
-  <main class="contenu-cours">
-    <section class="entete-cours">
-        <h1><i class="fab fa-windows"></i> Maîtriser Windows</h1>
-        <p class="introduction">Windows est le "chef d'orchestre" de votre ordinateur. Il vous permet de ranger vos documents comme dans un vrai bureau.</p>
-    </section>
+    <main class="contenu-cours">
+        <section class="entete-cours">
+            <h1><i class="fab fa-windows"></i> Apprendre à cliquer</h1>
+            <p class="introduction">Pratiquez le clic gauche, le clic droit et le double-clic ci-dessous.</p>
+        </section>
 
-    <section class="etape-cours">
-        <h2><i class="fas fa-desktop"></i> 1. Le Bureau et la Souris</h2>
-        <p>Le **Bureau** est l'écran que vous voyez au démarrage. C'est votre table de travail.</p>
-        <ul>
-            <li><strong>Le Clic Gauche :</strong> Pour sélectionner ou choisir quelque chose.</li>
-            <li><strong>Le Clic Droit :</strong> Pour ouvrir un menu d'options (comme un menu de restaurant).</li>
-            <li><strong>Le Double-Clic :</strong> Pour ouvrir un dossier ou un logiciel.</li>
-        </ul>
-    </section>
-
+<section class="etape-cours">
+    <h2><i class="fas fa-gamepad"></i> Le Défi du Clic</h2>
+    <p>Objectif : Cliquez dans le rectangle selon les instructions !</p>
     
-
-    <section class="etape-cours">
-        <h2><i class="fas fa-bars"></i> 2. Le Bouton "Démarrer"</h2>
-        <p>C'est la porte d'entrée de votre ordinateur (en bas à gauche). Si vous cherchez un logiciel ou si vous voulez éteindre l'ordinateur, c'est ici !</p>
-    </section>
-
-    <section class="etape-cours">
-        <h2><i class="fas fa-folder-open"></i> 3. Les Fichiers et Dossiers</h2>
-        <p>Pour ne pas tout mélanger, on utilise des dossiers :</p>
-        <div class="comparaison">
-            <p><i class="fas fa-file-alt"></i> <strong>Un Fichier :</strong> C'est une lettre, une photo ou une musique.</p>
-            <p><i class="fas fa-folder"></i> <strong>Un Dossier :</strong> C'est une chemise cartonnée où l'on range plusieurs fichiers.</p>
-        </div>
-    </section>
-
-    
-
-    <div class="actions-cours">
-        <button class="btn-validation" onclick="validerCours('windows')">J'ai tout compris, je valide !</button>
+    <div class="score-board">
+        Score : <span id="score-valeur">0</span> / 20
     </div>
-</main>
 
-    <footer>
-        <p>&copy; 2024 Formation Numérique - Apprendre pas à pas.</p>
-    </footer>
+    <div class="zone-exercice-souris">
+        <div id="souris-visuelle">
+            <div id="clic-gauche" class="bouton-souris"></div>
+            <div id="clic-droit" class="bouton-souris"></div>
+        </div>
+        
+        <div id="ecran-test">
+            <p id="message-souris">Prêt ? Cliquez ici pour commencer !</p>
+        </div>
+    </div>
+</section>
+
+        <div class="actions-cours">
+            <button class="btn-cours" onclick="validerCours('windows')" style="background-color: #27ae60;">J'ai terminé, valider mon badge !</button>
+        </div>
+    </main>
 
     <script src="script.js"></script>
 </body>

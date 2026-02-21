@@ -224,3 +224,110 @@ i { margin-right: 8px; color: var(--accent-color); }
     border-radius: 8px;
     margin-top: 10px;
 }
+/* =========================================================
+   ZONE EXERCICE SOURIS (WINDOWS.HTML)
+   ========================================================= */
+
+.zone-exercice-souris {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: #f0f4f8;
+    padding: 30px;
+    border-radius: 20px;
+    border: 3px dashed #3498db;
+    margin: 20px 0;
+    flex-wrap: wrap; /* Pour que ça reste joli sur mobile */
+}
+
+/* Le dessin de la souris */
+#souris-visuelle {
+    width: 100px;
+    height: 160px;
+    border: 4px solid #333;
+    border-radius: 50px 50px 30px 30px;
+    display: flex;
+    background: white;
+    position: relative;
+    box-shadow: 0 10px 0 #bdc3c7;
+}
+
+.bouton-souris {
+    flex: 1;
+    height: 70px; /* La partie haute de la souris */
+    border-bottom: 4px solid #333;
+    transition: background 0.2s;
+}
+
+#clic-gauche {
+    border-right: 2px solid #333;
+    border-radius: 45px 0 0 0;
+}
+
+#clic-droit {
+    border-radius: 0 45px 0 0;
+}
+
+/* L'écran de test interactif */
+#ecran-test {
+    width: 350px;
+    height: 200px;
+    background: #2c3e50;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border-radius: 15px;
+    cursor: crosshair;
+    text-align: center;
+    padding: 20px;
+    border: 5px solid #bdc3c7;
+    overflow: hidden;
+}
+
+#message-souris {
+    font-size: 1.1rem;
+    font-weight: bold;
+    pointer-events: none; /* Pour ne pas gêner le clic */
+}
+
+/* Le menu qui apparaît au clic droit */
+.menu-virtuel {
+    display: none;
+    position: absolute;
+    background: rgba(255, 255, 255, 0.95); /* Blanc légèrement transparent */
+    color: #333;
+    border: 1px solid #ccc;
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
+    width: 180px; /* On passe de 150 à 180 pour éviter le retour à la ligne */
+    border-radius: 5px;
+    z-index: 100;
+}
+
+.menu-virtuel ul {
+    list-style: none;
+    padding: 5px 0;
+    margin: 0;
+}
+
+.menu-virtuel li {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.menu-virtuel li:hover {
+    background-color: #3498db;
+    color: white;
+}
+.score-board {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    background: #ecf0f1;
+    display: inline-block;
+    padding: 5px 20px;
+    border-radius: 50px;
+}
