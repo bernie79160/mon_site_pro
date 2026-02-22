@@ -2,43 +2,97 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cours PowerPoint - Faire un diaporama</title>
+    <title>S'initier à PowerPoint</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <style>
+        .diapositive {
+            width: 100%; max-width: 600px; height: 350px;
+            background: white; border: 1px solid #ddd; margin: 20px auto;
+            position: relative; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .titre-slide {
+            font-size: 2.5rem; color: #d24726; font-family: sans-serif;
+            border: 2px dashed #ccc; padding: 10px; margin-bottom: 20px;
+        }
+        .zone-image {
+            width: 200px; height: 120px; border: 2px dashed #ccc;
+            display: flex; justify-content: center; align-items: center; color: #aaa;
+        }
+        .ruban-ppt { background: #d24726; color: white; padding: 10px; text-align: center; }
+        
+        /* Animation du diaporama */
+        .mode-diaporama {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: black; z-index: 1000; display: flex; justify-content: center; align-items: center;
+        }
+        .mode-diaporama .diapositive { width: 90%; height: 90%; border: none; }
+    </style>
 </head>
 <body class="page-cours">
     <header>
-        <nav>
-            <ul><li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a></li></ul>
-        </nav>
+        <nav><ul><li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a></li></ul></nav>
     </header>
 
     <main class="contenu-cours">
         <section class="entete-cours">
-            <h1><i class="fas fa-file-powerpoint"></i> Utiliser PowerPoint</h1>
-            <p class="introduction">PowerPoint sert à créer des albums photos animés.</p>
+            <h1><i class="fas fa-file-powerpoint" style="color: #d24726;"></i> Présenter avec PowerPoint</h1>
+            <p id="consigne-ppt" class="consigne-majeure">
+                1. Cliquez sur le bouton pour <strong>insérer une image</strong> de décoration.
+            </p>
         </section>
 
-        <section class="etape-cours">
-            <h2>1. La Diapositive</h2>
-            <p>Chaque "page" de votre présentation s'appelle une <strong>diapositive</strong>. On les voit défiler sur la gauche de l'écran.</p>
-        </section>
+        <div class="logiciel-ppt" id="logiciel-ppt">
+            <div class="ruban-ppt"><i class="fas fa-play"></i> Conception de présentation</div>
+            <div class="diapositive" id="slide">
+                <div class="titre-slide">Ma Présentation</div>
+                <div id="image-place" class="zone-image">Pas d'image</div>
+            </div>
+        </div>
 
-        <section class="etape-cours">
-            <h2>2. Insérer des images</h2>
-            <p>Le plus important est d'ajouter des photos pour illustrer vos propos. Vous pouvez les agrandir ou les déplacer avec la souris.</p>
-        </section>
+        <div style="text-align: center; margin-top: 20px;">
+            <button id="btn-image" class="btn-cours" style="background-color: #d24726;" onclick="ajouterImage()">
+                <i class="fas fa-image"></i> Insérer une Image
+            </button>
+            <button id="btn-diaporama" class="btn-cours" style="background-color: #333; display: none;" onclick="lancerDiaporama()">
+                <i class="fas fa-desktop"></i> Lancer le Diaporama (F5)
+            </button>
+        </div>
 
-        <section class="etape-cours">
-            <h2>3. Le mode Diaporama</h2>
-            <p>C'est le moment magique où votre présentation prend tout l'écran pour être montrée aux autres.</p>
-        </section>
-
-        <div class="actions-cours">
-            <button onclick="validerCours()">J'ai compris PowerPoint !</button>
+        <div class="actions-cours" style="text-align: center; margin-top: 20px;">
+            <button id="btn-valider-ppt" class="btn-validation" onclick="validerCours('powerpoint')" disabled style="opacity: 0.5; background-color: #d24726; color: white;">
+                J'ai terminé le dernier cours !
+            </button>
         </div>
     </main>
+
+    <script>
+        function ajouterImage() {
+            document.getElementById('image-place').innerHTML = '<i class="fas fa-photo-video" style="font-size: 4rem; color: #d24726;"></i>';
+            document.getElementById('image-place').style.border = "none";
+            document.getElementById('btn-image').style.display = "none";
+            document.getElementById('btn-diaporama').style.display = "inline-block";
+            document.getElementById('consigne-ppt').innerHTML = "2. Bravo ! Maintenant, cliquez sur <strong>Lancer le Diaporama</strong> pour voir le résultat.";
+        }
+
+        function lancerDiaporama() {
+            const logiciel = document.getElementById('logiciel-ppt');
+            logiciel.classList.add('mode-diaporama');
+            
+            document.getElementById('consigne-ppt').innerHTML = "✨ Impressionnant ! Appuyez sur le bouton de validation pour terminer votre formation.";
+            
+            const btn = document.getElementById('btn-valider-ppt');
+            btn.disabled = false;
+            btn.style.opacity = "1";
+            btn.style.zIndex = "1001"; // Pour qu'il reste visible par-dessus
+            
+            // On quitte le mode diaporama après 3 secondes pour voir le bouton
+            setTimeout(() => {
+                logiciel.classList.remove('mode-diaporama');
+            }, 3000);
+        }
+    </script>
     <script src="script.js"></script>
 </body>
 </html>

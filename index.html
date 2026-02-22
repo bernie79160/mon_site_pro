@@ -16,7 +16,11 @@
                 <li><a href="#accueil"><i class="fas fa-home"></i> Accueil</a></li>
                 <li><a href="#services"><i class="fas fa-graduation-cap"></i> Cours</a></li>
                 <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
-                <li><button id="theme-toggle">🌙 Mode Sombre</button></li>
+   <li>
+    <button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">
+        🌙 Mode Sombre
+    </button>
+</li>
             </ul>
         </nav>
     </header>
@@ -114,26 +118,30 @@
         </section>
     </main>
 
-    <section id="contact">
-        <div class="contact-container">
-            <h2><i class="fas fa-envelope"></i> Me Contacter</h2>
-            <form id="monFormulaire">
-                <div class="form-group">
-                    <input type="text" placeholder="Ton nom" required>
-                </div>
-                <div class="form-group">
-                    <input type="email" placeholder="ton@email.com" required>
-                </div>
-                <div class="form-group">
-                    <textarea placeholder="Ton message" rows="5" required></textarea>
-                </div>
-                <button type="submit" class="btn-envoi">Envoyer le message</button>
-            </form>
-        </div>
-    </section>
+<section id="contact" class="container-contact">
+    <h2><i class="fas fa-envelope"></i> Me Contacter</h2>
+    <div class="contact-card">
+        <form id="form-contact">
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" placeholder="Ton nom" required>
+            </div>
+            <div class="input-group">
+                <i class="fas fa-at"></i>
+                <input type="email" placeholder="ton@email.com" required>
+            </div>
+            <div class="input-group">
+                <textarea placeholder="Ton message" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn-send">
+                Envoyer le message <i class="fas fa-paper-plane"></i>
+            </button>
+        </form>
+    </div>
+</section>
 
     <footer>
-        <p>&copy; 2026 Mon Entreprise - Tous droits réservés.</p>
+        <p>&copy; 2026 Bernard TELLIER - Tous droits réservés.</p>
     </footer>
 
     <script src="script.js"></script>

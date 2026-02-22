@@ -4,7 +4,44 @@
     --text-main: #333;
     --header-bg: #2c3e50;
 }
+/* --- Styles Mode Sombre --- */
+body.dark-mode {
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
 
+body.dark-mode .cours-card, 
+body.dark-mode .logiciel-word, 
+body.dark-mode .tableur-container,
+body.dark-mode section.etape-cours {
+    background-color: #2d2d2d;
+    color: #ffffff;
+    border-color: #444;
+}
+
+body.dark-mode header {
+    background-color: #000000;
+}
+
+body.dark-mode .introduction, body.dark-mode p {
+    color: #ccc;
+}
+
+/* Style du bouton mode sombre dans le menu */
+.btn-dark-toggle {
+    background: #444;
+    color: white;
+    border: 1px solid #666;
+    padding: 5px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: 0.3s;
+}
+
+.btn-dark-toggle:hover {
+    background: #666;
+}
 body { 
     font-family: 'Open Sans', sans-serif; 
     background: var(--bg-color); 
@@ -302,3 +339,129 @@ header nav ul li a {
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     white-space: nowrap;
 }
+/* --- Style Contact --- */
+.container-contact {
+    padding: 40px 20px;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.contact-card {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-group i {
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    color: #3498db;
+}
+
+.input-group input, .input-group textarea {
+    width: 100%;
+    padding: 12px 15px 12px 45px;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+    transition: 0.3s;
+    box-sizing: border-box; /* Évite que le champ ne dépasse */
+}
+
+.input-group input:focus, .input-group textarea:focus {
+    border-color: #3498db;
+    outline: none;
+    background: #f7fbff;
+}
+
+.btn-send {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    transition: 0.3s;
+}
+
+.btn-send:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+}
+
+/* --- Adaptation Mode Sombre --- */
+body.dark-mode .contact-card {
+    background: #2d2d2d;
+}
+
+body.dark-mode .input-group input, 
+body.dark-mode .input-group textarea {
+    background: #1a1a1a;
+    border-color: #444;
+    color: white;
+}
+/* --- Zone Téléchargement PDF --- */
+.zone-telechargement {
+    margin: 30px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.card-pdf {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    border: 2px solid #eee;
+    max-width: 500px;
+    transition: transform 0.2s;
+}
+
+.card-pdf:hover {
+    transform: scale(1.02);
+    border-color: #e74c3c;
+}
+
+.pdf-info h3 {
+    margin: 0;
+    color: #2c3e50;
+}
+
+.pdf-info p {
+    margin: 5px 0 0;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.btn-download {
+    background: #e74c3c;
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Mode Sombre */
+body.dark-mode .card-pdf {
+    background: #2d2d2d;
+    border-color: #444;
+}
+body.dark-mode .pdf-info h3 { color: white; }
+body.dark-mode .pdf-info p { color: #aaa; }

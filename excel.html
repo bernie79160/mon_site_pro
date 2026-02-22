@@ -2,45 +2,89 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cours Excel - Créer des tableaux</title>
+    <title>S'initier à Excel</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <style>
+        .tableur-container {
+            width: 100%; max-width: 700px; margin: 20px auto;
+            background: white; border: 2px solid #217346; border-radius: 5px; overflow: hidden;
+        }
+        .excel-table {
+            width: 100%; border-collapse: collapse; font-family: sans-serif;
+        }
+        .excel-table th, .excel-table td {
+            border: 1px solid #ddd; padding: 10px; text-align: center;
+        }
+        .excel-table th { background: #f3f3f3; color: #666; font-weight: normal; width: 50px; }
+        .row-header { background: #f3f3f3; width: 40px; }
+        .cell-input {
+            width: 80%; border: 2px solid transparent; text-align: center; font-size: 1rem; outline: none;
+        }
+        .cell-input:focus { border-color: #217346; background: #e6f4ea; }
+        .cell-total { background: #f9f9f9; font-weight: bold; color: #217346; }
+        
+        .ruban-excel { background: #217346; color: white; padding: 10px; display: flex; gap: 20px; align-items: center; }
+    </style>
 </head>
 <body class="page-cours">
     <header>
-        <nav>
-            <ul><li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a></li></ul>
-        </nav>
+        <nav><ul><li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a></li></ul></nav>
     </header>
 
     <main class="contenu-cours">
         <section class="entete-cours">
-            <h1><i class="fas fa-file-excel"></i> Utiliser Excel</h1>
-            <p class="introduction">Excel est une feuille de papier quadrillée intelligente.</p>
+            <h1><i class="fas fa-file-excel" style="color: #217346;"></i> Les calculs avec Excel</h1>
+            <p id="consigne-excel" class="consigne-majeure">
+                Mission : Cliquez dans la case <strong>B2</strong> et tapez le chiffre <strong>5</strong>.
+            </p>
         </section>
 
-        
+        <div class="tableur-container">
+            <div class="ruban-excel">
+                <i class="fas fa-table"></i> <span>Tableur - Liste de Courses</span>
+            </div>
+            <table class="excel-table">
+                <tr><th></th><th>A</th><th>B</th></tr>
+                <tr><td class="row-header">1</td><td>Pommes</td><td>2 €</td></tr>
+                <tr><td class="row-header">2</td><td>Poires</td><td><input type="number" id="input-excel" class="cell-input" oninput="verifierExcel()" placeholder="?"></td></tr>
+                <tr><td class="row-header">3</td><td style="font-weight: bold;">TOTAL</td><td id="cell-resultat" class="cell-total">? €</td></tr>
+            </table>
+        </div>
 
-        <section class="etape-cours">
-            <h2>1. Les Colonnes et les Lignes</h2>
-            <p>Le tableau est organisé avec des lettres (en haut) et des chiffres (à gauche). C'est comme le jeu de la bataille navale !</p>
-        </section>
+        <div style="text-align: center; margin-top: 20px;">
+            <button id="btn-calcul" class="btn-cours" style="background-color: #217346; display: none;" onclick="calculerTotal()">
+                <i class="fas fa-calculator"></i> Cliquer pour calculer le Total
+            </button>
+        </div>
 
-        <section class="etape-cours">
-            <h2>2. La Cellule (La case)</h2>
-            <p>Chaque case s'appelle une <strong>cellule</strong>. Cliquez sur une case pour y écrire un mot ou un chiffre.</p>
-        </section>
-
-        <section class="etape-cours">
-            <h2>3. Faire des calculs</h2>
-            <p>La magie d'Excel : si vous changez un chiffre dans une case, Excel peut refaire le calcul total automatiquement pour vous.</p>
-        </section>
-
-        <div class="actions-cours">
-            <button onclick="validerCours()">J'ai compris Excel !</button>
+        <div class="actions-cours" style="text-align: center;">
+            <button id="btn-valider-excel" class="btn-validation" onclick="validerCours('excel')" disabled style="opacity: 0.5; background-color: #217346; color: white; margin-top: 30px; padding: 15px 30px; border: none; border-radius: 5px;">
+                J'ai terminé le cours Excel !
+            </button>
         </div>
     </main>
+
+    <script>
+        function verifierExcel() {
+            const val = document.getElementById('input-excel').value;
+            if (val == "5") {
+                document.getElementById('consigne-excel').innerHTML = "Parfait ! Maintenant, cliquez sur le bouton <strong>Calculer</strong>.";
+                document.getElementById('btn-calcul').style.display = "inline-block";
+            }
+        }
+
+        function calculerTotal() {
+            document.getElementById('cell-resultat').innerText = "7 €";
+            document.getElementById('consigne-excel').innerHTML = "🎉 Bravo ! Excel a calculé 2 + 5 = 7. Vous pouvez valider.";
+            document.getElementById('consigne-excel').style.color = "#27ae60";
+            
+            const btn = document.getElementById('btn-valider-excel');
+            btn.disabled = false;
+            btn.style.opacity = "1";
+            btn.style.cursor = "pointer";
+        }
+    </script>
     <script src="script.js"></script>
 </body>
 </html>
