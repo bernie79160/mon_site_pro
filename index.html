@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Site Pro - Accueil</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
@@ -22,77 +20,116 @@
             </ul>
         </nav>
     </header>
-<button onclick="localStorage.clear(); location.reload();" style="background-color: #e74c3c; margin-bottom: 20px;">
-    🗑️ Réinitialiser ma progression
-</button>
-    <main>
-        <section id="accueil">
-            <h1>Bienvenue sur mon site pro</h1>
-            <p>Apprenez l'informatique pas à pas avec des exercices interactifs.</p>
-            <button id="btn-felicitation">Ma progression</button>
-        </section>
+
+<main id="accueil">
+    <div class="header-action-zone">
+        <button onclick="localStorage.clear(); location.reload();" class="btn-reset-global">
+            <i class="fas fa-trash"></i> Réinitialiser ma progression
+        </button>
+    </div>
 
         <section id="services">
-            <h2><i class="fas fa-graduation-cap"></i> Nos Cours</h2>
-            
-            <div class="progress-container">
-                <p>Votre progression globale : <span id="progress-text">0%</span></p>
+            <div class="progress-container" style="margin-top: 20px;">
                 <div class="progress-bar-bg">
                     <div id="progress-fill"></div>
                 </div>
+                <p>Votre progression globale : <span id="progress-text">0%</span></p>
             </div>
 
+            <h2><i class="fas fa-graduation-cap"></i> Nos Cours</h2>
+
             <div class="cours-container">
-                <div class="cours-card theme-windows">
-                    <span id="badge-informatique" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
-                    <div class="cours-icon"><i class="fab fa-windows"></i></div>
-                    <h3>Découvrir L'univers informatique</h3>
-                    <p>Apprenez à utiliser la souris et à organiser vos fichiers.</p>
-                    <button class="btn-cours" onclick="ouvrirCours('informatique')">Commencer la leçon</button>
-                </div>
-
                 <div class="cours-card theme-internet">
-                    <span id="badge-internet" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
-                    <div class="cours-icon"><i class="fas fa-globe"></i></div>
-                    <h3>Internet et Emails</h3>
-                    <p>Naviguez en toute sécurité et envoyez des messages.</p>
-                    <button class="btn-cours" onclick="ouvrirCours('internet')">Découvrir</button>
+                    <div class="card-header"></div>
+                    <span id="badge-pointeur" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
+                    <i class="fas fa-mouse-pointer"></i>
+                    <h3>Les formes du pointeur</h3>
+                    <p>Découvrez pourquoi la flèche change de forme.</p>
+                    <button class="btn-card" onclick="ouvrirCours('pointeur')">Découvrir</button>
                 </div>
 
-                <div class="cours-card theme-word">
+                <div id="card-informatique" class="cours-card theme-windows">
+                    <div class="card-header"></div>
+                    <span id="badge-informatique" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
+                    <i class="fas fa-desktop"></i>
+                    <h3>L'univers informatique</h3>
+                    <p>Maitriser la souris</p>
+                    <button class="btn-card" onclick="ouvrirCours('informatique')">Découvrir</button>
+                </div>
+
+                <div id="card-windows" class="cours-card theme-windows">
+                    <div class="card-header"></div>
+                    <span id="badge-windows" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
+                    <i class="fab fa-windows"></i>
+                    <h3>L'univers Windows</h3>
+                    <p>Apprivoiser le bureau et le menu démarrer.</p>
+                    <button class="btn-card" onclick="ouvrirCours('windows')">Découvrir</button>
+                </div>
+
+                <div id="card-bureau" class="cours-card theme-windows">
+                    <div class="card-header"></div>
+                    <span id="badge-bureau" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
+                    <i class="fas fa-window-restore"></i>
+                    <h3>Le Bureau et les Icônes</h3>
+                    <p>Apprenez à utiliser les raccourcis et la corbeille.</p>
+                    <button class="btn-card" onclick="ouvrirCours('bureau')">Découvrir</button>
+                </div>
+
+                <div id="card-clavier" class="cours-card theme-windows">
+                    <div class="card-header"></div>
+                    <span id="badge-clavier" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
+                    <i class="fas fa-keyboard"></i>
+                    <h3>Découvrir le Clavier</h3>
+                    <p>Apprivoiser les touches principales et les majuscules.</p>
+                    <button class="btn-card" onclick="ouvrirCours('clavier')">Découvrir</button>
+                </div>
+
+                <div id="card-word" class="cours-card theme-word">
+                    <div class="card-header"></div>
                     <span id="badge-word" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
-                    <div class="cours-icon"><i class="fas fa-file-word"></i></div>
+                    <i class="fas fa-file-word"></i>
                     <h3>Écrire avec Word</h3>
-                    <p>Créez vos courriers et apprenez à mettre en forme vos textes.</p>
-                    <button class="btn-cours" onclick="ouvrirCours('word')">Découvrir</button>
+                    <p>Créez vos courriers et mettez en forme vos textes.</p>
+                    <button class="btn-card" onclick="ouvrirCours('word')">Découvrir</button>
                 </div>
 
-                <div class="cours-card theme-excel">
+                <div id="card-excel" class="cours-card theme-excel">
+                    <div class="card-header"></div>
                     <span id="badge-excel" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
-                    <div class="cours-icon"><i class="fas fa-file-excel"></i></div>
+                    <i class="fas fa-file-excel"></i>
                     <h3>Calculer avec Excel</h3>
-                    <p>Créez des tableaux simples pour gérer votre budget.</p>
-                    <button class="btn-cours" onclick="ouvrirCours('excel')">Découvrir</button>
+                    <p>Créez des tableaux simples pour votre budget.</p>
+                    <button class="btn-card" onclick="ouvrirCours('excel')">Découvrir</button>
                 </div>
 
-                <div class="cours-card theme-powerpoint">
+                <div id="card-powerpoint" class="cours-card theme-powerpoint">
+                    <div class="card-header"></div>
                     <span id="badge-powerpoint" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
-                    <div class="cours-icon"><i class="fas fa-file-powerpoint"></i></div>
+                    <i class="fas fa-file-powerpoint"></i>
                     <h3>Présenter avec PowerPoint</h3>
-                    <p>Réalisez des diaporamas avec des photos pour vos souvenirs.</p>
-                    <button class="btn-cours" onclick="ouvrirCours('powerpoint')">Découvrir</button>
+                    <p>Réalisez des diaporamas avec vos souvenirs.</p>
+                    <button class="btn-card" onclick="ouvrirCours('powerpoint')">Découvrir</button>
                 </div>
-                
+            </div> 
+        </section>
     </main>
 
     <section id="contact">
-        <h2>Me Contacter</h2>
-        <form id="monFormulaire">
-            <input type="text" placeholder="Ton nom" required>
-            <input type="email" placeholder="ton@email.com" required>
-            <textarea placeholder="Ton message" rows="5" required></textarea>
-            <button type="submit">Envoyer</button>
-        </form>
+        <div class="contact-container">
+            <h2><i class="fas fa-envelope"></i> Me Contacter</h2>
+            <form id="monFormulaire">
+                <div class="form-group">
+                    <input type="text" placeholder="Ton nom" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="ton@email.com" required>
+                </div>
+                <div class="form-group">
+                    <textarea placeholder="Ton message" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn-envoi">Envoyer le message</button>
+            </form>
+        </div>
     </section>
 
     <footer>

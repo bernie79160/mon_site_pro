@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Nettoyer son Bureau</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .icone-bureau {
+            width: 90px;
+            text-align: center;
+            color: white;
+            cursor: grab;
+            position: absolute;
+            padding: 10px;
+            border-radius: 8px;
+            transition: transform 0.1s;
+        }
+        .icone-bureau:active { cursor: grabbing; transform: scale(1.1); }
+        .icone-bureau i { font-size: 45px; display: block; margin-bottom: 5px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .icone-bureau span { font-size: 11px; font-weight: 600; text-shadow: 1px 1px 2px black; display: block; line-height: 1.2; }
+
+        .corbeille-zone {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 120px;
+            height: 140px;
+            border: 3px dashed rgba(255,255,255,0.6);
+            border-radius: 15px;
+            color: white;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+        .survol-corbeille { background: rgba(231, 76, 60, 0.5); border-color: #e74c3c; transform: scale(1.05); }
+    </style>
+</head>
+<body class="page-cours">
+    <header>
+        <nav><ul><li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a></li></ul></nav>
+    </header>
+
+    <main class="contenu-cours">
+        <section class="entete-cours">
+            <h1><i class="fas fa-broom"></i> Grand Nettoyage du Bureau</h1>
+            <p id="consigne-bureau" class="consigne-majeure">
+                Mettez les <strong>4 fichiers inutiles</strong> à la poubelle. (Restant : <span id="compteur">4</span>)
+            </p>
+        </section>
+
+        <div id="bureau-canvas" style="width: 100%; max-width: 780px; height: 450px; background: #2c3e50; margin: 10px auto; position: relative; border-radius: 10px; border: 5px solid #34495e; overflow: hidden; box-shadow: inset 0 0 50px rgba(0,0,0,0.5);">
+            
+            <div id="file1" class="icone-bureau" draggable="true" ondragstart="drag(event)" style="top: 30px; left: 40px;">
+                <i class="fas fa-file-alt" style="color: #bdc3c7;"></i><span>Note_vide.txt</span>
+            </div>
+            <div id="file2" class="icone-bureau" draggable="true" ondragstart="drag(event)" style="top: 150px; left: 60px;">
+                <i class="fas fa-file-image" style="color: #e67e22;"></i><span>Photo_floue.jpg</span>
+            </div>
+            <div id="file3" class="icone-bureau" draggable="true" ondragstart="drag(event)" style="top: 270px; left: 30px;">
+                <i class="fas fa-file-archive" style="color: #f1c40f;"></i><span>Vieux_dossier.zip</span>
+            </div>
+            <div id="file4" class="icone-bureau" draggable="true" ondragstart="drag(event)" style="top: 40px; left: 160px;">
+                <i class="fas fa-trash" style="color: #95a5a6;"></i><span>Pub_internet.exe</span>
+            </div>
+
+            <div class="icone-bureau" style="top: 30px; right: 200px; cursor: default; opacity: 0.9;">
+                <i class="fas fa-file-word" style="color: #3498db;"></i><span>Mon_CV.docx</span>
+            </div>
+            <div class="icone-bureau" style="top: 150px; right: 220px; cursor: default; opacity: 0.9;">
+                <i class="fas fa-file-pdf" style="color: #e74c3c;"></i><span>Facture_EDF.pdf</span>
+            </div>
+
+            <div id="corbeille" class="corbeille-zone" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="leaveDrop(event)">
+                <i class="fas fa-trash-alt" style="font-size: 50px; margin-bottom: 10px;"></i>
+                <span>CORBEILLE</span>
+            </div>
+        </div>
+
+        <div class="actions-cours" style="text-align: center;">
+            <button id="btn-valider-bureau" class="btn-cours" style="background-color: #2980b9; opacity: 0.5; padding: 15px 40px;" onclick="validerCours('bureau')" disabled>
+                Bureau Nettoyé !
+            </button>
+        </div>
+    </main>
+
+    <script>
+        let fichiersSupprimes = 0;
+        const totalASupprimer = 4;
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+            document.getElementById('corbeille').classList.add('survol-corbeille');
+        }
+
+        function leaveDrop(ev) {
+            document.getElementById('corbeille').classList.remove('survol-corbeille');
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            document.getElementById('corbeille').classList.remove('survol-corbeille');
+            
+            var data = ev.dataTransfer.getData("text");
+            var element = document.getElementById(data);
+            
+            if (element) {
+                element.style.display = 'none';
+                fichiersSupprimes++;
+                
+                let restant = totalASupprimer - fichiersSupprimes;
+                document.getElementById('compteur').innerText = restant;
+
+                if (fichiersSupprimes === totalASupprimer) {
+                    gagner();
+                }
+            }
+        }
+
+        function gagner() {
+            document.getElementById('corbeille').innerHTML = '<i class="fas fa-check-circle" style="font-size: 50px; color: #2ecc71;"></i><span>PROPRE !</span>';
+            document.getElementById('consigne-bureau').innerHTML = "🎉 Parfait ! Vous savez trier vos documents.";
+            document.getElementById('consigne-bureau').style.color = "#27ae60";
+            
+            const btn = document.getElementById('btn-valider-bureau');
+            btn.disabled = false;
+            btn.style.opacity = "1";
+            btn.style.cursor = "pointer";
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

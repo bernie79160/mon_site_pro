@@ -2,52 +2,133 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cours Windows - La Souris</title>
+    <title>Maîtriser les Fenêtres Windows</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <style>
+        .bureau-windows {
+            width: 100%; max-width: 780px; height: 500px;
+            background: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80') center/cover;
+            margin: 10px auto; position: relative; border: 5px solid #333; border-radius: 10px; overflow: hidden;
+        }
+        
+        /* Icônes de raccourcis */
+        .icone-raccourci {
+            width: 85px; padding: 10px; text-align: center; color: white; cursor: pointer;
+            position: absolute; transition: background 0.2s; border-radius: 5px;
+        }
+        .icone-raccourci:hover { background: rgba(255,255,255,0.2); }
+        .icone-raccourci i { font-size: 40px; display: block; margin-bottom: 5px; text-shadow: 1px 1px 3px black; }
+        .icone-raccourci span { font-size: 11px; text-shadow: 1px 1px 2px black; font-weight: bold; }
+
+        /* Style des fenêtres */
+        .fenetre {
+            position: absolute; width: 320px; height: 240px; background: white;
+            border: 1px solid #0078d7; box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            display: none; flex-direction: column; cursor: move;
+        }
+        .fenetre-barre {
+            background: #f3f3f3; padding: 5px 10px; display: flex; 
+            justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd;
+        }
+        .bouton-fermer { color: #555; cursor: pointer; font-weight: bold; padding: 0 8px; }
+        .bouton-fermer:hover { background: #e81123; color: white; }
+        .contenu-win { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 30px; }
+    </style>
 </head>
 <body class="page-cours">
-
     <header>
-        <nav>
-            <ul>
-                <li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour à l'accueil</a></li>
-            </ul>
-        </nav>
+        <nav><ul><li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a></li></ul></nav>
     </header>
 
     <main class="contenu-cours">
         <section class="entete-cours">
-            <h1><i class="fab fa-windows"></i> Apprendre à cliquer</h1>
-            <p class="introduction">Pratiquez le clic gauche, le clic droit et le double-clic ci-dessous.</p>
+            <h1><i class="fas fa-copy"></i> Gérer plusieurs fenêtres</h1>
+            <p id="consigne-win" class="consigne-majeure">
+                Ouvrez les <strong>3 raccourcis</strong> (Internet, Photos, Musique) par un double-clic.
+            </p>
         </section>
 
-<section class="etape-cours">
-    <h2><i class="fas fa-gamepad"></i> Le Défi du Clic</h2>
-    <p>Objectif : Cliquez dans le rectangle selon les instructions !</p>
-    
-    <div class="score-board">
-        Score : <span id="score-valeur">0</span> / 20
-    </div>
+        <div class="bureau-windows">
+            <div class="icone-raccourci" style="top: 20px; left: 20px;" ondblclick="ouvrir('win-internet')">
+                <i class="fab fa-edge" style="color: #3498db;"></i><span>Internet</span>
+            </div>
+            <div class="icone-raccourci" style="top: 120px; left: 20px;" ondblclick="ouvrir('win-photos')">
+                <i class="fas fa-images" style="color: #2ecc71;"></i><span>Mes Photos</span>
+            </div>
+            <div class="icone-raccourci" style="top: 220px; left: 20px;" ondblclick="ouvrir('win-musique')">
+                <i class="fas fa-music" style="color: #9b59b6;"></i><span>Ma Musique</span>
+            </div>
 
-    <div class="zone-exercice-souris">
-        <div id="souris-visuelle">
-            <div id="clic-gauche" class="bouton-souris"></div>
-            <div id="clic-droit" class="bouton-souris"></div>
-        </div>
-        
-        <div id="ecran-test">
-            <p id="message-souris">Prêt ? Cliquez ici pour commencer !</p>
-        </div>
-    </div>
-</section>
+            <div id="win-internet" class="fenetre" style="top: 40px; left: 180px;" onclick="focusWin(this)">
+                <div class="fenetre-barre"><span>Internet</span><span class="bouton-fermer" onclick="fermer('win-internet')">X</span></div>
+                <div class="contenu-win" style="background: #eee;"><i class="fas fa-globe-europe"></i></div>
+            </div>
 
-        <div class="actions-cours">
-            <button class="btn-cours" onclick="validerCours('windows')" style="background-color: #27ae60;">J'ai terminé, valider mon badge !</button>
+            <div id="win-photos" class="fenetre" style="top: 80px; left: 220px;" onclick="focusWin(this)">
+                <div class="fenetre-barre"><span>Photos</span><span class="bouton-fermer" onclick="fermer('win-photos')">X</span></div>
+                <div class="contenu-win"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=300&q=80" style="width:100%"></div>
+            </div>
+
+            <div id="win-musique" class="fenetre" style="top: 120px; left: 260px;" onclick="focusWin(this)">
+                <div class="fenetre-barre"><span>Musique</span><span class="bouton-fermer" onclick="fermer('win-musique')">X</span></div>
+                <div class="contenu-win" style="background: #333; color: white;"><i class="fas fa-play-circle"></i></div>
+            </div>
+
+            <div style="position: absolute; bottom: 0; width: 100%; height: 40px; background: rgba(0,0,0,0.9); z-index: 9999;"></div>
+        </div>
+
+        <div class="actions-cours" style="text-align: center;">
+            <button id="btn-valider-win" class="btn-cours" style="background-color: #2980b9; opacity: 0.5;" onclick="validerCours('windows')" disabled>
+                Toutes les fenêtres sont fermées !
+            </button>
         </div>
     </main>
 
+    <script>
+        let fenetresOuvertes = 0;
+        let totalOuvertesEver = 0;
+        let zIndexGlobal = 100;
+
+        function ouvrir(id) {
+            const win = document.getElementById(id);
+            if(win.style.display !== 'flex') {
+                win.style.display = 'flex';
+                focusWin(win);
+                fenetresOuvertes++;
+                totalOuvertesEver++;
+            }
+            majConsigne();
+        }
+
+        function fermer(id) {
+            document.getElementById(id).style.display = 'none';
+            fenetresOuvertes--;
+            majConsigne();
+        }
+
+        function focusWin(el) {
+            zIndexGlobal++;
+            el.style.zIndex = zIndexGlobal;
+        }
+
+        function majConsigne() {
+            const c = document.getElementById('consigne-win');
+            if(totalOuvertesEver < 3) {
+                c.innerHTML = "Étape 1 : Ouvrez les <strong>3 raccourcis</strong> du bureau.";
+            } else if (fenetresOuvertes > 0) {
+                c.innerHTML = "Étape 2 : Maintenant, <strong>fermez chaque fenêtre</strong> avec la croix rouge.";
+                c.style.color = "#e67e22";
+            } else {
+                c.innerHTML = "🎉 Parfait ! Vous savez gérer le bureau.";
+                c.style.color = "#27ae60";
+                const btn = document.getElementById('btn-valider-win');
+                btn.disabled = false;
+                btn.style.opacity = "1";
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

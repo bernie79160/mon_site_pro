@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Initiation au Clavier</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .touche-visuelle {
+            font-size: 5rem;
+            background: white;
+            padding: 20px 50px;
+            border-radius: 15px;
+            border-bottom: 8px solid #bdc3c7;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            color: #2c3e50;
+            min-width: 150px;
+            text-align: center;
+            margin: 20px auto;
+        }
+        .clavier-container {
+            text-align: center;
+            background: #ecf0f1;
+            padding: 40px;
+            border-radius: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .feedback-touche { color: #3498db; font-weight: bold; height: 30px; }
+    </style>
+</head>
+<body class="page-cours">
+    <header>
+        <nav><ul><li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a></li></ul></nav>
+    </header>
+
+    <main class="contenu-cours">
+        <section class="entete-cours">
+            <h1><i class="fas fa-keyboard"></i> Mission Clavier</h1>
+            <p id="consigne-clavier" class="consigne-majeure">
+                Appuyez sur la touche demandée sur votre <strong>vrai clavier</strong>.
+            </p>
+        </section>
+
+        <div class="clavier-container">
+            <div id="nom-touche" style="font-size: 1.2rem; color: #7f8c8d;">Appuyez sur :</div>
+            <div id="affichage-touche" class="touche-visuelle">A</div>
+            <div id="feedback" class="feedback-touche"></div>
+        </div>
+
+        <div class="actions-cours" style="text-align: center; margin-top: 30px;">
+            <p>Progression : <span id="compteur-clavier">0</span> / 10</p>
+            <button id="btn-valider-clavier" class="btn-cours" style="background-color: #2980b9; opacity: 0.5;" onclick="validerCours('clavier')" disabled>
+                Je connais mon clavier
+            </button>
+        </div>
+    </main>
+
+    <script>
+        const touchesAMontrer = [
+            { code: 'a', nom: 'La lettre A' },
+            { code: ' ', nom: 'La barre ESPACE' },
+            { code: 'e', nom: 'La lettre E' },
+            { code: 'Enter', nom: 'La touche ENTRÉE' },
+            { code: 'i', nom: 'La lettre I' },
+            { code: 'Backspace', nom: 'La touche EFFACER (←)' },
+            { code: 'm', nom: 'La lettre M' },
+            { code: 'o', nom: 'La lettre O' },
+            { code: 'u', nom: 'La lettre U' },
+            { code: 'Enter', nom: 'La touche ENTRÉE pour finir' }
+        ];
+
+        let indexActuel = 0;
+        const affichage = document.getElementById('affichage-touche');
+        const feedback = document.getElementById('feedback');
+        const nomTouche = document.getElementById('nom-touche');
+        const compteur = document.getElementById('compteur-clavier');
+
+        // Mettre à jour l'affichage au début
+        majTouche();
+
+        window.addEventListener('keydown', function(event) {
+            if (indexActuel >= touchesAMontrer.length) return;
+
+            const toucheAttendue = touchesAMontrer[indexActuel].code;
+            const toucheAppuyee = event.key;
+
+            if (toucheAppuyee.toLowerCase() === toucheAttendue.toLowerCase()) {
+                indexActuel++;
+                compteur.innerText = indexActuel;
+                feedback.innerHTML = "✅ Bien joué !";
+                feedback.style.color = "#27ae60";
+                
+                if (indexActuel < touchesAMontrer.length) {
+                    setTimeout(majTouche, 500);
+                } else {
+                    finirExercice();
+                }
+            } else {
+                feedback.innerHTML = "❌ Essayez encore...";
+                feedback.style.color = "#e74c3c";
+            }
+        });
+
+        function majTouche() {
+            feedback.innerHTML = "";
+            const item = touchesAMontrer[indexActuel];
+            nomTouche.innerText = "Appuyez sur : " + item.nom;
+            
+            // Affichage spécial pour les touches muettes
+            if(item.code === ' ') affichage.innerText = "␣";
+            else if(item.code === 'Enter') affichage.innerText = "↵";
+            else if(item.code === 'Backspace') affichage.innerText = "⌫";
+            else affichage.innerText = item.code.toUpperCase();
+        }
+
+        function finirExercice() {
+            affichage.innerText = "🎉";
+            nomTouche.innerText = "Bravo !";
+            document.getElementById('consigne-clavier').innerHTML = "Vous êtes prêt pour le traitement de texte !";
+            const btn = document.getElementById('btn-valider-clavier');
+            btn.disabled = false;
+            btn.style.opacity = "1";
+        }
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -2,56 +2,108 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cours Windows - La Souris</title>
+    <title>Entraînement Souris Complet</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="page-cours">
-
     <header>
-        <nav>
-            <ul>
-                <li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour à l'accueil</a></li>
-            </ul>
-        </nav>
+        <nav><ul><li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a></li></ul></nav>
     </header>
 
     <main class="contenu-cours">
         <section class="entete-cours">
-            <h1><i class="fab fa-windows"></i> Apprendre à cliquer</h1>
-            <p class="introduction">Pratiquez le clic gauche, le clic droit et le double-clic ci-dessous.</p>
-        </section>
-<p id="consigne-jeu">Étape 1 : Amenez la flèche sur la cible rouge !</p>
-<section class="etape-cours">
-    <h2><i class="fas fa-gamepad"></i> Apprivoiser la souris</h2>
-    <p id="consigne-jeu" style="font-weight: bold; color: #3498db; font-size: 1.2rem;">
-        Étape 1 : Amenez la flèche sur la cible rouge !
-    </p>
-    
-    <div class="score-board">
-        Objectifs : <span id="score-valeur">0</span> / 20
-    </div>
-
-    <div class="zone-exercice-souris">
-        <div id="souris-visuelle">
-            <div id="clic-gauche" class="bouton-souris"></div>
-            <div id="clic-droit" class="bouton-souris"></div>
-        </div>
-        
-        <div id="ecran-test">
-            <p id="message-souris">Chargement du jeu...</p>
+            <h1><i class="fas fa-mouse"></i> Maîtrise de la Souris (8x8x8)</h1>
+            <p id="consigne-exo" class="consigne-majeure" style="color: #e67e22; font-weight: bold;">
+                Étape 1 : Cliquez 8 fois sur la cible ROUGE (Clic Gauche).
+            </p>
+            <div style="margin-bottom: 10px;">
+                <progress id="barre-etape" value="0" max="8" style="width: 100%; height: 20px;"></progress>
             </div>
-    </div>
-</section>
+        </section>
 
-        <div class="actions-cours">
-            <button class="btn-cours" onclick="validerCours('informatique')" style="background-color: #27ae60;">
-    J'ai terminé, valider mon badge !
-</button>
+        <div id="exercice-souris" style="width: 100%; max-width: 700px; height: 400px; background: white; border: 3px solid #333; margin: 20px auto; position: relative; border-radius: 10px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+            
+            <div id="cible-gauche" onclick="gererClic(event, 'gauche')" style="width: 50px; height: 50px; background: red; border: 4px solid white; border-radius: 50%; position: absolute; top: 50%; left: 50%; cursor: pointer; display: block;"></div>
+            
+            <div id="cible-double" ondblclick="gererClic(event, 'double')" style="width: 60px; height: 60px; background: #3498db; border: 4px solid white; border-radius: 10px; position: absolute; cursor: pointer; display: none; text-align: center; color: white; line-height: 50px;">
+                <i class="fas fa-mouse"></i> x2
+            </div>
+
+            <div id="cible-droit" oncontextmenu="gererClic(event, 'droit')" style="width: 50px; height: 50px; background: #e67e22; border: 4px solid white; border-radius: 5px; position: absolute; cursor: help; display: none;"></div>
+            
+        </div>
+
+        <div class="actions-cours" style="text-align: center;">
+            <button id="btn-valider-informatique" class="btn-cours" style="background-color: #2980b9; opacity: 0.5; padding: 15px 40px; font-size: 1.2rem;" onclick="validerCours('informatique')" disabled>
+                Terminer l'exercice
+            </button>
         </div>
     </main>
 
+    <script>
+        let scores = { gauche: 0, double: 0, droit: 0 };
+        const objectif = 8;
+        let modeActuel = 'gauche';
+
+        const consigne = document.getElementById('consigne-exo');
+        const barre = document.getElementById('barre-etape');
+
+        function deplacerElement(id) {
+            const el = document.getElementById(id);
+            const zone = document.getElementById('exercice-souris');
+            const maxX = zone.clientWidth - 70;
+            const maxY = zone.clientHeight - 70;
+            
+            el.style.left = Math.floor(Math.random() * maxX) + "px";
+            el.style.top = Math.floor(Math.random() * maxY) + "px";
+        }
+
+        function gererClic(event, type) {
+            if (type === 'droit') event.preventDefault(); // Bloque le vrai menu
+
+            if (type !== modeActuel) return;
+
+            scores[type]++;
+            barre.value = scores[type];
+
+            if (scores[type] < objectif) {
+                deplacerElement('cible-' + type);
+            } else {
+                passerEtapeSuivante();
+            }
+        }
+
+        function passerEtapeSuivante() {
+            barre.value = 0;
+            if (modeActuel === 'gauche') {
+                modeActuel = 'double';
+                document.getElementById('cible-gauche').style.display = 'none';
+                document.getElementById('cible-double').style.display = 'block';
+                deplacerElement('cible-double');
+                consigne.innerHTML = "Étape 2 : <strong>Double-cliquez</strong> 8 fois sur le carré BLEU.";
+                consigne.style.color = "#3498db";
+            } else if (modeActuel === 'double') {
+                modeActuel = 'droit';
+                document.getElementById('cible-double').style.display = 'none';
+                document.getElementById('cible-droit').style.display = 'block';
+                deplacerElement('cible-droit');
+                consigne.innerHTML = "Étape 3 : Faites un <strong>Clic Droit</strong> 8 fois sur le carré ORANGE.";
+                consigne.style.color = "#e67e22";
+            } else {
+                // Fin de l'exercice
+                document.getElementById('cible-droit').style.display = 'none';
+                consigne.innerHTML = "🎉 Excellent ! Vous maîtrisez parfaitement la souris !";
+                consigne.style.color = "#27ae60";
+                const btn = document.getElementById('btn-valider-informatique');
+                btn.disabled = false;
+                btn.style.opacity = "1";
+                btn.style.cursor = "pointer";
+            }
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

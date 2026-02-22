@@ -1,139 +1,105 @@
-// =========================================================
-// 1. LES ACTIONS DE NAVIGATION (Outils globaux)
-// =========================================================
+// --- Navigation ---
+function ouvrirCours(nom) { window.location.href = nom + '.html'; }
 
-function ouvrirCours(nomDuCours) {
-    window.location.href = nomDuCours + '.html';
-}
-
-function validerCours(nomDuCours) {
-    localStorage.setItem('cours-' + nomDuCours, 'done');
-    alert("Bravo ! Vous avez obtenu le badge " + nomDuCours.toUpperCase() + " !");
-    window.location.href = 'index.html';
-}
-
-// =========================================================
-// 2. LA LOGIQUE DE CALCUL (La "machinerie")
-// =========================================================
-
+// --- Gestion des Badges & Barre de progression ---
 function mettreAJourProgression() {
-    const cours = ['informatique', 'internet', 'word', 'excel', 'powerpoint'];
-    let valides = 0;
+    const coursIds = ['pointeur', 'informatique', 'windows', 'bureau', 'clavier', 'word', 'excel', 'powerpoint'];
+    let termine = 0;
 
-    cours.forEach(c => {
-        const badge = document.getElementById('badge-' + c);
-        if (localStorage.getItem('cours-' + c) === 'done') {
-            valides++;
-            if (badge) badge.style.display = 'block';
+    coursIds.forEach(id => {
+        const badge = document.getElementById('badge-' + id);
+        if (localStorage.getItem('cours-' + id) === 'done') {
+            termine++;
+            if (badge) badge.style.display = 'inline-block';
         } else {
-            if (badge) badge.style.display = 'none'; 
+            if (badge) badge.style.display = 'none';
         }
     });
 
-    const pourcentage = (valides / cours.length) * 100;
-    const fill = document.getElementById('progress-fill');
-    const text = document.getElementById('progress-text');
-    
-    if (fill && text) {
-        fill.style.width = pourcentage + "%";
-        text.textContent = Math.round(pourcentage) + "%";
-    }
+    const pourcentage = Math.round((termine / coursIds.length) * 100);
+    if (document.getElementById('progress-fill')) document.getElementById('progress-fill').style.width = pourcentage + "%";
+    if (document.getElementById('progress-text')) document.getElementById('progress-text').textContent = pourcentage + "%";
+}
+function verifierVerrous() {
+    // 1. L'ordre de tes cours
+    const ordreCours = ['pointeur', 'informatique', 'windows', 'bureau', 'word', 'excel', 'powerpoint'];
 
-    if (valides === cours.length && valides > 0) {
-        setTimeout(() => {
-            alert("🏆 INCROYABLE ! Vous avez terminé tous les modules !");
-        }, 500);
+    for (let i = 1; i < ordreCours.length; i++) {
+        const coursPrecedent = ordreCours[i - 1];
+        const coursActuel = ordreCours[i];
+        
+        // On récupère la carte HTML correspondante
+        // Note : il faudra ajouter des IDs sur tes cartes dans le HTML
+        const carteElement = document.getElementById('card-' + coursActuel);
+        
+        if (carteElement) {
+            // Si le cours précédent n'est pas terminé (pas de badge 'done')
+            if (localStorage.getItem('cours-' + coursPrecedent) !== 'done') {
+                carteElement.classList.add('card-locked');
+            } else {
+                carteElement.classList.remove('card-locked');
+            }
+        }
     }
 }
 
-// =========================================================
-// 3. LE DÉMARRAGE ET INTERACTIONS
-// =========================================================
+// Appelle cette fonction au chargement de l'index
+document.addEventListener('DOMContentLoaded', verifierVerrous);
+// --- Validation des cours ---
+function validerCours(nom) {
+    localStorage.setItem('cours-' + nom, 'done');
+    alert("Bravo ! Vous avez gagné un nouveau badge !");
+    window.location.href = 'index.html';
+}
 
-document.addEventListener('DOMContentLoaded', () => {
-    
-    mettreAJourProgression();
+// --- Simulateur Windows ---
+function actionFenetre(type) {
+    const fen = document.getElementById('fenetre-test');
+    const consigne = document.getElementById('consigne-jeu');
+    if (!fen) return;
 
-    const ecran = document.getElementById('ecran-test');
-    const message = document.getElementById('message-souris');
-    const visuelGauche = document.getElementById('clic-gauche');
-    const visuelDroit = document.getElementById('clic-droit');
-
-    if (ecran) {
-        let score = 0;
-        const typesDeClics = ["CLIC GAUCHE", "CLIC DROIT", "DOUBLE CLIC GAUCHE"];
-        let objectifActuel = "";
-        let clickTimer = null; // Pour distinguer clic simple et double
-
-        function genererNouvelObjectif() {
-            objectifActuel = typesDeClics[Math.floor(Math.random() * typesDeClics.length)];
-            message.innerHTML = `Action demandée : <br><span style="font-size: 2rem; color: #f1c40f;">${objectifActuel}</span>`;
-        }
-
-        function verifierAction(typeRealise) {
-            if (objectifActuel === "FINI") return;
-
-            if (typeRealise === objectifActuel) {
-                score++;
-                document.getElementById('score-valeur').textContent = score;
-                message.innerHTML = "✅ Bien joué !";
-                
-                if (score >= 20) {
-                    message.innerHTML = "🏆 Défi réussi ! <br> Vous maîtrisez les clics de souris.";
-                    objectifActuel = "FINI";
-                } else {
-                    setTimeout(genererNouvelObjectif, 1000);
-                }
-            } else {
-                message.innerHTML = "❌ Essayez encore !";
-                setTimeout(() => {
-                    if(objectifActuel !== "FINI") {
-                        message.innerHTML = `Action demandée : <br><span style="font-size: 2rem; color: #f1c40f;">${objectifActuel}</span>`;
-                    }
-                }, 800);
-            }
-        }
-
-        // --- GESTION DES CLICS ---
-
-        ecran.addEventListener('click', (e) => {
-            if (objectifActuel === "FINI") return;
-            
-            // Animation visuelle bouton gauche
-            visuelGauche.style.backgroundColor = "#3498db";
-            setTimeout(() => visuelGauche.style.backgroundColor = "white", 200);
-
-            if (e.detail === 1) {
-                // On attend 250ms pour être sûr que ce n'est pas un début de double-clic
-                clickTimer = setTimeout(() => {
-                    verifierAction("CLIC GAUCHE");
-                }, 250);
-            } else if (e.detail === 2) {
-                clearTimeout(clickTimer); // Annule l'action "GAUCHE" prévue
-                verifierAction("DOUBLE CLIC GAUCHE");
-            }
-        });
-
-        ecran.addEventListener('contextmenu', (e) => {
-            e.preventDefault(); // Bloque le menu contextuel du navigateur
-            if (objectifActuel === "FINI") return;
-
-            // Animation visuelle bouton droit
-            visuelDroit.style.backgroundColor = "#e74c3c";
-            setTimeout(() => visuelDroit.style.backgroundColor = "white", 200);
-            
-            verifierAction("CLIC DROIT");
-        });
-
-        genererNouvelObjectif();
+    if (type === 'reduire') {
+        fen.style.display = 'none';
+        consigne.innerHTML = "Très bien ! Maintenant cliquez sur l'icône bleue en bas pour la rouvrir.";
+    } else if (type === 'fermer') {
+        fen.style.display = 'none';
+        alert("Félicitations ! Vous savez manipuler les fenêtres.");
     }
+}
 
-    // Gestion du Mode Sombre
-    const themeToggle = document.getElementById('theme-toggle');
-    if(themeToggle) {
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            themeToggle.textContent = document.body.classList.contains('dark-mode') ? "☀️ Mode Clair" : "🌙 Mode Sombre";
-        });
+window.onload = mettreAJourProgression;
+function gererVerrouillage() {
+    // Liste ordonnée des cours pour la progression
+    const progression = [
+        { actuel: 'informatique', precedent: 'pointeur' },
+        { actuel: 'windows', precedent: 'informatique' },
+        { actuel: 'bureau', precedent: 'windows' },
+        { actuel: 'clavier', precedent: 'bureau' },   // <-- On ajoute cette étape ici
+        { actuel: 'word', precedent: 'clavier' },     // <-- Word attend maintenant le clavier
+        { actuel: 'excel', precedent: 'word' },
+        { actuel: 'powerpoint', precedent: 'excel' }
+    ];
+
+    progression.forEach(etape => {
+        const carte = document.getElementById('card-' + etape.actuel);
+        if (carte) {
+            // On vérifie si le cours PRECEDENT est marqué comme "done" dans le stockage
+            const estPrecedentFini = localStorage.getItem('cours-' + etape.precedent) === 'done';
+
+            if (estPrecedentFini) {
+                carte.classList.remove('card-locked'); // On déverrouille
+            } else {
+                carte.classList.add('card-locked');    // On laisse verrouillé
+            }
+        }
+    });
+}
+
+// Lancer la vérification dès que la page est prête
+document.addEventListener('DOMContentLoaded', () => {
+    gererVerrouillage();
+    // On appelle aussi ta fonction de mise à jour de la barre si elle existe
+    if (typeof mettreAJourProgression === 'function') {
+        mettreAJourProgression();
     }
 });

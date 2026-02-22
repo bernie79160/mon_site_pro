@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Les formes de la souris</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="page-cours">
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a></li>
+            </ul>
+        </nav>
+    </header>
+
+<main class="contenu-cours">
+    <section class="entete-cours">
+        <h1><i class="fas fa-mouse-pointer"></i> Les formes de la souris</h1>
+        <p class="consigne-majeure">Passez votre souris sur les cases pour voir la flèche se transformer !</p>
+    </section>
+
+    <div class="grille-pointeurs">
+        <div class="carte-pointeur p-lien">
+            <i class="fas fa-hand-pointer"></i>
+            <p>La Main<br><span>(Pour cliquer sur un bouton)</span></p>
+        </div>
+        <div class="carte-pointeur p-texte">
+            <i class="fas fa-i-cursor"></i>
+            <p>La Barre<br><span>(Pour écrire du texte)</span></p>
+        </div>
+        <div class="carte-pointeur p-chargement">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Le Cercle<br><span>(L'ordinateur réfléchit)</span></p>
+        </div>
+        <div class="carte-pointeur p-interdit">
+            <i class="fas fa-ban"></i>
+            <p>Interdit<br><span>(On ne peut pas cliquer)</span></p>
+        </div>
+    </div>
+
+<div class="actions-cours" style="text-align: center; margin-top: 40px;">
+        <button class="btn-cours" style="background-color: #3498db; color: white; border: none; padding: 15px 30px; border-radius: 8px; cursor: pointer; font-weight: bold;" onclick="validerCours('pointeur')">
+            <i class="fas fa-check"></i> J'ai compris les formes !
+        </button>
+    </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

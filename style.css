@@ -1,357 +1,304 @@
-/* 1. VARIABLES DE COULEURS */
+/* --- Base & Centrage --- */
 :root {
-    --bg-color: #f4f4f4;
-    --card-bg: #ffffff;
-    --text-color: #333333;
+    --bg-color: #f0f2f5;
+    --text-main: #333;
     --header-bg: #2c3e50;
-    --accent-color: #3498db;
-    --input-bg: #ffffff;
 }
 
-body.dark-mode {
-    --bg-color: #121212;
-    --card-bg: #1e1e1e;
-    --text-color: #e0e0e0;
-    --header-bg: #000000;
-    --accent-color: #bb86fc;
-    --input-bg: #2d2d2d;
-}
-
-/* 2. RESET & CONFIGURATION GÉNÉRALE */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Open Sans', sans-serif;
-    line-height: 1.6;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    transition: background-color 0.3s, color 0.3s;
-}
-
-h1, h2, h3 {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-/* 3. NAVIGATION (HEADER) */
-header {
-    background-color: var(--header-bg);
-    color: #fff;
-    padding: 1rem 0;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
-nav ul {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    list-style: none;
-}
-
-nav ul li { margin: 0 15px; }
-
-nav ul li a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-    transition: color 0.3s;
-}
-
-nav ul li a:hover { color: var(--accent-color); }
-
-/* 4. SECTIONS & CARTES */
-#accueil {
-    height: 60vh;
+body { 
+    font-family: 'Open Sans', sans-serif; 
+    background: var(--bg-color); 
+    color: var(--text-main); 
+    margin: 0; 
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background-color: var(--card-bg);
+    align-items: center; /* Centre tout le contenu horizontalement */
+}
+
+main {
+    width: 100%;
+    max-width: 800px; /* On fixe la largeur pour le 800x600 */
     padding: 20px;
-    margin-bottom: 20px;
 }
 
-h1 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-    color: var(--accent-color); 
-}
-
+/* --- Grille des Cours --- */
 .cours-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
+    margin-top: 30px;
+    justify-content: center;
 }
 
+/* --- Style des Cartes --- */
 .cours-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
     position: relative;
-    background-color: var(--card-bg);
-    border-radius: 15px;
-    padding: 30px;
+    padding-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     text-align: center;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease;
-    border: 1px solid var(--accent-color);
+    transition: transform 0.3s;
 }
 
-.cours-card:hover { transform: translateY(-10px); }
+.cours-card:hover { transform: translateY(-5px); }
 
-/* 5. PROGRESSION & BADGES */
+/* --- COULEURS DES THÈMES (Le retour !) --- */
+.card-header { height: 10px; width: 100%; margin-bottom: 15px; }
+
+.theme-internet .card-header { background: #3498db; } /* Bleu */
+.theme-internet > i { color: #3498db; font-size: 3rem; margin: 15px 0; }
+
+.theme-windows .card-header { background: #2980b9; } /* Bleu Foncé */
+.theme-windows i { color: #2980b9; font-size: 3rem; margin: 15px 0; }
+
+.theme-word .card-header { background: #2b579a; } /* Bleu Word */
+.theme-word i { color: #2b579a; font-size: 3rem; margin: 15px 0; }
+
+.theme-excel .card-header { background: #217346; } /* Vert Excel */
+.theme-excel i { color: #217346; font-size: 3rem; margin: 15px 0; }
+
+.theme-powerpoint .card-header { background: #d24726; } /* Orange PPT */
+.theme-powerpoint i { color: #d24726; font-size: 3rem; margin: 15px 0; }
+
+/* --- Badges & Boutons --- */
+.badge-succes {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #27ae60;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    display: none; /* Caché par défaut, géré par JS */
+}
+
+.btn-card {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+}/* --- Correction du bug du haut --- */
+.container-reset {
+    display: flex;
+    justify-content: center; /* Centre le bouton horizontalement */
+    padding: 20px 0;         /* Donne de l'air en haut et en bas */
+    width: 100%;
+}
+
+.btn-reset {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Open Sans', sans-serif;
+    transition: opacity 0.2s;
+}
+
+.btn-reset:hover {
+    opacity: 0.8;
+}
+
+/* --- Forcer le format 800px centré --- */
+#accueil, #services, #contact {
+    max-width: 800px;
+    margin: 0 auto; /* Centre le bloc sur la page */
+    width: 95%;     /* Sécurité pour les tout petits écrans */
+}
+
+header {
+    min-height: 60px; /* Force une hauteur minimum pour éviter les sauts */
+}
+/* --- Fix du Header (Menu) --- */
+header {
+    background-color: #2c3e50;
+    width: 100%;
+    padding: 15px 0;
+    display: flex;
+    justify-content: center; /* Centre le menu horizontalement */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    gap: 25px; /* Espace entre Accueil, Cours, Contact */
+    margin: 0;
+    padding: 0;
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* --- Zone du bouton Réinitialiser --- */
+.header-action-zone {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+    margin-top: 10px;
+}
+
+.btn-reset-global {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: bold;
+}
+
+/* --- Centrage Global 800x600 --- */
+#accueil {
+    max-width: 800px;
+    margin: 0 auto; /* Centre tout le bloc principal */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+/* --- Style de la Barre de Progression --- */
 .progress-container {
-    max-width: 600px;
-    margin: 20px auto 40px auto;
+    width: 100%;
+    max-width: 600px; /* Elle sera un peu plus courte que le reste pour être élégante */
+    margin: 30px auto; /* Centre la barre avec de l'espace autour */
     text-align: center;
 }
 
 .progress-bar-bg {
-    background-color: #e0e0e0;
-    border-radius: 20px;
-    height: 15px;
     width: 100%;
-    overflow: hidden;
-    box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+    height: 25px; /* On la fait un peu épaisse pour bien voir la couleur */
+    background-color: #e0e0e0; /* Gris clair pour le fond vide */
+    border-radius: 15px; /* Bords bien arrondis */
+    overflow: hidden; /* Pour que le remplissage vert ne dépasse pas des arrondis */
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); /* Petit effet de profondeur */
+    margin-bottom: 10px;
 }
 
 #progress-fill {
-    background: linear-gradient(90deg, #2ecc71, #27ae60);
     height: 100%;
-    width: 0%;
-    transition: width 0.8s ease-in-out;
+    width: 0%; /* C'est le JavaScript qui fera monter ce chiffre */
+    background: linear-gradient(90deg, #2ecc71, #27ae60); /* Un beau dégradé vert */
+    border-radius: 15px 0 0 15px;
+    transition: width 0.6s ease-out; /* Animation fluide quand on gagne un badge */
 }
 
-.badge-succes {
-    display: none;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: linear-gradient(45deg, #f1c40f, #f39c12);
-    color: white;
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: bold;
-    animation: bounce 1s ease infinite;
-}
-
-/* 6. THÈMES COULEURS */
-.theme-windows { border-top: 8px solid #00a4ef; }
-.theme-internet { border-top: 8px solid #2c3e50; }
-.theme-word { border-top: 8px solid #2b579a; }
-.theme-excel { border-top: 8px solid #217346; }
-.theme-powerpoint { border-top: 8px solid #d24726; }
-
-/* 7. FORMULAIRE & BOUTONS */
-#contact {
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: var(--card-bg);
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-}
-
-button {
-    background-color: var(--accent-color);
-    color: white;
-    padding: 10px 25px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-}
-
-button:hover {
-    transform: scale(1.05);
-    letter-spacing: 1px;
-}
-
-input, textarea {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #555;
-    border-radius: 4px;
-    background-color: var(--input-bg);
-    color: var(--text-color);
-}
-
-/* 8. ANIMATIONS & DIVERS */
-i { margin-right: 8px; color: var(--accent-color); }
-
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
-}
-
-@media screen and (max-width: 600px) {
-    nav ul { flex-direction: column; }
-    nav ul li { margin: 10px 0; }
-}
-.etape-cours ul {
-    list-style: none;
-    margin-top: 15px;
-}
-
-.etape-cours ul li {
-    margin-bottom: 10px;
-    padding-left: 25px;
-    position: relative;
-}
-
-.etape-cours ul li::before {
-    content: "➔";
-    position: absolute;
-    left: 0;
-    color: var(--accent-color);
-}
-
-.comparaison {
-    background-color: rgba(52, 152, 219, 0.1);
-    padding: 15px;
-    border-radius: 8px;
-    margin-top: 10px;
-}
-/* =========================================================
-   ZONE EXERCICE SOURIS (WINDOWS.HTML)
-   ========================================================= */
-
-.zone-exercice-souris {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    background: #f0f4f8;
-    padding: 30px;
-    border-radius: 20px;
-    border: 3px dashed #3498db;
-    margin: 20px 0;
-    flex-wrap: wrap; /* Pour que ça reste joli sur mobile */
-}
-
-/* Le dessin de la souris */
-#souris-visuelle {
-    width: 100px;
-    height: 160px;
-    border: 4px solid #333;
-    border-radius: 50px 50px 30px 30px;
-    display: flex;
-    background: white;
-    position: relative;
-    box-shadow: 0 10px 0 #bdc3c7;
-}
-
-.bouton-souris {
-    flex: 1;
-    height: 70px; /* La partie haute de la souris */
-    border-bottom: 4px solid #333;
-    transition: background 0.2s;
-}
-
-#clic-gauche {
-    border-right: 2px solid #333;
-    border-radius: 45px 0 0 0;
-}
-
-#clic-droit {
-    border-radius: 0 45px 0 0;
-}
-
-/* L'écran de test interactif */
-#ecran-test {
-    width: 350px;
-    height: 200px;
-    background: #2c3e50;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    border-radius: 15px;
-    cursor: crosshair;
-    text-align: center;
-    padding: 20px;
-    border: 5px solid #bdc3c7;
-    overflow: hidden;
-}
-
-#message-souris {
-    font-size: 1.1rem;
-    font-weight: bold;
-    pointer-events: none; /* Pour ne pas gêner le clic */
-}
-
-/* Le menu qui apparaît au clic droit */
-.menu-virtuel {
-    display: none;
-    position: absolute;
-    background: rgba(255, 255, 255, 0.95); /* Blanc légèrement transparent */
-    color: #333;
-    border: 1px solid #ccc;
-    box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
-    width: 180px; /* On passe de 150 à 180 pour éviter le retour à la ligne */
-    border-radius: 5px;
-    z-index: 100;
-}
-
-.menu-virtuel ul {
-    list-style: none;
-    padding: 5px 0;
-    margin: 0;
-}
-
-.menu-virtuel li {
-    padding: 10px 15px;
-    font-size: 0.9rem;
-    cursor: pointer;
-}
-
-.menu-virtuel li:hover {
-    background-color: #3498db;
-    color: white;
-}
-.score-board {
-    font-size: 1.5rem;
-    font-weight: bold;
+.progress-container p {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
     color: #2c3e50;
-    margin-bottom: 10px;
-    background: #ecf0f1;
-    display: inline-block;
-    padding: 5px 20px;
-    border-radius: 50px;
+    font-size: 1.1rem;
 }
-.cible {
-    width: 40px;
-    height: 40px;
-    background-color: #e74c3c;
-    border-radius: 50%;
-    position: absolute;
+
+#progress-text {
+    color: #27ae60; /* Le pourcentage sera en vert */
+    font-weight: 700;
+}
+/* --- Styles pour l'exercice du pointeur --- */
+.grille-pointeurs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin: 30px 0;
+}
+
+.carte-pointeur {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px dashed #ddd;
+    text-align: center;
     transition: all 0.3s;
 }
-.cible {
-    width: 40px;
-    height: 40px;
-    background-color: #e74c3c;
-    border-radius: 50%;
-    position: absolute;
-    border: 4px solid white;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    cursor: crosshair;
-    transition: transform 0.2s;
+
+/* C'est ici que la magie opère : change le curseur au survol */
+.p-lien { cursor: pointer; }
+.p-texte { cursor: text; }
+.p-chargement { cursor: wait; }
+.p-interdit { cursor: not-allowed; }
+
+.carte-pointeur:hover {
+    border-color: #3498db;
+    background-color: #ebf5fb;
+}
+/* Style pour le bouton spécifique de validation dans les cours */
+.btn-cours {
+    background-color: #3498db; /* Bleu par défaut */
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+    display: inline-block;
+    margin-top: 20px;
 }
 
-.cible:hover {
-    background-color: #2ecc71; /* Devient verte au survol */
-    transform: scale(1.2);
+.btn-cours:hover {
+    background-color: #2980b9; /* Bleu un peu plus foncé au survol */
+    transform: scale(1.05);
+}
+.zone-exercice-souris {
+    max-width: 760px; /* Un peu moins de 800 pour laisser de la marge */
+    margin: 0 auto;
+    background: white;
+    border-radius: 10px;
+}/* Style pour les cartes verrouillées */
+.card-locked {
+    opacity: 0.5;
+    filter: grayscale(1); /* Met la carte en gris */
+    cursor: not-allowed !important;
+    pointer-events: none; /* Empêche de cliquer */
+    position: relative;
+}
+
+.card-locked::after {
+    content: "🔒 Verrouillé";
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.7);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+}
+/* --- Système de Verrouillage des Cours --- */
+.card-locked {
+    opacity: 0.6;
+    filter: grayscale(100%); /* Met la carte en noir et blanc */
+    pointer-events: none;    /* Désactive tous les clics sur la carte */
+    position: relative;
+    user-select: none;
+}
+
+.card-locked::before {
+    content: "🔒 Suivez le cours précédent";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-10deg);
+    background: rgba(231, 76, 60, 0.9); /* Rouge Windows */
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    z-index: 10;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    white-space: nowrap;
 }
