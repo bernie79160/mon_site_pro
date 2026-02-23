@@ -16,35 +16,37 @@
                 <li><a href="#accueil"><i class="fas fa-home"></i> Accueil</a></li>
                 <li><a href="#services"><i class="fas fa-graduation-cap"></i> Cours</a></li>
                 <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
-   <li>
-    <button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">
-        🌙 Mode Sombre
-    </button>
-</li>
+                <li>
+                    <button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">
+                        🌙 Mode Sombre
+                    </button>
+                </li>
             </ul>
         </nav>
     </header>
 
-<main id="accueil">
-    <div class="header-action-zone">
-        <button onclick="localStorage.clear(); location.reload();" class="btn-reset-global">
-            <i class="fas fa-trash"></i> Réinitialiser ma progression
-        </button>
-    </div>
+    <main id="accueil">
+        <div style="text-align: center; padding: 20px 0;">
+            <button onclick="localStorage.clear(); location.reload();" class="btn-reset-global">
+                <i class="fas fa-trash"></i> Réinitialiser ma progression
+            </button>
+        </div>
 
         <section id="services">
-            <div class="progress-container" style="margin-top: 20px;">
-                <div class="progress-bar-bg">
-                    <div id="progress-fill"></div>
+            <div style="max-width: 800px; margin: 0 auto; text-align: center; padding: 0 20px;">
+                
+                <div class="progress-container">
+                    <div class="progress-bar-bg" style="background: #dfe6e9; border-radius: 20px; height: 20px; width: 100%; margin: 15px auto; overflow: hidden; border: 1px solid #ccc;">
+                        <div id="progress-fill" style="background: linear-gradient(90deg, #3498db, #2ecc71); height: 100%; width: 0%; transition: width 0.5s;"></div>
+                    </div>
+                    <p style="font-weight: 600;">Votre progression globale : <span id="progress-text">0%</span></p>
                 </div>
-                <p>Votre progression globale : <span id="progress-text">0%</span></p>
-            </div>
 
-            <h2><i class="fas fa-graduation-cap"></i> Nos Cours</h2>
+                <h2 style="margin: 40px 0; font-size: 2rem;"><i class="fas fa-graduation-cap"></i> Nos Cours</h2>
+            </div>
 
             <div class="cours-container">
                 <div class="cours-card theme-internet">
-                    <div class="card-header"></div>
                     <span id="badge-pointeur" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
                     <i class="fas fa-mouse-pointer"></i>
                     <h3>Les formes du pointeur</h3>
@@ -53,7 +55,6 @@
                 </div>
 
                 <div id="card-informatique" class="cours-card theme-windows">
-                    <div class="card-header"></div>
                     <span id="badge-informatique" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
                     <i class="fas fa-desktop"></i>
                     <h3>L'univers informatique</h3>
@@ -62,7 +63,6 @@
                 </div>
 
                 <div id="card-windows" class="cours-card theme-windows">
-                    <div class="card-header"></div>
                     <span id="badge-windows" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
                     <i class="fab fa-windows"></i>
                     <h3>L'univers Windows</h3>
@@ -71,7 +71,6 @@
                 </div>
 
                 <div id="card-bureau" class="cours-card theme-windows">
-                    <div class="card-header"></div>
                     <span id="badge-bureau" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
                     <i class="fas fa-window-restore"></i>
                     <h3>Le Bureau et les Icônes</h3>
@@ -80,7 +79,6 @@
                 </div>
 
                 <div id="card-clavier" class="cours-card theme-windows">
-                    <div class="card-header"></div>
                     <span id="badge-clavier" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
                     <i class="fas fa-keyboard"></i>
                     <h3>Découvrir le Clavier</h3>
@@ -89,7 +87,6 @@
                 </div>
 
                 <div id="card-word" class="cours-card theme-word">
-                    <div class="card-header"></div>
                     <span id="badge-word" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
                     <i class="fas fa-file-word"></i>
                     <h3>Écrire avec Word</h3>
@@ -98,7 +95,6 @@
                 </div>
 
                 <div id="card-excel" class="cours-card theme-excel">
-                    <div class="card-header"></div>
                     <span id="badge-excel" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
                     <i class="fas fa-file-excel"></i>
                     <h3>Calculer avec Excel</h3>
@@ -107,7 +103,6 @@
                 </div>
 
                 <div id="card-powerpoint" class="cours-card theme-powerpoint">
-                    <div class="card-header"></div>
                     <span id="badge-powerpoint" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
                     <i class="fas fa-file-powerpoint"></i>
                     <h3>Présenter avec PowerPoint</h3>
@@ -118,29 +113,19 @@
         </section>
     </main>
 
-<section id="contact" class="container-contact">
-    <h2><i class="fas fa-envelope"></i> Me Contacter</h2>
-    <div class="contact-card">
-        <form id="form-contact">
-            <div class="input-group">
-                <i class="fas fa-user"></i>
-                <input type="text" placeholder="Ton nom" required>
-            </div>
-            <div class="input-group">
-                <i class="fas fa-at"></i>
-                <input type="email" placeholder="ton@email.com" required>
-            </div>
-            <div class="input-group">
-                <textarea placeholder="Ton message" rows="4" required></textarea>
-            </div>
-            <button type="submit" class="btn-send">
-                Envoyer le message <i class="fas fa-paper-plane"></i>
-            </button>
-        </form>
-    </div>
-</section>
+    <section id="contact" style="max-width: 600px; margin: 50px auto; padding: 20px; text-align: center;">
+        <h2><i class="fas fa-envelope"></i> Me Contacter</h2>
+        <div class="contact-card" style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.05);">
+            <form id="form-contact">
+                <input type="text" placeholder="Ton nom" style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc;">
+                <input type="email" placeholder="ton@email.com" style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc;">
+                <textarea placeholder="Ton message" rows="4" style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc;"></textarea>
+                <button type="submit" class="btn-cours" style="width: 100%; margin: 0;">Envoyer le message</button>
+            </form>
+        </div>
+    </section>
 
-    <footer>
+    <footer style="text-align: center; padding: 40px; background: #2c3e50; color: white; margin-top: 50px;">
         <p>&copy; 2026 Bernard TELLIER - Tous droits réservés.</p>
     </footer>
 

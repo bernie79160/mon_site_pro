@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Styles pour le simulateur Word intégré */
+        /* Styles spécifiques pour le simulateur Word */
         .logiciel-word {
             width: 100%; max-width: 800px; margin: 30px auto;
             background: #f3f2f1; border: 2px solid #2b579a; border-radius: 5px; overflow: hidden;
@@ -18,7 +18,7 @@
             display: flex; gap: 15px; align-items: center; justify-content: center;
         }
         .btn-word {
-            padding: 8px 15px; border: 1px solid #ddd; background: white; cursor: pointer; border-radius: 3px; font-family: serif;
+            padding: 8px 15px; border: 1px solid #ddd; background: white; cursor: pointer; border-radius: 3px;
         }
         .btn-word:hover { background: #ebebeb; }
         .feuille-blanche {
@@ -29,14 +29,31 @@
             overflow-y: auto; text-align: left;
         }
         .feuille-blanche:empty:before { content: "Cliquez ici pour écrire..."; color: #aaa; }
+        
+        /* Centrage des sections de cours */
+        .etape-cours {
+            max-width: 800px;
+            margin: 20px auto;
+            text-align: center;
+        }
+        .etape-cours ul {
+            list-style: none;
+            padding: 0;
+            display: inline-block;
+            text-align: left;
+        }
+        .etape-cours ul li {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
     </style>
 </head>
 <body class="page-cours">
 
     <header>
         <nav>
-            <ul style="display: flex; align-items: center; list-style: none; gap: 20px;">
-                <li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour à l'accueil</a></li>
+            <ul>
+                <li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a></li>
                 <li>
                     <button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">
                         🌙 Mode Sombre
@@ -48,13 +65,13 @@
 
     <main class="contenu-cours">
         <section class="entete-cours">
-            <h1><i class="fas fa-file-word"></i> Écrire avec Word</h1>
-            <p class="introduction">Word est votre papier et votre stylo numérique. On l'utilise pour faire des lettres, des listes ou des CV.</p>
+            <h1><i class="fas fa-file-word" style="color: #2b579a;"></i> Écrire avec Word</h1>
+            <p class="consigne-majeure">Word est votre papier et votre stylo numérique.</p>
         </section>
 
-        <section class="etape-cours" style="background: #e1eaf6; padding: 20px; border-radius: 10px;">
+        <section class="etape-cours" style="background: #e1eaf6; padding: 20px; border-radius: 15px; border: 1px solid #2b579a;">
             <h2><i class="fas fa-edit"></i> À vous d'essayer !</h2>
-            <p id="consigne-word" style="font-weight: bold; color: #2b579a; text-align: center;">
+            <p id="consigne-word" style="font-weight: bold; color: #2b579a; margin-bottom: 20px;">
                 1. Cliquez dans la feuille blanche et écrivez "Bonjour".
             </p>
 
@@ -71,45 +88,18 @@
 
         <section class="etape-cours">
             <h2>1. Le Ruban (votre trousse à outils)</h2>
-            <p>Tout en haut de Word se trouve le <strong>Ruban</strong>. C'est là que vous choisirez vos outils.</p>
+            <p>Tout en haut de Word se trouve le <strong>Ruban</strong>. C'est là que vous choisirez vos outils :</p>
+            
             <ul>
-                <li><strong>G (Gras) :</strong> Pour écrire plus épais.</li>
-                <li><em>I (Italique) :</em> Pour pencher le texte.</li>
-                <li><u>S (Souligné) :</u> Pour souligner les mots importants.</li>
+                <li><i class="fas fa-bold" style="color: #2c3e50; margin-right: 10px;"></i> <strong>G (Gras) :</strong> Pour écrire plus épais.</li>
+                <li><i class="fas fa-italic" style="color: #2c3e50; margin-right: 10px;"></i> <em>I (Italique) :</em> Pour pencher le texte.</li>
+                <li><i class="fas fa-underline" style="color: #2c3e50; margin-right: 10px;"></i> <u>S (Souligné) :</u> Pour souligner les mots importants.</li>
             </ul>
         </section>
 
-        <section class="etape-cours">
-            <h2>2. Changer l'apparence</h2>
-            <p>Vous pouvez modifier votre texte même après l'avoir écrit :</p>
-            <div class="comparaison">
-                <p><i class="fas fa-font"></i> <strong>La Police :</strong> C'est le style d'écriture.</p>
-                <p><i class="fas fa-palette"></i> <strong>La Couleur :</strong> Pour mettre de la vie.</p>
-            </div>
-        </section>
-
-        <section class="etape-cours">
-            <h2>3. Ne pas perdre son travail</h2>
-            <p><i class="fas fa-save"></i> Allez dans <strong>Fichier > Enregistrer</strong> pour ne pas perdre votre travail.</p>
-        </section>
-
-        <section class="zone-telechargement">
-            <div class="card-pdf">
-                <i class="fas fa-file-pdf fa-3x" style="color: #e74c3c;"></i>
-                <div class="pdf-info">
-                    <h3>Fiche Mémo Word</h3>
-                    <p>Téléchargez le résumé du cours pour l'imprimer.</p>
-                </div>
-                <a href="pdf/cours-clavier.pdf" download class="btn-download">
-                    <i class="fas fa-download"></i> Télécharger (PDF)
-                </a>
-            </div>
-        </section>
-
-        <div class="actions-cours" style="text-align: center; margin-top: 30px;">
-            <button id="btn-valider-word" class="btn-validation" onclick="validerCours('word')" disabled 
-                style="opacity: 0.5; background-color: #2b579a; color: white; border: none; padding: 15px 30px; border-radius: 5px; cursor: not-allowed; font-weight: bold;">
-                J'ai terminé l'exercice et le cours !
+        <div style="text-align: center; margin-top: 40px; margin-bottom: 50px;">
+            <button id="btn-valider-word" class="btn-cours" onclick="validerCours('word')" disabled style="opacity: 0.5;">
+                <i class="fas fa-check-circle"></i> J'ai compris l'utilisation de Word
             </button>
         </div>
     </main>
@@ -124,8 +114,7 @@
             const texte = editeur.innerText.trim();
             if (texte.length >= 3 && !texteSaisi) {
                 texteSaisi = true;
-                consigne.innerHTML = "2. Maintenant, <strong>sélectionnez le texte</strong> et cliquez sur le <strong>G</strong>.";
-                consigne.style.color = "#2b579a";
+                consigne.innerHTML = "2. Maintenant, <strong>sélectionnez le texte</strong> et cliquez sur le <strong>G</strong> en haut.";
             }
         });
 
@@ -133,7 +122,7 @@
             document.execCommand(commande, false, valeur);
             editeur.focus();
             if (texteSaisi) {
-                consigne.innerHTML = "✅ Parfait ! Vous pouvez valider le cours et télécharger votre fiche.";
+                consigne.innerHTML = "✅ Parfait ! Vous savez maintenant utiliser Word.";
                 consigne.style.color = "#27ae60";
                 btnValider.disabled = false;
                 btnValider.style.opacity = "1";
@@ -141,6 +130,7 @@
             }
         }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
