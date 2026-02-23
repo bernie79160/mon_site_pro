@@ -465,3 +465,27 @@ body.dark-mode .card-pdf {
 }
 body.dark-mode .pdf-info h3 { color: white; }
 body.dark-mode .pdf-info p { color: #aaa; }
+/* --- Correctif Mode Sombre pour la page Pointeur --- */
+
+/* On change la couleur de la carte et de l'icône */
+body.dark-mode .carte-pointeur {
+    background-color: #2d2d2d; /* Gris foncé au lieu de blanc */
+    border: 1px solid #444;    /* Bordure subtile */
+    color: #ffffff;            /* Texte en blanc */
+}
+
+/* On s'assure que l'icône FontAwesome est bien visible */
+body.dark-mode .carte-pointeur i {
+    color: #3498db; /* On lui donne une couleur bleue pour qu'elle flashe bien */
+}
+
+/* Le petit texte d'explication sous le nom du pointeur */
+body.dark-mode .carte-pointeur span {
+    color: #bbb; /* Gris clair pour le texte secondaire */
+}
+
+/* Effet au survol en mode sombre */
+body.dark-mode .carte-pointeur:hover {
+    background-color: #3d3d3d;
+    border-color: #3498db; /* La bordure devient bleue au survol */
+}
