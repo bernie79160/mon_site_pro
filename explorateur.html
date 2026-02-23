@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>L'Explorateur de fichiers</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="page-cours">
+    <header>
+        <nav>
+            <ul style="display: flex; align-items: center; list-style: none; gap: 20px; padding: 10px;">
+                <li><a href="index.html" style="text-decoration: none; color: inherit;"><i class="fas fa-arrow-left"></i> Retour Accueil</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="contenu-cours">
+        <section class="entete-cours">
+            <h1><i class="fas fa-search"></i> Créer et Organiser</h1>
+            <p id="consigne-explorateur" class="consigne-majeure">
+                Cliquez sur le bouton pour créer un <strong>Nouveau dossier</strong> et nommez-le : <strong>Mes courriers</strong>
+            </p>
+        </section>
+
+        <div id="fenetre-explorateur" style="width: 100%; max-width: 800px; height: 450px; background: white; border: 2px solid #ccc; margin: 20px auto; border-radius: 8px; overflow: hidden; display: flex; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+            
+            <div style="width: 200px; background: #f0f0f0; border-right: 1px solid #ccc; padding: 15px;">
+                <p style="font-weight: bold; color: #2980b9; margin-bottom: 15px;"><i class="fas fa-file"></i> Documents</p>
+                <p style="color: #666;"><i class="fas fa-image"></i> Images</p>
+                <p style="color: #666;"><i class="fas fa-download"></i> Téléchargements</p>
+            </div>
+
+            <div style="flex: 1; display: flex; flex-direction: column;">
+                
+                <div id="barre-adresse" style="background: #f9f9f9; padding: 10px; border-bottom: 1px solid #eee; font-size: 13px; color: #666;">
+                    <i class="fas fa-desktop"></i> Ce PC > Documents <span id="chemin-actuel" style="font-weight: bold; color: #333;"></span>
+                </div>
+
+                <div style="padding: 15px; border-bottom: 1px solid #eee; background: #fff;">
+                    <button id="btn-nouveau-dossier" class="btn-cours" onclick="creerDossier()" style="margin: 0;">
+                        <i class="fas fa-folder-plus"></i> Nouveau dossier
+                    </button>
+                </div>
+
+                <div id="zone-fichiers" style="flex: 1; padding: 20px; display: flex; flex-wrap: wrap; gap: 20px; align-content: flex-start; background: #fff;">
+                    </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
