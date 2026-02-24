@@ -2,86 +2,88 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gérer son Bureau et ses Dossiers</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <style>
-        #bureau-canvas {
-            width: 100%; max-width: 800px; height: 500px; background: #2c3e50;
-            margin: 20px auto; position: relative; border: 8px solid #34495e; 
-            border-radius: 15px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-        }
-        .icone-bureau {
-            width: 100px; text-align: center; color: white; cursor: grab;
-            position: absolute; padding: 10px; transition: transform 0.2s;
-            z-index: 10;
-        }
-        .icone-bureau i { font-size: 45px; display: block; margin-bottom: 5px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-        .icone-bureau span { font-size: 11px; font-weight: bold; text-shadow: 1px 1px 2px black; display: block; }
-
+        /* On ne garde ICI que ce qui est UNIQUE au jeu de glisser-déposer */
+        /* Tout le reste est géré par style.css */
+        
         .cible-depot {
             position: absolute; width: 130px; height: 150px; border: 3px dashed rgba(255,255,255,0.3);
             border-radius: 15px; color: white; display: flex; flex-direction: column;
             justify-content: center; align-items: center; background: rgba(0,0,0,0.2); transition: all 0.3s;
         }
-        /* INDISPENSABLE pour que le drop fonctionne sur les icônes */
         .cible-depot * { pointer-events: none; }
 
         #corbeille { bottom: 20px; right: 20px; }
         #dossier-rangement { bottom: 20px; right: 170px; }
+        
+        /* Effets visuels quand on survole les zones avec une icône */
         .survol-corbeille { background: rgba(231, 76, 60, 0.4) !important; border-color: #e74c3c !important; }
         .survol-rangement { background: rgba(46, 204, 113, 0.4) !important; border-color: #2ecc71 !important; }
     </style>
 </head>
 <body class="page-cours">
-    <header>
-        <nav>
-            <ul style="display: flex; align-items: center; list-style: none; gap: 20px; padding: 10px;">
-                <li><a href="index.html" style="text-decoration: none; color: inherit; border: 1px solid white; padding: 5px 10px; border-radius: 5px;"><i class="fas fa-arrow-left"></i> Retour</a></li>
-                <li><button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">🌙 Mode Sombre</button></li>
-            </ul>
-        </nav>
-    </header>
 
-    <main class="contenu-cours">
-        <section class="entete-cours">
-            <h1><i class="fas fa-desktop"></i> Nettoyage et Rangement</h1>
-            <p id="consigne-bureau" class="consigne-majeure">Jetez les <strong>fichiers gris</strong> et rangez <strong>votre CV bleu</strong>.</p>
-        </section>
+<header>
+    <nav>
+        <ul>
+            <li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a></li>
+            <li>
+                <button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">
+                    🌙 Mode Sombre
+                </button>
+            </li>
+        </ul>
+    </nav>
+</header>
 
-        <div id="bureau-canvas">
-            <div id="file1" class="icone-bureau" draggable="true" ondragstart="drag(event)" style="top: 30px; left: 30px;">
-                <i class="fas fa-file-alt" style="color: #bdc3c7;"></i><span>Note_vide.txt</span>
-            </div>
-            <div id="file2" class="icone-bureau" draggable="true" ondragstart="drag(event)" style="top: 150px; left: 30px;">
-                <i class="fas fa-file-image" style="color: #bdc3c7;"></i><span>Photo_floue.jpg</span>
-            </div>
-            <div id="file3" class="icone-bureau" draggable="true" ondragstart="drag(event)" style="top: 270px; left: 30px;">
-                <i class="fas fa-file-archive" style="color: #bdc3c7;"></i><span>Vieux_dossier.zip</span>
-            </div>
-            <div id="mon-cv" class="icone-bureau" draggable="true" ondragstart="drag(event)" style="top: 30px; left: 180px;">
-                <i class="fas fa-file-word" style="color: #3498db;"></i><span>Mon_CV.docx</span>
-            </div>
+<main class="contenu-cours">
+    <section class="entete-cours">
+        <h1><i class="fas fa-desktop"></i> Nettoyage et Rangement</h1>
+        <p id="consigne-bureau" class="consigne-majeure">Jetez les <strong>fichiers gris</strong> et rangez <strong>votre CV bleu</strong>.</p>
+    </section>
 
-            <div id="dossier-rangement" class="cible-depot" ondrop="dropRangement(event)" ondragover="allowDrop(event)" ondragleave="leaveDrop(event)">
-                <i class="fas fa-folder" style="font-size: 50px; color: #f1c40f; margin-bottom: 10px;"></i>
-                <span>MES DOCUMENTS</span>
-            </div>
-
-            <div id="corbeille" class="cible-depot" ondrop="dropCorbeille(event)" ondragover="allowDrop(event)" ondragleave="leaveDrop(event)">
-                <i class="fas fa-trash-alt" style="font-size: 50px; margin-bottom: 10px;"></i>
-                <span>CORBEILLE</span>
-            </div>
+    <div id="bureau-canvas">
+        <div id="file1" class="icone-bureau" draggable="true" ondragstart="drag(event)" style="top: 30px; left: 30px;">
+            <i class="fas fa-file-alt" style="color: #bdc3c7;"></i><span>Note_vide.txt</span>
+        </div>
+        <div id="file2" class="icone-bureau" draggable="true" ondragstart="drag(event)" style="top: 150px; left: 30px;">
+            <i class="fas fa-file-image" style="color: #bdc3c7;"></i><span>Photo_floue.jpg</span>
+        </div>
+        <div id="file3" class="icone-bureau" draggable="true" ondragstart="drag(event)" style="top: 270px; left: 30px;">
+            <i class="fas fa-file-archive" style="color: #bdc3c7;"></i><span>Vieux_dossier.zip</span>
+        </div>
+        
+        <div id="mon-cv" class="icone-bureau" draggable="true" ondragstart="drag(event)" style="top: 30px; left: 180px;">
+            <i class="fas fa-file-word" style="color: #3498db;"></i><span>Mon_CV.docx</span>
         </div>
 
-        <div style="text-align: center; margin-top: 30px; margin-bottom: 50px;">
-    <button id="btn-valider-bureau" class="btn-cours" onclick="validerCours('bureau')" disabled>
-        <i class="fas fa-check-circle"></i> C'est tout propre !
-    </button>
-</div>
-    </main>
+        <div id="dossier-rangement" class="cible-depot" ondrop="dropRangement(event)" ondragover="allowDrop(event)" ondragleave="leaveDrop(event)">
+            <i class="fas fa-folder" style="font-size: 50px; color: #f1c40f; margin-bottom: 10px;"></i>
+            <span>MES DOCUMENTS</span>
+        </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <script src="script.js"></script>
+        <div id="corbeille" class="cible-depot" ondrop="dropCorbeille(event)" ondragover="allowDrop(event)" ondragleave="leaveDrop(event)">
+            <i class="fas fa-trash-alt" style="font-size: 50px; margin-bottom: 10px;"></i>
+            <span>CORBEILLE</span>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 30px; margin-bottom: 50px;">
+        <button id="btn-valider-bureau" class="btn-cours" onclick="validerCours('bureau')" disabled>
+            <i class="fas fa-check-circle"></i> C'est tout propre !
+        </button>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2026 Bernard TELLIER - Tous droits réservés.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

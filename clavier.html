@@ -30,19 +30,18 @@
     </style>
 </head>
 <body class="page-cours">
-    <header>
-        <nav>
-    <ul style="display: flex; align-items: center; list-style: none; gap: 20px; padding: 10px;">
-        <li><a href="index.html" style="text-decoration: none; color: inherit;"><i class="fas fa-arrow-left"></i> Retour</a></li>
-        
-        <li>
-            <button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon" style="cursor: pointer;">
-                🌙 Mode Sombre
-            </button>
-        </li>
-    </ul>
-</nav>
-    </header>
+<header>
+    <nav>
+        <ul>
+            <li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a></li>
+            <li>
+                <button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">
+                    🌙 Mode Sombre
+                </button>
+            </li>
+        </ul>
+    </nav>
+</header>
 
     <main class="contenu-cours">
         <section class="entete-cours">
@@ -133,6 +132,12 @@
             btn.style.opacity = "1";
         }
     </script>
+
+<footer>
+    <p>&copy; 2026 Bernard TELLIER - Tous droits réservés.</p>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

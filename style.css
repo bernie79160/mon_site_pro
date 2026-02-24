@@ -1,5 +1,5 @@
 /* ==========================================
-   1. BASES ET NAVIGATION (FIL D'ARIANE)
+   1. BASES ET NAVIGATION (UNIFORMISÉE)
    ========================================== */
 body { 
     font-family: 'Open Sans', sans-serif; 
@@ -9,16 +9,19 @@ body {
 
 header {
     background-color: #2c3e50;
-    padding: 10px 0;
+    padding: 15px 0;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    position: sticky; 
+    top: 0;
+    z-index: 1000;
 }
 
 header nav ul {
     list-style: none;
     display: flex;
-    justify-content: center; /* Centre parfaitement le menu */
+    justify-content: center; 
     align-items: center;
-    gap: 30px;
+    gap: 25px;
     margin: 0; padding: 0;
 }
 
@@ -27,18 +30,44 @@ header nav ul li a {
     text-decoration: none;
     font-weight: 600;
     font-size: 1rem;
+    padding: 8px 15px;
+    border-radius: 5px;
     transition: 0.3s;
     display: flex;
     align-items: center;
     gap: 8px;
+    border: 1px solid transparent;
 }
 
-header nav ul li a:hover { color: #3498db !important; }
+header nav ul li a[href="index.html"] {
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+header nav ul li a:hover {
+    background-color: rgba(52, 152, 219, 0.2);
+    border-color: #3498db;
+    color: #3498db !important;
+}
+
+.btn-dark-toggle {
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-dark-toggle:hover {
+    background-color: white;
+    color: #2c3e50;
+}
 
 /* ==========================================
    2. GRILLES (ACCUEIL & POINTEURS)
    ========================================== */
-/* On unifie les conteneurs pour qu'ils soient tous centrés */
 .cours-container, .grille-pointeurs {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -46,7 +75,7 @@ header nav ul li a:hover { color: #3498db !important; }
     max-width: 1200px;
     margin: 40px auto;
     padding: 0 20px;
-    justify-content: center; /* Centre les cartes si elles ne remplissent pas la ligne */
+    justify-content: center;
 }
 
 /* ==========================================
@@ -65,24 +94,40 @@ header nav ul li a:hover { color: #3498db !important; }
     position: relative;
     transition: 0.3s;
     border-top: 8px solid #ddd;
-    min-height: 200px; /* Assure une taille uniforme */
+    min-height: 200px;
 }
-
-.cours-card:hover, .carte-pointeur:hover { transform: translateY(-10px); }
-
-/* --- COULEURS DES ICÔNES --- */
-.theme-internet i   { color: #3498db !important; } 
-.theme-windows i    { color: #0078d7 !important; }
-.theme-word i       { color: #2b579a !important; } 
-.theme-excel i      { color: #217346 !important; } 
-.theme-powerpoint i { color: #d24726 !important; } 
-.theme-bureau i     { color: #f1c40f !important; } 
 
 .cours-card i, .carte-pointeur i {
     font-size: 3.5rem;
     margin-bottom: 15px;
     display: block;
+    transition: transform 0.3s ease;
 }
+
+.cours-card:hover, .carte-pointeur:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    border-top-width: 12px;
+}
+
+/* --- GESTION DES COULEURS UNIFIÉE --- */
+.theme-internet { border-top-color: #3498db !important; }
+.theme-internet i { color: #3498db !important; }
+
+.theme-windows { border-top-color: #0078d7 !important; }
+.theme-windows i { color: #0078d7 !important; }
+
+.theme-word { border-top-color: #2b579a !important; }
+.theme-word i { color: #2b579a !important; }
+
+.theme-excel { border-top-color: #217346 !important; }
+.theme-excel i { color: #217346 !important; }
+
+.theme-powerpoint { border-top-color: #d24726 !important; }
+.theme-powerpoint i { color: #d24726 !important; }
+
+.theme-bureau { border-top-color: #f1c40f !important; }
+.theme-bureau i { color: #f1c40f !important; }
 
 /* ==========================================
    4. PROGRESSION ET BADGES
@@ -98,12 +143,6 @@ header nav ul li a:hover { color: #3498db !important; }
     top: 15px; right: 15px;
 }
 
-.card-locked {
-    opacity: 0.5;
-    filter: grayscale(1);
-    pointer-events: none;
-}
-
 /* ==========================================
    5. MODE SOMBRE (GLOBAL)
    ========================================== */
@@ -116,7 +155,7 @@ body.dark-mode header { background-color: #000; }
 body.dark-mode .consigne-majeure { background: #3d3d3d; color: #eee; }
 
 /* ==========================================
-   6. LE BUREAU & DRAG AND DROP
+   6. LE BUREAU & LOOK RACCOURCI
    ========================================== */
 #bureau-canvas {
     width: 100%; max-width: 800px; height: 450px; 
@@ -131,7 +170,34 @@ body.dark-mode .consigne-majeure { background: #3d3d3d; color: #eee; }
     display: flex; flex-direction: column; align-items: center;
 }
 
-.icone-bureau i { font-size: 45px; display: block; pointer-events: none; }
+.icone-bureau i { 
+    font-size: 45px; 
+    display: block; 
+    pointer-events: none; 
+    position: relative; /* Indispensable pour la flèche */
+}
+
+/* LA FLÈCHE DE RACCOURCI (BAS GAUCHE) */
+.icone-bureau i::after {
+    content: "➔"; 
+    position: absolute;
+    bottom: -2px;    /* Collé au bas de l'icône */
+    left: -5px;     /* Ajusté pour le coin gauche du dessin */
+    width: 14px;
+    height: 14px;
+    background: white;
+    border: 1px solid #777;
+    color: #0078d7; 
+    font-size: 9px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    transform: rotate(-45deg);
+    text-shadow: none; 
+    z-index: 20;
+}
 
 /* ==========================================
    7. BOUTONS & ENTETE
@@ -140,7 +206,7 @@ body.dark-mode .consigne-majeure { background: #3d3d3d; color: #eee; }
     background-color: #27ae60; color: white; border: none;
     padding: 15px 40px; font-size: 1.1rem; font-weight: bold;
     border-radius: 50px; cursor: pointer; transition: 0.3s;
-    margin: 20px auto; display: block; /* display: block + margin: auto = centré */
+    margin: 20px auto; display: block;
 }
 
 .btn-cours:disabled { opacity: 0.5; cursor: not-allowed; background-color: #bdc3c7 !important; }
@@ -155,40 +221,40 @@ body.dark-mode .consigne-majeure { background: #3d3d3d; color: #eee; }
     font-size: 1.1rem; color: #555; background: #f8f9fa;
     padding: 10px 20px; border-radius: 8px; display: inline-block;
 }
+
 /* ==========================================
    8. EFFETS SPECIFIQUES PAGE POINTEUR
    ========================================== */
+.carte-pointeur.p-lien:hover { cursor: pointer !important; }
+.carte-pointeur.p-texte:hover { cursor: text !important; }
+.carte-pointeur.p-chargement:hover { cursor: wait !important; }
+.carte-pointeur.p-interdit:hover { cursor: not-allowed !important; }
 
-/* Carte La Main (p-lien) */
-.carte-pointeur.p-lien:hover {
-    cursor: pointer !important;
-}
-
-/* Carte La Barre (p-texte) */
-.carte-pointeur.p-texte:hover {
-    cursor: text !important;
-}
-
-/* Carte Le Cercle (p-chargement) */
-.carte-pointeur.p-chargement:hover {
-    cursor: wait !important;
-}
-
-/* Carte Interdit (p-interdit) */
-.carte-pointeur.p-interdit:hover {
-    cursor: not-allowed !important;
-}
-
-/* On ajoute un petit effet visuel sur la carte elle-même au survol */
-.carte-pointeur:hover {
-    background-color: #f8f9fa;
-    transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
-}
-
-/* Pour le texte d'explication sous le nom du pointeur */
 .carte-pointeur p span {
     font-size: 0.85rem;
     color: #7f8c8d;
     font-weight: normal;
+}
+
+/* ==========================================
+   9. PIED DE PAGE
+   ========================================== */
+footer {
+    background-color: #2c3e50;
+    color: white;
+    text-align: center;
+    padding: 40px 20px;
+    margin-top: 50px;
+    border-top: 3px solid #3498db;
+}
+footer p { margin: 0; }
+
+/* ==========================================
+   10. ADAPTATION MOBILE
+   ========================================== */
+@media (max-width: 768px) {
+    .cours-container { grid-template-columns: 1fr; padding: 10px; }
+    h1 { font-size: 1.8rem; }
+    header nav ul { flex-direction: column; gap: 15px; padding: 10px 0; }
+    .cours-card { margin: 10px; }
 }
