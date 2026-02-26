@@ -109,6 +109,17 @@ header nav ul li a:hover {
     box-shadow: 0 15px 30px rgba(0,0,0,0.1);
     border-top-width: 12px;
 }
+/* --- État verrouillé (Cours non accessibles) --- */
+.card-locked {
+    filter: grayscale(1);      /* Rend la carte grise */
+    opacity: 0.5;              /* Rend la carte transparente */
+    cursor: not-allowed !important; /* Affiche un signe "interdit" */
+    pointer-events: none;      /* Empêche de cliquer sur la carte */
+}
+
+.card-locked button {
+    display: none;             /* Cache le bouton "Découvrir" si verrouillé */
+}
 
 /* --- GESTION DES COULEURS UNIFIÉE --- */
 .theme-internet { border-top-color: #3498db !important; }
@@ -141,6 +152,8 @@ header nav ul li a:hover {
     font-size: 0.8rem;
     position: absolute;
     top: 15px; right: 15px;
+    z-index: 10; /* Pour passer devant l'icône du cours */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 /* ==========================================
@@ -257,4 +270,56 @@ footer p { margin: 0; }
     h1 { font-size: 1.8rem; }
     header nav ul { flex-direction: column; gap: 15px; padding: 10px 0; }
     .cours-card { margin: 10px; }
+}
+/*===========================================
+    11. MENU DÉROULANT SUR NOUVEAU
+  =========================================== */
+  /* Le menu qui se cache et s'affiche */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%; /* S'affiche juste sous le bouton */
+    left: 0;
+    background: white;
+    border: 1px solid #d1d1d1;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2); /* Ombre plus forte pour le relief */
+    z-index: 9999 !important; /* Force l'affichage au-dessus de tout */
+    min-width: 180px;
+    border-radius: 4px;
+    padding: 5px 0;
+}
+
+.dropdown-item {
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    cursor: pointer;
+    color: #333;
+}
+
+.dropdown-item:hover {
+    background: #f0f0f0;
+}
+
+.dropdown-item:hover { background: #f0f0f0; }
+.dropdown-item i { color: #0078d4; width: 16px; }
+
+/* Pour positionner le menu par rapport au bouton */
+.tool-item { position: relative; }
+.btn-card {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 5px;
+    margin-top: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-card:hover {
+    background-color: #2980b9;
 }

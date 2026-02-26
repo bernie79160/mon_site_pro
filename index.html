@@ -34,20 +34,18 @@
 
         <section id="services">
             <div style="max-width: 800px; margin: 0 auto; text-align: center; padding: 0 20px;">
-                
                 <div class="progress-container">
                     <div class="progress-bar-bg" style="background: #dfe6e9; border-radius: 20px; height: 20px; width: 100%; margin: 15px auto; overflow: hidden; border: 1px solid #ccc;">
                         <div id="progress-fill" style="background: linear-gradient(90deg, #3498db, #2ecc71); height: 100%; width: 0%; transition: width 0.5s;"></div>
                     </div>
                     <p style="font-weight: 600;">Votre progression globale : <span id="progress-text">0%</span></p>
                 </div>
-
                 <h2 style="margin: 40px 0; font-size: 2rem;"><i class="fas fa-graduation-cap"></i> Nos Cours</h2>
             </div>
 
             <div class="cours-container">
-                <div class="cours-card theme-internet">
-                    <span id="badge-pointeur" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
+                <div id="card-pointeur" class="cours-card theme-internet">
+                    <span id="badge-pointeur" class="badge-succes" style="display:none;"><i class="fas fa-medal"></i> Terminé</span>
                     <i class="fas fa-mouse-pointer"></i>
                     <h3>Les formes du pointeur</h3>
                     <p>Découvrez pourquoi la flèche change de forme.</p>
@@ -55,7 +53,7 @@
                 </div>
 
                 <div id="card-informatique" class="cours-card theme-windows">
-                    <span id="badge-informatique" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
+                    <span id="badge-informatique" class="badge-succes" style="display:none;"><i class="fas fa-medal"></i> Terminé</span>
                     <i class="fas fa-desktop"></i>
                     <h3>L'univers informatique</h3>
                     <p>Maitriser la souris</p>
@@ -63,50 +61,58 @@
                 </div>
 
                 <div id="card-windows" class="cours-card theme-windows">
-                    <span id="badge-windows" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
+                    <span id="badge-windows" class="badge-succes" style="display:none;"><i class="fas fa-medal"></i> Terminé</span>
                     <i class="fab fa-windows"></i>
                     <h3>L'univers Windows</h3>
                     <p>Apprivoiser le bureau et le menu démarrer.</p>
                     <button class="btn-card" onclick="ouvrirCours('windows')">Découvrir</button>
                 </div>
 
+                <div id="card-explorateur" class="cours-card theme-windows">
+                    <span id="badge-explorateur" class="badge-succes" style="display:none;"><i class="fas fa-medal"></i> Terminé</span>
+                    <i class="fas fa-folder-open"></i>
+                    <h3>L'Explorateur</h3>
+                    <p>Gérer ses dossiers et fichiers.</p>
+                    <button class="btn-card" onclick="ouvrirCours('explorateur')">Découvrir</button>
+                </div>
+
                 <div id="card-bureau" class="cours-card theme-windows">
-                    <span id="badge-bureau" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
+                    <span id="badge-bureau" class="badge-succes" style="display:none;"><i class="fas fa-medal"></i> Terminé</span>
                     <i class="fas fa-window-restore"></i>
                     <h3>Le Bureau et les Icônes</h3>
-                    <p>Apprenez à utiliser les raccourcis et la corbeille.</p>
+                    <p>Apprenez à utiliser les raccourcis.</p>
                     <button class="btn-card" onclick="ouvrirCours('bureau')">Découvrir</button>
                 </div>
 
                 <div id="card-clavier" class="cours-card theme-windows">
-                    <span id="badge-clavier" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
+                    <span id="badge-clavier" class="badge-succes" style="display:none;"><i class="fas fa-medal"></i> Terminé</span>
                     <i class="fas fa-keyboard"></i>
                     <h3>Découvrir le Clavier</h3>
-                    <p>Apprivoiser les touches principales et les majuscules.</p>
+                    <p>Apprivoiser les touches principales.</p>
                     <button class="btn-card" onclick="ouvrirCours('clavier')">Découvrir</button>
                 </div>
 
                 <div id="card-word" class="cours-card theme-word">
-                    <span id="badge-word" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
+                    <span id="badge-word" class="badge-succes" style="display:none;"><i class="fas fa-medal"></i> Terminé</span>
                     <i class="fas fa-file-word"></i>
                     <h3>Écrire avec Word</h3>
-                    <p>Créez vos courriers et mettez en forme vos textes.</p>
+                    <p>Créez vos courriers.</p>
                     <button class="btn-card" onclick="ouvrirCours('word')">Découvrir</button>
                 </div>
 
                 <div id="card-excel" class="cours-card theme-excel">
-                    <span id="badge-excel" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
+                    <span id="badge-excel" class="badge-succes" style="display:none;"><i class="fas fa-medal"></i> Terminé</span>
                     <i class="fas fa-file-excel"></i>
                     <h3>Calculer avec Excel</h3>
-                    <p>Créez des tableaux simples pour votre budget.</p>
+                    <p>Créez des tableaux simples.</p>
                     <button class="btn-card" onclick="ouvrirCours('excel')">Découvrir</button>
                 </div>
 
                 <div id="card-powerpoint" class="cours-card theme-powerpoint">
-                    <span id="badge-powerpoint" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
+                    <span id="badge-powerpoint" class="badge-succes" style="display:none;"><i class="fas fa-medal"></i> Terminé</span>
                     <i class="fas fa-file-powerpoint"></i>
                     <h3>Présenter avec PowerPoint</h3>
-                    <p>Réalisez des diaporamas avec vos souvenirs.</p>
+                    <p>Réalisez des diaporamas.</p>
                     <button class="btn-card" onclick="ouvrirCours('powerpoint')">Découvrir</button>
                 </div>
             </div> 
@@ -125,9 +131,9 @@
         </div>
     </section>
 
-   <footer>
-    <p>&copy; 2026 Bernard TELLIER - Tous droits réservés.</p>
-</footer>
+    <footer>
+        <p>&copy; 2026 Bernard TELLIER - Tous droits réservés.</p>
+    </footer>
 
     <script src="script.js"></script>
 </body>

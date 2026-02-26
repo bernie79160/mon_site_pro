@@ -3,223 +3,305 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>L'Explorateur de fichiers - Simulateur</title>
+    <title>Explorateur de fichiers - Arborescence Dynamique</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <style>
         .win-explorer {
-            width: 100%; max-width: 900px; height: 550px;
-            background: white; margin: 20px auto;
-            display: flex; flex-direction: column;
-            border: 1px solid #aaa; border-radius: 5px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.25);
-            overflow: hidden; font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 600px;
         }
 
-        .explorer-header { background: #f5f6f7; border-bottom: 1px solid #dadbdc; padding: 10px; }
-        .explorer-toolbar { display: flex; gap: 15px; margin-top: 5px; }
+        .explorer-main {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #f9f9f9;
+            border-right: 1px solid #d1d1d1;
+            overflow-y: auto;
+            padding: 10px 0;
+        }
+
+        .tree-item {
+            padding: 6px 15px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.2s;
+        }
+
+        .tree-item:hover { background: #ebebeb; }
         
-        .tool-btn { 
-            display: flex; flex-direction: column; align-items: center; 
-            font-size: 11px; color: #333; cursor: pointer; border: 1px solid transparent;
-            padding: 5px; border-radius: 3px; min-width: 80px;
-        }
-        .tool-btn:hover { background: #e5f3ff; border-color: #cce8ff; }
-        .tool-btn i { font-size: 20px; color: #0078d7; margin-bottom: 3px; }
-
-        .explorer-address-bar { 
-            display: flex; align-items: center; padding: 5px; 
-            background: white; border-bottom: 1px solid #ddd; gap: 10px;
-        }
-        .address-box { 
-            flex: 1; border: 1px solid #ccc; padding: 4px 10px; 
-            font-size: 13px; color: #555; display: flex; align-items: center; gap: 8px; min-height: 20px;
+        .tree-item.active { 
+            background: #cce4f7; 
+            color: #0078d4; 
+            font-weight: bold; 
         }
 
-        .explorer-body { display: flex; flex: 1; overflow: hidden; }
-
-        .explorer-sidebar { 
-            width: 220px; background: #f0f0f0; border-right: 1px solid #e5e5e5; 
-            padding: 10px; font-size: 13px; overflow-y: auto; user-select: none;
+        .sub-tree {
+            margin-left: 18px;
+            border-left: 1px dotted #bbb;
+            display: block;
+            animation: fadeIn 0.5s ease;
         }
-        .sidebar-item { padding: 6px 8px; cursor: pointer; display: flex; align-items: center; gap: 10px; border-radius: 3px; }
-        .sidebar-item:hover { background: #e5e5e5; }
-        .sidebar-item.active { background: #0078d7 !important; color: white !important; font-weight: 500; }
-        .sidebar-item i { width: 16px; text-align: center; }
-        .sidebar-title { font-size: 11px; font-weight: bold; color: #666; margin: 15px 0 5px 8px; text-transform: uppercase; }
 
-        .explorer-content { flex: 1; background: white; padding: 20px; display: flex; flex-wrap: wrap; gap: 20px; align-content: flex-start; overflow-y: auto; }
-
-        .folder-item {
-            display: flex; flex-direction: column; align-items: center; width: 95px;
-            padding: 5px; text-align: center;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(-5px); }
+            to { opacity: 1; transform: translateX(0); }
         }
-        .folder-item i { font-size: 45px; color: #f1c40f; margin-bottom: 5px; }
-        .folder-item span { font-size: 12px; color: #333; word-break: break-all; }
-        
-        /* Input pour simuler le renommage */
-        .folder-input { width: 80px; font-size: 11px; text-align: center; border: 1px solid #0078d7; outline: none; }
 
-        .new-anim { animation: folderPop 0.3s ease; }
-        @keyframes folderPop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .content-area {
+            flex: 1;
+            padding: 20px;
+            background: #ffffff;
+            overflow-y: auto;
+        }
+
+        .explorer-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 10px;
+            background: #f3f3f3;
+            border-bottom: 1px solid #d1d1d1;
+        }
+
+        .btn-corrige {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .btn-corrige:hover { background: #c0392b; }
     </style>
 </head>
 <body class="page-cours">
 
-<header>
-    <nav>
-        <ul>
-            <li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a></li>
-            <li><button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">🌙 Mode Sombre</button></li>
-        </ul>
-    </nav>
-</header>
+    <header>
+        <nav><ul><li><a href="index.html"><i class="fas fa-arrow-left"></i> Quitter le cours</a></li></ul></nav>
+    </header>
 
-<main class="contenu-cours">
-    <section class="entete-cours">
-        <h1><i class="fas fa-search"></i> Naviguer et Créer</h1>
-        <div id="consigne-box" style="background: #ebf5fb; padding: 15px; border-radius: 8px; border-left: 5px solid #3498db; margin-bottom: 20px;">
-            <p id="consigne-explorateur" class="consigne-majeure" style="margin:0; font-weight: bold;">
-                Étape 1 : Cliquez sur "Documents" dans la colonne de gauche.
-            </p>
+    <main class="contenu-cours">
+        <div id="box-instruction" class="entete-cours">
+            <h2 id="titre-mission"><i class="fas fa-tasks"></i> Mission : L'Arborescence</h2>
+            <p id="texte-instruction" class="consigne-majeure">Cliquez sur un dossier à gauche pour commencer l'organisation.</p>
+            <button id="btn-valider-exercice" class="btn-cours" style="display:none;" onclick="validerCours('explorateur')">Terminer l'exercice</button>
         </div>
-    </section>
 
-    <div class="win-explorer">
-        <div class="explorer-header">
+        <div class="win-explorer">
             <div class="explorer-toolbar">
-                <div class="tool-btn" id="btn-nouveau" onclick="preparerDossier()" style="opacity: 0.5; cursor: default;">
-                    <i class="fas fa-folder-plus"></i>
-                    <span>Nouveau dossier</span>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <div style="position: relative;">
+                        <button class="btn-card" style="margin:0; padding: 5px 15px;" id="btn-nouveau" onclick="toggleMenuNouveau()">
+                            <i class="fas fa-plus" style="color:#2ecc71"></i> Nouveau
+                        </button>
+                        <div id="menu-nouveau" class="dropdown-menu">
+                            <div class="dropdown-item" onclick="creerElement('dossier')"><i class="fas fa-folder" style="color:#ffca28"></i> Dossier</div>
+                        </div>
+                    </div>
+                    <div class="address-bar" id="barre-adresse"><i class="fas fa-desktop"></i> Ce PC</div>
+                </div>
+                <button class="btn-corrige" onclick="appliquerCorrige()"><i class="fas fa-magic"></i> Remplir automatiquement (Corrigé)</button>
+            </div>
+
+            <div class="explorer-main">
+                <div class="sidebar" id="sidebar-tree">
+                    <div id="node-Documents">
+                        <div class="tree-item" id="side-Documents" onclick="ouvrirDossier('Documents')">
+                            <i class="fas fa-file-alt" style="color:#3498db"></i> Documents
+                        </div>
+                        <div class="sub-tree" id="sub-Documents"></div>
+                    </div>
+                    <div id="node-Images">
+                        <div class="tree-item" id="side-Images" onclick="ouvrirDossier('Images')">
+                            <i class="fas fa-image" style="color:#e74c3c"></i> Images
+                        </div>
+                        <div class="sub-tree" id="sub-Images"></div>
+                    </div>
+                    <div id="node-Musique">
+                        <div class="tree-item" id="side-Musique" onclick="ouvrirDossier('Musique')">
+                            <i class="fas fa-music" style="color:#9b59b6"></i> Musique
+                        </div>
+                        <div class="sub-tree" id="sub-Musique"></div>
+                    </div>
+                    <div id="node-Videos">
+                        <div class="tree-item" id="side-Videos" onclick="ouvrirDossier('Videos')">
+                            <i class="fas fa-video" style="color:#1abc9c"></i> Vidéos
+                        </div>
+                        <div class="sub-tree" id="sub-Videos"></div>
+                    </div>
+                </div>
+
+                <div class="content-area">
+                    <div class="zone-fichiers" id="zone-fichiers">
+                        <p style="color:#999; text-align:center; margin-top:50px;">Sélectionnez un dossier à gauche pour commencer.</p>
+                    </div>
                 </div>
             </div>
         </div>
+    </main>
 
-        <div class="explorer-address-bar">
-            <div class="address-box">
-                <i class="fas fa-desktop"></i>
-                <span id="adresse-actuelle">Ce PC</span>
-            </div>
-        </div>
+    <script>
+        let dossierActuel = ""; 
+        let estDansSousDossier = false;
 
-        <div class="explorer-body">
-            <div class="explorer-sidebar">
-                <div class="sidebar-title">Ce PC</div>
-                <div class="sidebar-item" onclick="changerDossier('Documents', this)"><i class="fas fa-file-alt"></i> Documents</div>
-                <div class="sidebar-item" onclick="changerDossier('Images', this)"><i class="fas fa-images"></i> Images</div>
-                <div class="sidebar-item" onclick="changerDossier('Musique', this)"><i class="fas fa-music"></i> Musique</div>
-                <div class="sidebar-item" onclick="changerDossier('Vidéos', this)"><i class="fas fa-video"></i> Vidéos</div>
-            </div>
+        // Configuration des objectifs incluant le nouveau dossier Vidéos
+        const objectifs = {
+            "Documents": { nom: "ADMIN", fait: false, enfants: ["Factures", "Contrats"], faitsEnfants: [] },
+            "Images": { nom: "SOUVENIRS", fait: false, enfants: ["2024", "2025"], faitsEnfants: [] },
+            "Musique": { nom: "PLAYLIST", fait: false, enfants: ["Jazz", "Classique"], faitsEnfants: [] },
+            "Videos": { nom: "FILMS", fait: false, enfants: ["Vacances", "Cinema"], faitsEnfants: [] }
+        };
 
-            <div id="zone-fichiers" class="explorer-content">
-                <p style="color: #999; font-style: italic; margin: auto;">Sélectionnez un dossier à gauche pour commencer.</p>
-            </div>
-        </div>
-    </div>
+        function toggleMenuNouveau() {
+            const menu = document.getElementById('menu-nouveau');
+            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+        }
 
-    <div style="text-align: center; margin-bottom: 50px;">
-        <button id="btn-valider-explorateur" class="btn-cours" onclick="validerCours('explorateur')" disabled>
-            <i class="fas fa-check-circle"></i> Terminer le module
-        </button>
-    </div>
-</main>
+        function ouvrirDossier(nom) {
+            dossierActuel = nom;
+            estDansSousDossier = false;
+            majInterface();
+        }
 
-<footer>
-    <p>&copy; 2026 Bernard TELLIER - Tous droits réservés.</p>
-</footer>
+        function entrerDansDossier() {
+            if (!dossierActuel || !objectifs[dossierActuel].fait) return;
+            estDansSousDossier = true;
+            majInterface();
+        }
 
-<script>
-    let dossierActuel = null;
-    let objectifs = {
-        "Documents": { nom: "Mes courriers", fait: false },
-        "Images": { nom: "Photos de vacances", fait: false },
-        "Musique": { nom: "Mes Albums", fait: false },
-        "Vidéos": { nom: "Souvenirs", fait: false }
-    };
+        function majInterface() {
+            document.querySelectorAll('.tree-item').forEach(i => i.classList.remove('active'));
+            let idBouton = estDansSousDossier ? `side-sub-${objectifs[dossierActuel].nom}` : `side-${dossierActuel}`;
+            let el = document.getElementById(idBouton);
+            if(el) el.classList.add('active');
 
-    function changerDossier(nom, element) {
-        dossierActuel = nom;
-        document.getElementById('adresse-actuelle').innerHTML = `Ce PC <i class="fas fa-chevron-right" style="font-size:10px; margin:0 5px;"></i> ${nom}`;
-        
-        document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
-        element.classList.add('active');
+            let path = `<i class="fas fa-desktop"></i> Ce PC > ${dossierActuel}`;
+            if(estDansSousDossier) path += ` > ${objectifs[dossierActuel].nom}`;
+            document.getElementById('barre-adresse').innerHTML = path;
 
-        const btnNouveau = document.getElementById('btn-nouveau');
-        btnNouveau.style.opacity = "1";
-        btnNouveau.style.cursor = "pointer";
+            rafraichirZoneFichiers();
+            majConsigneLocal();
+        }
 
-        const zone = document.getElementById('zone-fichiers');
-        zone.innerHTML = ""; 
-        
-        majConsigne();
-    }
+        function creerElement(type) {
+            if (!dossierActuel) { alert("Sélectionnez d'abord un dossier à gauche !"); return; }
+            let nom = prompt("Entrez le nom du nouveau dossier :");
+            if (!nom) return;
+            if (document.getElementById('menu-nouveau')) document.getElementById('menu-nouveau').style.display = 'none';
 
-    function preparerDossier() {
-        if (!dossierActuel) return;
+            verifierObjectifDossier(nom);
+            rafraichirArborescence(); 
+            majInterface();
+        }
 
-        const zone = document.getElementById('zone-fichiers');
-        
-        // On crée l'élément visuel avec un input
-        const div = document.createElement('div');
-        div.className = 'folder-item new-anim';
-        div.innerHTML = `
-            <i class="fas fa-folder"></i>
-            <input type="text" class="folder-input" id="input-nom" placeholder="Nommez-moi...">
-        `;
-        zone.appendChild(div);
-
-        const input = document.getElementById('input-nom');
-        input.focus();
-
-        // Ecouter la touche Entrée
-        input.addEventListener('keyup', function(e) {
-            if (e.key === 'Enter') {
-                validerNomDossier(input.value, div);
+        function verifierObjectifDossier(nom) {
+            let obj = objectifs[dossierActuel];
+            let nomTape = nom.toUpperCase().trim();
+            if (!estDansSousDossier) {
+                if (nomTape === obj.nom) obj.fait = true;
+            } else {
+                if (obj.enfants.map(e => e.toUpperCase()).includes(nomTape)) {
+                    if (!obj.faitsEnfants.includes(nomTape)) {
+                        // On stocke le nom avec la casse d'origine du tableau objectifs pour l'esthétique
+                        let nomCorrect = obj.enfants.find(e => e.toUpperCase() === nomTape);
+                        obj.faitsEnfants.push(nomCorrect);
+                    }
+                }
             }
-        });
-    }
-
-    function validerNomDossier(nom, div) {
-        if (!nom.trim()) {
-            div.remove();
-            return;
         }
 
-        div.innerHTML = `<i class="fas fa-folder"></i><span>${nom}</span>`;
+        function rafraichirArborescence() {
+            Object.keys(objectifs).forEach(key => {
+                const container = document.getElementById(`sub-${key}`);
+                container.innerHTML = ""; 
+                
+                let obj = objectifs[key];
+                if (obj.fait) {
+                    container.innerHTML += `
+                        <div class="tree-item" id="side-sub-${obj.nom}" onclick="ouvrirDossier('${key}'); entrerDansDossier();">
+                            <i class="fas fa-folder-open" style="color:#ffca28"></i> ${obj.nom}
+                        </div>
+                        <div class="sub-tree" id="deep-${key}"></div>
+                    `;
 
-        let obj = objectifs[dossierActuel];
-        if (nom.toLowerCase().trim() === obj.nom.toLowerCase()) {
-            obj.fait = true;
-            if (typeof confetti === 'function') confetti();
+                    const deepContainer = document.getElementById(`deep-${key}`);
+                    obj.faitsEnfants.forEach(enfant => {
+                        deepContainer.innerHTML += `
+                            <div class="tree-item" style="opacity:0.7; cursor:default;">
+                                <i class="fas fa-folder" style="font-size:11px;"></i> ${enfant}
+                            </div>
+                        `;
+                    });
+                }
+            });
         }
-        
-        majConsigne();
-    }
 
-    function majConsigne() {
-        const c = document.getElementById('consigne-explorateur');
-        const btn = document.getElementById('btn-valider-explorateur');
+        function rafraichirZoneFichiers() {
+            const zone = document.getElementById('zone-fichiers');
+            zone.innerHTML = "";
+            let obj = objectifs[dossierActuel];
+            if(!obj) return;
 
-        if (!dossierActuel) {
-            c.innerHTML = "Étape 1 : Cliquez sur <strong>Documents</strong> dans la colonne de gauche.";
-        } else if (!objectifs["Documents"].fait) {
-            c.innerHTML = "Dans Documents, créez le dossier : <strong>Mes courriers</strong> (Validez avec la touche Entrée)";
-        } else if (!objectifs["Images"].fait) {
-            c.innerHTML = "Étape 2 : Allez dans <strong>Images</strong> et créez : <strong>Photos de vacances</strong>";
-        } else if (!objectifs["Musique"].fait) {
-            c.innerHTML = "Étape 3 : Allez dans <strong>Musique</strong> et créez : <strong>Mes Albums</strong>";
-        } else if (!objectifs["Vidéos"].fait) {
-            c.innerHTML = "Étape 4 : Allez dans <strong>Vidéos</strong> et créez : <strong>Souvenirs</strong>";
-        } else {
-            c.innerHTML = "🎉 Excellent ! L'arborescence n'a plus de secret pour vous.";
-            document.getElementById('consigne-box').style.borderColor = "#27ae60";
-            btn.disabled = false;
+            if (!estDansSousDossier) {
+                if (obj.fait) {
+                    zone.innerHTML += `
+                        <div class="folder-item" ondblclick="entrerDansDossier()">
+                            <i class="fas fa-folder" style="color:#ffca28"></i>
+                            <span>${obj.nom}</span>
+                        </div>`;
+                }
+            } else {
+                obj.faitsEnfants.forEach(e => {
+                    zone.innerHTML += `<div class="folder-item"><i class="fas fa-folder" style="color:#ffca28"></i><span>${e}</span></div>`;
+                });
+            }
         }
-    }
 
-    majConsigne();
-</script>
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-<script src="script.js"></script>
+        function majConsigneLocal() {
+            const txt = document.getElementById('texte-instruction');
+            if(!dossierActuel) return;
+            let obj = objectifs[dossierActuel];
+            
+            if (!obj.fait) {
+                txt.innerHTML = `Dans ${dossierActuel}, créez le dossier <strong>${obj.nom}</strong>.`;
+            } else if (obj.faitsEnfants.length < obj.enfants.length) {
+                if(!estDansSousDossier) txt.innerHTML = `Bravo ! Maintenant, <strong>double-cliquez</strong> sur ${obj.nom} au centre pour entrer dedans.`;
+                else txt.innerHTML = `Super ! Créez maintenant les dossiers : <strong>${obj.enfants.join(' et ')}</strong>`;
+            } else {
+                txt.innerHTML = `Dossier ${dossierActuel} terminé ! Passez au suivant à gauche.`;
+                
+                // Vérification finale
+                if (Object.values(objectifs).every(o => o.faitsEnfants.length >= o.enfants.length)) {
+                    txt.innerHTML = "🎉 Félicitations Bernard ! L'arborescence est complète.";
+                    document.getElementById('btn-valider-exercice').style.display = "block";
+                }
+            }
+        }
+
+        // --- FONCTION CORRIGÉ ---
+        function appliquerCorrige() {
+            Object.keys(objectifs).forEach(key => {
+                let obj = objectifs[key];
+                obj.fait = true;
+                obj.faitsEnfants = [...obj.enfants];
+            });
+            rafraichirArborescence();
+            if(dossierActuel) majInterface();
+            majConsigneLocal();
+            alert("Le corrigé a été appliqué ! Tous les dossiers ont été créés.");
+        }
+    </script>
 </body>
 </html>
