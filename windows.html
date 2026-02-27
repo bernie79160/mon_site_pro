@@ -93,7 +93,7 @@
     </div>
 
     <div style="text-align: center; margin-bottom: 50px;">
-        <button id="btn-valider-win" class="btn-cours" onclick="validerCours('windows')" disabled>
+        <button id="btn-valider-win" class="btn-cours" onclick="validerEtContinuer('windows')" disabled>
             <i class="fas fa-check-circle"></i> Exercice terminé !
         </button>
     </div>
@@ -150,12 +150,27 @@
             btn.disabled = false;
             btn.innerHTML = '<i class="fas fa-arrow-right"></i> Exercice suivant : L\'Explorateur';
             btn.style.backgroundColor = "#27ae60"; // Vert succès
-            
-            // On remplace l'action initiale par la redirection
-            btn.onclick = function() {
-                // On valide quand même le cours dans le localStorage avant de partir
-                localStorage.setItem('cours-windows', 'done');
-                window.location.href = "explorateur.html";
+        }
+    }
+
+    // Nouvelle fonction ajoutée ici pour gérer la modale et la redirection
+    function validerEtContinuer(cours) {
+        // Appelle la fonction de script.js
+        validerCours(cours);                
+
+        // Modifie le comportement du bouton "Oui, valider" de la modale
+        const btnYes = document.getElementById('btnYes');
+        if (btnYes) {
+            btnYes.onclick = () => {
+                localStorage.setItem('cours-' + cours, 'done');
+                if (typeof confetti === 'function') confetti();
+                
+                // Supprimer la modale
+                const overlay = document.querySelector('.custom-confirm-overlay');
+                if (overlay) overlay.remove();
+                
+                // Redirection vers la page suivante
+                window.location.href = 'explorateur.html';
             };
         }
     }

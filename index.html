@@ -27,7 +27,7 @@
 
     <main id="accueil">
         <div style="text-align: center; padding: 20px 0;">
-            <button onclick="localStorage.clear(); location.reload();" class="btn-reset-global">
+            <button onclick="localStorage.clear(); location.reload();" class="btn-reset-global" style="padding: 10px 20px; cursor: pointer; border-radius: 5px; border: 1px solid #ccc; background: #fff;">
                 <i class="fas fa-trash"></i> Réinitialiser ma progression
             </button>
         </div>
@@ -35,8 +35,8 @@
         <section id="services">
             <div style="max-width: 800px; margin: 0 auto; text-align: center; padding: 0 20px;">
                 <div class="progress-container">
-                    <div class="progress-bar-bg" style="background: #dfe6e9; border-radius: 20px; height: 20px; width: 100%; margin: 15px auto; overflow: hidden; border: 1px solid #ccc;">
-                        <div id="progress-fill" style="background: linear-gradient(90deg, #3498db, #2ecc71); height: 100%; width: 0%; transition: width 0.5s;"></div>
+                    <div class="progress-bar-bg">
+                        <div id="progress-fill"></div>
                     </div>
                     <p style="font-weight: 600;">Votre progression globale : <span id="progress-text">0%</span></p>
                 </div>
@@ -45,7 +45,7 @@
 
             <div class="cours-container">
                 <div id="card-pointeur" class="cours-card theme-internet">
-                    <span id="badge-pointeur" class="badge-succes" style="display:none;"><i class="fas fa-medal"></i> Terminé</span>
+                    <span id="badge-pointeur" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
                     <i class="fas fa-mouse-pointer"></i>
                     <h3>Les formes du pointeur</h3>
                     <p>Découvrez pourquoi la flèche change de forme.</p>
@@ -53,15 +53,15 @@
                 </div>
 
                 <div id="card-informatique" class="cours-card theme-windows">
-                    <span id="badge-informatique" class="badge-succes" style="display:none;"><i class="fas fa-medal"></i> Terminé</span>
+                    <span id="badge-informatique" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
                     <i class="fas fa-desktop"></i>
                     <h3>L'univers informatique</h3>
-                    <p>Maitriser la souris</p>
+                    <p>Maitriser la souris et les bases.</p>
                     <button class="btn-card" onclick="ouvrirCours('informatique')">Découvrir</button>
                 </div>
 
                 <div id="card-windows" class="cours-card theme-windows">
-                    <span id="badge-windows" class="badge-succes" style="display:none;"><i class="fas fa-medal"></i> Terminé</span>
+                    <span id="badge-windows" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
                     <i class="fab fa-windows"></i>
                     <h3>L'univers Windows</h3>
                     <p>Apprivoiser le bureau et le menu démarrer.</p>
@@ -69,7 +69,7 @@
                 </div>
 
                 <div id="card-explorateur" class="cours-card theme-windows">
-                    <span id="badge-explorateur" class="badge-succes" style="display:none;"><i class="fas fa-medal"></i> Terminé</span>
+                    <span id="badge-explorateur" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
                     <i class="fas fa-folder-open"></i>
                     <h3>L'Explorateur</h3>
                     <p>Gérer ses dossiers et fichiers.</p>
@@ -77,7 +77,7 @@
                 </div>
 
                 <div id="card-bureau" class="cours-card theme-windows">
-                    <span id="badge-bureau" class="badge-succes" style="display:none;"><i class="fas fa-medal"></i> Terminé</span>
+                    <span id="badge-bureau" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
                     <i class="fas fa-window-restore"></i>
                     <h3>Le Bureau et les Icônes</h3>
                     <p>Apprenez à utiliser les raccourcis.</p>
@@ -85,7 +85,7 @@
                 </div>
 
                 <div id="card-clavier" class="cours-card theme-windows">
-                    <span id="badge-clavier" class="badge-succes" style="display:none;"><i class="fas fa-medal"></i> Terminé</span>
+                    <span id="badge-clavier" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
                     <i class="fas fa-keyboard"></i>
                     <h3>Découvrir le Clavier</h3>
                     <p>Apprivoiser les touches principales.</p>
@@ -93,15 +93,15 @@
                 </div>
 
                 <div id="card-word" class="cours-card theme-word">
-                    <span id="badge-word" class="badge-succes" style="display:none;"><i class="fas fa-medal"></i> Terminé</span>
+                    <span id="badge-word" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
                     <i class="fas fa-file-word"></i>
                     <h3>Écrire avec Word</h3>
-                    <p>Créez vos courriers.</p>
+                    <p>Créez vos courriers et documents.</p>
                     <button class="btn-card" onclick="ouvrirCours('word')">Découvrir</button>
                 </div>
 
                 <div id="card-excel" class="cours-card theme-excel">
-                    <span id="badge-excel" class="badge-succes" style="display:none;"><i class="fas fa-medal"></i> Terminé</span>
+                    <span id="badge-excel" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
                     <i class="fas fa-file-excel"></i>
                     <h3>Calculer avec Excel</h3>
                     <p>Créez des tableaux simples.</p>
@@ -109,7 +109,7 @@
                 </div>
 
                 <div id="card-powerpoint" class="cours-card theme-powerpoint">
-                    <span id="badge-powerpoint" class="badge-succes" style="display:none;"><i class="fas fa-medal"></i> Terminé</span>
+                    <span id="badge-powerpoint" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
                     <i class="fas fa-file-powerpoint"></i>
                     <h3>Présenter avec PowerPoint</h3>
                     <p>Réalisez des diaporamas.</p>
@@ -121,12 +121,12 @@
 
     <section id="contact" style="max-width: 600px; margin: 50px auto; padding: 20px; text-align: center;">
         <h2><i class="fas fa-envelope"></i> Me Contacter</h2>
-        <div class="contact-card" style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.05);">
+        <div class="contact-card">
             <form id="form-contact">
-                <input type="text" placeholder="Ton nom" style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc;">
-                <input type="email" placeholder="ton@email.com" style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc;">
-                <textarea placeholder="Ton message" rows="4" style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc;"></textarea>
-                <button type="submit" class="btn-cours" style="width: 100%; margin: 0;">Envoyer le message</button>
+                <input type="text" placeholder="Ton nom" style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;">
+                <input type="email" placeholder="ton@email.com" style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;">
+                <textarea placeholder="Ton message" rows="4" style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;"></textarea>
+                <button type="submit" class="btn-card" style="width: 100%;">Envoyer le message</button>
             </form>
         </div>
     </section>

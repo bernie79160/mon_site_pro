@@ -5,6 +5,7 @@ body {
     font-family: 'Open Sans', sans-serif; 
     margin: 0; padding: 0; 
     background-color: #f0f2f5; 
+    transition: background-color 0.3s, color 0.3s;
 }
 
 header {
@@ -79,7 +80,7 @@ header nav ul li a:hover {
 }
 
 /* ==========================================
-   3. CARTES (UNIFICATION)
+   3. CARTES ET BOUTONS
    ========================================== */
 .cours-card, .carte-pointeur {
     background: white;
@@ -109,36 +110,64 @@ header nav ul li a:hover {
     box-shadow: 0 15px 30px rgba(0,0,0,0.1);
     border-top-width: 12px;
 }
-/* --- État verrouillé (Cours non accessibles) --- */
+
+/* --- STYLE DU BOUTON DÉCOUVRIR --- */
+.btn-card {
+    background-color: #3498db; /* Bleu par défaut */
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 8px;
+    margin-top: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    width: 100%;
+}
+
+.btn-card:hover {
+    filter: brightness(1.1);
+    transform: scale(1.02);
+}
+
+/* --- ÉTAT VERROUILLÉ --- */
 .card-locked {
-    filter: grayscale(1);      /* Rend la carte grise */
-    opacity: 0.5;              /* Rend la carte transparente */
-    cursor: not-allowed !important; /* Affiche un signe "interdit" */
-    pointer-events: none;      /* Empêche de cliquer sur la carte */
+    filter: grayscale(1);
+    opacity: 0.5;
+    cursor: not-allowed !important;
+    pointer-events: none;
 }
 
-.card-locked button {
-    display: none;             /* Cache le bouton "Découvrir" si verrouillé */
+.card-locked .btn-card {
+    display: none;
 }
 
-/* --- GESTION DES COULEURS UNIFIÉE --- */
+/* --- GESTION DES COULEURS PAR THÈME --- */
+/* On applique la couleur à la bordure, à l'icône ET au bouton */
+
 .theme-internet { border-top-color: #3498db !important; }
 .theme-internet i { color: #3498db !important; }
+.theme-internet .btn-card { background-color: #3498db !important; }
 
 .theme-windows { border-top-color: #0078d7 !important; }
 .theme-windows i { color: #0078d7 !important; }
+.theme-windows .btn-card { background-color: #0078d7 !important; }
 
 .theme-word { border-top-color: #2b579a !important; }
 .theme-word i { color: #2b579a !important; }
+.theme-word .btn-card { background-color: #2b579a !important; }
 
 .theme-excel { border-top-color: #217346 !important; }
 .theme-excel i { color: #217346 !important; }
+.theme-excel .btn-card { background-color: #217346 !important; }
 
 .theme-powerpoint { border-top-color: #d24726 !important; }
 .theme-powerpoint i { color: #d24726 !important; }
+.theme-powerpoint .btn-card { background-color: #d24726 !important; }
 
 .theme-bureau { border-top-color: #f1c40f !important; }
 .theme-bureau i { color: #f1c40f !important; }
+.theme-bureau .btn-card { background-color: #f1c40f !important; }
 
 /* ==========================================
    4. PROGRESSION ET BADGES
@@ -152,20 +181,50 @@ header nav ul li a:hover {
     font-size: 0.8rem;
     position: absolute;
     top: 15px; right: 15px;
-    z-index: 10; /* Pour passer devant l'icône du cours */
+    z-index: 10;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.progress-container {
+    max-width: 600px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.progress-bar-bg {
+    background: #e0e0e0;
+    border-radius: 10px;
+    height: 20px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+#progress-fill {
+    background: linear-gradient(90deg, #3498db, #2ecc71);
+    height: 100%;
+    width: 0%;
+    transition: width 0.5s ease;
 }
 
 /* ==========================================
    5. MODE SOMBRE (GLOBAL)
    ========================================== */
 body.dark-mode { background-color: #1a1a1a; color: white; }
-body.dark-mode .cours-card, body.dark-mode .carte-pointeur { 
+body.dark-mode .cours-card, 
+body.dark-mode .carte-pointeur, 
+body.dark-mode .instruction-window,
+body.dark-mode .custom-confirm-box { 
     background-color: #2d2d2d; 
-    border-bottom: 1px solid #444; 
+    border-color: #444;
+    color: white;
 }
 body.dark-mode header { background-color: #000; }
 body.dark-mode .consigne-majeure { background: #3d3d3d; color: #eee; }
+body.dark-mode .dropdown-menu { background: #2d2d2d; border-color: #444; }
+body.dark-mode .dropdown-item { color: #eee; }
+body.dark-mode .dropdown-item:hover { background: #3d3d3d; }
+body.dark-mode .custom-confirm-box h2, 
+body.dark-mode .custom-confirm-box p { color: white; }
 
 /* ==========================================
    6. LE BUREAU & LOOK RACCOURCI
@@ -187,15 +246,14 @@ body.dark-mode .consigne-majeure { background: #3d3d3d; color: #eee; }
     font-size: 45px; 
     display: block; 
     pointer-events: none; 
-    position: relative; /* Indispensable pour la flèche */
+    position: relative;
 }
 
-/* LA FLÈCHE DE RACCOURCI (BAS GAUCHE) */
 .icone-bureau i::after {
     content: "➔"; 
     position: absolute;
-    bottom: -2px;    /* Collé au bas de l'icône */
-    left: -5px;     /* Ajusté pour le coin gauche du dessin */
+    bottom: -2px;
+    left: -5px;
     width: 14px;
     height: 14px;
     background: white;
@@ -213,7 +271,7 @@ body.dark-mode .consigne-majeure { background: #3d3d3d; color: #eee; }
 }
 
 /* ==========================================
-   7. BOUTONS & ENTETE
+   7. BOUTONS JS & ENTETES COURS
    ========================================== */
 .btn-cours {
     background-color: #27ae60; color: white; border: none;
@@ -250,7 +308,7 @@ body.dark-mode .consigne-majeure { background: #3d3d3d; color: #eee; }
 }
 
 /* ==========================================
-   9. PIED DE PAGE
+   9. PIED DE PAGE ET CONTACT
    ========================================== */
 footer {
     background-color: #2c3e50;
@@ -260,30 +318,34 @@ footer {
     margin-top: 50px;
     border-top: 3px solid #3498db;
 }
-footer p { margin: 0; }
+
+.contact-card {
+    background: white; 
+    padding: 30px; 
+    border-radius: 15px; 
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
 
 /* ==========================================
    10. ADAPTATION MOBILE
    ========================================== */
 @media (max-width: 768px) {
     .cours-container { grid-template-columns: 1fr; padding: 10px; }
-    h1 { font-size: 1.8rem; }
     header nav ul { flex-direction: column; gap: 15px; padding: 10px 0; }
-    .cours-card { margin: 10px; }
 }
-/*===========================================
-    11. MENU DÉROULANT SUR NOUVEAU
-  =========================================== */
-  /* Le menu qui se cache et s'affiche */
+
+/* ==========================================
+   11. EXPLORATEUR (NOUVEAU MENU)
+   ========================================== */
 .dropdown-menu {
     display: none;
     position: absolute;
-    top: 100%; /* S'affiche juste sous le bouton */
+    top: 100%;
     left: 0;
     background: white;
     border: 1px solid #d1d1d1;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.2); /* Ombre plus forte pour le relief */
-    z-index: 9999 !important; /* Force l'affichage au-dessus de tout */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    z-index: 9999;
     min-width: 180px;
     border-radius: 4px;
     padding: 5px 0;
@@ -299,27 +361,73 @@ footer p { margin: 0; }
     color: #333;
 }
 
-.dropdown-item:hover {
-    background: #f0f0f0;
-}
-
 .dropdown-item:hover { background: #f0f0f0; }
 .dropdown-item i { color: #0078d4; width: 16px; }
 
-/* Pour positionner le menu par rapport au bouton */
-.tool-item { position: relative; }
-.btn-card {
-    background-color: #3498db;
-    color: white;
-    border: none;
-    padding: 8px 20px;
-    border-radius: 5px;
-    margin-top: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
+/* ==========================================
+   12. FENÊTRE DE CONFIRMATION MODALE
+   ========================================== */
+.custom-confirm-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    backdrop-filter: blur(3px);
+    opacity: 0;
+    animation: fadeIn 0.3s forwards;
 }
 
-.btn-card:hover {
-    background-color: #2980b9;
+@keyframes fadeIn { to { opacity: 1; } }
+
+.custom-confirm-box {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    animation: popIn 0.3s ease;
 }
+
+@keyframes popIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.custom-confirm-box h2 {
+    margin-top: 0;
+    color: #2c3e50;
+    font-size: 1.5rem;
+}
+
+.custom-confirm-box p {
+    color: #7f8c8d;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.confirm-btns {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.btn-confirm {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+    font-size: 1rem;
+}
+
+.btn-yes { background-color: #2ecc71; color: white; }
+.btn-yes:hover { background-color: #27ae60; }
+
+.btn-no { background-color: #e74c3c; color: white; }
+.btn-no:hover { background-color: #c0392b; }

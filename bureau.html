@@ -7,9 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* On ne garde ICI que ce qui est UNIQUE au jeu de glisser-déposer */
-        /* Tout le reste est géré par style.css */
-        
         .cible-depot {
             position: absolute; width: 130px; height: 150px; border: 3px dashed rgba(255,255,255,0.3);
             border-radius: 15px; color: white; display: flex; flex-direction: column;
@@ -20,7 +17,6 @@
         #corbeille { bottom: 20px; right: 20px; }
         #dossier-rangement { bottom: 20px; right: 170px; }
         
-        /* Effets visuels quand on survole les zones avec une icône */
         .survol-corbeille { background: rgba(231, 76, 60, 0.4) !important; border-color: #e74c3c !important; }
         .survol-rangement { background: rgba(46, 204, 113, 0.4) !important; border-color: #2ecc71 !important; }
     </style>
@@ -31,11 +27,7 @@
     <nav>
         <ul>
             <li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a></li>
-            <li>
-                <button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">
-                    🌙 Mode Sombre
-                </button>
-            </li>
+            <li><button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">🌙 Mode Sombre</button></li>
         </ul>
     </nav>
 </header>
@@ -85,5 +77,58 @@
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script src="script.js"></script>
+<script>
+    let objetsRestants = 4;
+
+    function allowDrop(ev) {
+        ev.preventDefault();
+        if (ev.currentTarget.id === "corbeille") ev.currentTarget.classList.add("survol-corbeille");
+        if (ev.currentTarget.id === "dossier-rangement") ev.currentTarget.classList.add("survol-rangement");
+    }
+
+    function leaveDrop(ev) {
+        ev.currentTarget.classList.remove("survol-corbeille", "survol-rangement");
+    }
+
+    function drag(ev) {
+        ev.dataTransfer.setData("text", ev.target.id);
+    }
+
+    function dropCorbeille(ev) {
+        ev.preventDefault();
+        leaveDrop(ev);
+        const data = ev.dataTransfer.getData("text");
+        if (data === "mon-cv") {
+            alert("Attention ! Ne jetez pas votre CV, rangez-le plutôt dans Mes Documents.");
+        } else {
+            document.getElementById(data).style.display = "none";
+            objetsRestants--;
+            verifierFin();
+        }
+    }
+
+    function dropRangement(ev) {
+        ev.preventDefault();
+        leaveDrop(ev);
+        const data = ev.dataTransfer.getData("text");
+        if (data === "mon-cv") {
+            document.getElementById(data).style.display = "none";
+            objetsRestants--;
+            verifierFin();
+        } else {
+            alert("Ce fichier est inutile, jetez-le à la corbeille.");
+        }
+    }
+
+    function verifierFin() {
+        if (objetsRestants === 0) {
+            const btn = document.getElementById("btn-valider-bureau");
+            btn.disabled = false;
+            btn.style.backgroundColor = "#27ae60";
+            document.getElementById("consigne-bureau").innerHTML = "🎉 Excellent ! Le bureau est parfaitement rangé.";
+            document.getElementById("consigne-bureau").style.color = "#27ae60";
+        }
+    }
+</script>
 </body>
 </html>
