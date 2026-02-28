@@ -1,3 +1,61 @@
 Ajouter des sous exercice
 la souris (double click, molette, glisser)
 lo souris le click droit qui offre plusieur possibilité
+
+Bernie :
+Création du site analyse des besoins :
+
+Objectif :
+
+Créer un site web professionnel et pédagogique pour apprendre :
+1 – Windows :
+La souris (clic gauche, double clic, clic droit, molette)
+Les barres de défilement
+Le bureau Windows
+Les icônes et raccourcis
+Le menu Démarrer
+Introduction générale à Windows
+L’explorateur Windows, l’arborescence des répertoires, le rangement etc…
+
+3 – Internet :
+Les navigateurs (edge, chrome, firefox etc….)
+La sécurité, rester protéger.
+Les mots de passes : (jamais identique sur 2 sites) 
+Comment se repérer sur une page Web (fil d’ariane, bouton, lien etc….)
+L’historique, les favoris etc….
+
+4 – La messagerie (e-mail) :
+Création d’une adresse mail, avec mot de passe fort.
+Utilisation de votre messagerie : orange, sfr, free, bouygues etc….
+Nouveau message
+Répondre à un message
+Réception de pièces jointe, envoie de pièces jointe
+Transférer un mail
+
+5 – Word :
+Présentation du logiciel (fenêtre comme Word)
+Explication de toutes les fonctionnalités (barre accès rapide, les onglets, les rubans, le zoom etc…)
+Petit exercice : création d’un premier texte avec mise en forme simple (police, taille, gras, italique, souligner, couleur. Le texte à taper sera : « Je découvre l’informatique et j’apprends à utiliser différents outils ».
+Exemple à faire : Je découvre l’informatique et j’apprends à utiliser différents outils
+
+Steven : Si tu vois d’autre truc n’hésite pas à rajouter
+
+Le public cible :
+Débutants complets
+Personnes peu à l’aise avec l’informatique
+Seniors ou adultes en reconversion
+
+Contraintes pédagogiques :
+Interface très claire
+Gros textes lisibles
+Couleurs douces
+Pas de surcharge
+Explications simples
+Interactivité légère (sans complexité)
+Layout centré
+Grandes cartes interactives
+Icônes illustratives
+Boutons “Voir l’explication”
+Animations douces
+Responsive (mobile + tablette)
+
