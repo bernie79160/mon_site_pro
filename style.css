@@ -1,433 +1,581 @@
 /* ==========================================
    1. BASES ET NAVIGATION (UNIFORMISÉE)
    ========================================== */
-body { 
-    font-family: 'Open Sans', sans-serif; 
-    margin: 0; padding: 0; 
-    background-color: #f0f2f5; 
-    transition: background-color 0.3s, color 0.3s;
+body {
+  font-family: "Open Sans", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f2f5;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+  /* Empêche la sélection du texte sur tout le site */
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10+ */
+  user-select: none; /* Standard */
 }
 
 header {
-    background-color: #2c3e50;
-    padding: 15px 0;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    position: sticky; 
-    top: 0;
-    z-index: 1000;
+  background-color: #2c3e50;
+  padding: 15px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 header nav ul {
-    list-style: none;
-    display: flex;
-    justify-content: center; 
-    align-items: center;
-    gap: 25px;
-    margin: 0; padding: 0;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  margin: 0;
+  padding: 0;
 }
 
 header nav ul li a {
-    color: white !important;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1rem;
-    padding: 8px 15px;
-    border-radius: 5px;
-    transition: 0.3s;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    border: 1px solid transparent;
+  color: white !important;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 8px 15px;
+  border-radius: 5px;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid transparent;
 }
 
 header nav ul li a[href="index.html"] {
-    border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 header nav ul li a:hover {
-    background-color: rgba(52, 152, 219, 0.2);
-    border-color: #3498db;
-    color: #3498db !important;
+  background-color: rgba(52, 152, 219, 0.2);
+  border-color: #3498db;
+  color: #3498db !important;
 }
 
 .btn-dark-toggle {
-    background: none;
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    color: white;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: 0.3s;
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: white;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
 }
 
 .btn-dark-toggle:hover {
-    background-color: white;
-    color: #2c3e50;
+  background-color: white;
+  color: #2c3e50;
 }
 
 /* ==========================================
    2. GRILLES (ACCUEIL & POINTEURS)
    ========================================== */
-.cours-container, .grille-pointeurs {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 0 20px;
-    justify-content: center;
+.cours-container,
+.grille-pointeurs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+  justify-content: center;
 }
 
 /* ==========================================
    3. CARTES ET BOUTONS
    ========================================== */
-.cours-card, .carte-pointeur {
-    background: white;
-    border-radius: 15px;
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
-    justify-content: center;
-    text-align: center;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-    position: relative;
-    transition: 0.3s;
-    border-top: 8px solid #ddd;
-    min-height: 200px;
+.cours-card,
+.carte-pointeur {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+  position: relative;
+  transition: 0.3s;
+  border-top: 8px solid #ddd;
+  min-height: 200px;
 }
 
-.cours-card i, .carte-pointeur i {
-    font-size: 3.5rem;
-    margin-bottom: 15px;
-    display: block;
-    transition: transform 0.3s ease;
+.cours-card i,
+.carte-pointeur i {
+  font-size: 3.5rem;
+  margin-bottom: 15px;
+  display: block;
+  transition: transform 0.3s ease;
 }
 
-.cours-card:hover, .carte-pointeur:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-    border-top-width: 12px;
+.cours-card:hover,
+.carte-pointeur:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  border-top-width: 12px;
 }
 
 /* --- STYLE DU BOUTON DÉCOUVRIR --- */
 .btn-card {
-    background-color: #3498db; /* Bleu par défaut */
-    color: white;
-    border: none;
-    padding: 10px 25px;
-    border-radius: 8px;
-    margin-top: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
-    width: 100%;
+  background-color: #3498db; /* Bleu par défaut */
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 8px;
+  margin-top: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  width: 100%;
 }
 
 .btn-card:hover {
-    filter: brightness(1.1);
-    transform: scale(1.02);
+  filter: brightness(1.1);
+  transform: scale(1.02);
 }
 
 /* --- ÉTAT VERROUILLÉ --- */
 .card-locked {
-    filter: grayscale(1);
-    opacity: 0.5;
-    cursor: not-allowed !important;
-    pointer-events: none;
+  filter: grayscale(1);
+  opacity: 0.5;
+  cursor: not-allowed !important;
+  pointer-events: none;
 }
 
 .card-locked .btn-card {
-    display: none;
+  display: none;
 }
 
 /* --- GESTION DES COULEURS PAR THÈME --- */
 /* On applique la couleur à la bordure, à l'icône ET au bouton */
 
-.theme-internet { border-top-color: #3498db !important; }
-.theme-internet i { color: #3498db !important; }
-.theme-internet .btn-card { background-color: #3498db !important; }
+.theme-internet {
+  border-top-color: #3498db !important;
+}
+.theme-internet i {
+  color: #3498db !important;
+}
+.theme-internet .btn-card {
+  background-color: #3498db !important;
+}
 
-.theme-windows { border-top-color: #0078d7 !important; }
-.theme-windows i { color: #0078d7 !important; }
-.theme-windows .btn-card { background-color: #0078d7 !important; }
+.theme-windows {
+  border-top-color: #0078d7 !important;
+}
+.theme-windows i {
+  color: #0078d7 !important;
+}
+.theme-windows .btn-card {
+  background-color: #0078d7 !important;
+}
 
-.theme-word { border-top-color: #2b579a !important; }
-.theme-word i { color: #2b579a !important; }
-.theme-word .btn-card { background-color: #2b579a !important; }
+.theme-word {
+  border-top-color: #2b579a !important;
+}
+.theme-word i {
+  color: #2b579a !important;
+}
+.theme-word .btn-card {
+  background-color: #2b579a !important;
+}
 
-.theme-excel { border-top-color: #217346 !important; }
-.theme-excel i { color: #217346 !important; }
-.theme-excel .btn-card { background-color: #217346 !important; }
+.theme-excel {
+  border-top-color: #217346 !important;
+}
+.theme-excel i {
+  color: #217346 !important;
+}
+.theme-excel .btn-card {
+  background-color: #217346 !important;
+}
 
-.theme-powerpoint { border-top-color: #d24726 !important; }
-.theme-powerpoint i { color: #d24726 !important; }
-.theme-powerpoint .btn-card { background-color: #d24726 !important; }
+.theme-powerpoint {
+  border-top-color: #d24726 !important;
+}
+.theme-powerpoint i {
+  color: #d24726 !important;
+}
+.theme-powerpoint .btn-card {
+  background-color: #d24726 !important;
+}
 
-.theme-bureau { border-top-color: #f1c40f !important; }
-.theme-bureau i { color: #f1c40f !important; }
-.theme-bureau .btn-card { background-color: #f1c40f !important; }
+.theme-bureau {
+  border-top-color: #f1c40f !important;
+}
+.theme-bureau i {
+  color: #f1c40f !important;
+}
+.theme-bureau .btn-card {
+  background-color: #f1c40f !important;
+}
 
 /* ==========================================
    4. PROGRESSION ET BADGES
    ========================================== */
 .badge-succes {
-    display: none; 
-    background: #27ae60;
-    color: white;
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    position: absolute;
-    top: 15px; right: 15px;
-    z-index: 10;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  display: none;
+  background: #27ae60;
+  color: white;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 10;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .progress-container {
-    max-width: 600px;
-    margin: 20px auto;
-    text-align: center;
+  max-width: 600px;
+  margin: 20px auto;
+  text-align: center;
 }
 
 .progress-bar-bg {
-    background: #e0e0e0;
-    border-radius: 10px;
-    height: 20px;
-    overflow: hidden;
-    margin-bottom: 5px;
+  background: #e0e0e0;
+  border-radius: 10px;
+  height: 20px;
+  overflow: hidden;
+  margin-bottom: 5px;
 }
 
 #progress-fill {
-    background: linear-gradient(90deg, #3498db, #2ecc71);
-    height: 100%;
-    width: 0%;
-    transition: width 0.5s ease;
+  background: linear-gradient(90deg, #3498db, #2ecc71);
+  height: 100%;
+  width: 0%;
+  transition: width 0.5s ease;
 }
 
 /* ==========================================
    5. MODE SOMBRE (GLOBAL)
    ========================================== */
-body.dark-mode { background-color: #1a1a1a; color: white; }
-body.dark-mode .cours-card, 
-body.dark-mode .carte-pointeur, 
-body.dark-mode .instruction-window,
-body.dark-mode .custom-confirm-box { 
-    background-color: #2d2d2d; 
-    border-color: #444;
-    color: white;
+body.dark-mode {
+  background-color: #1a1a1a;
+  color: white;
 }
-body.dark-mode header { background-color: #000; }
-body.dark-mode .consigne-majeure { background: #3d3d3d; color: #eee; }
-body.dark-mode .dropdown-menu { background: #2d2d2d; border-color: #444; }
-body.dark-mode .dropdown-item { color: #eee; }
-body.dark-mode .dropdown-item:hover { background: #3d3d3d; }
-body.dark-mode .custom-confirm-box h2, 
-body.dark-mode .custom-confirm-box p { color: white; }
+body.dark-mode .cours-card,
+body.dark-mode .carte-pointeur,
+body.dark-mode .instruction-window,
+body.dark-mode .custom-confirm-box {
+  background-color: #2d2d2d;
+  border-color: #444;
+  color: white;
+}
+body.dark-mode header {
+  background-color: #000;
+}
+body.dark-mode .consigne-majeure {
+  background: #3d3d3d;
+  color: #eee;
+}
+body.dark-mode .dropdown-menu {
+  background: #2d2d2d;
+  border-color: #444;
+}
+body.dark-mode .dropdown-item {
+  color: #eee;
+}
+body.dark-mode .dropdown-item:hover {
+  background: #3d3d3d;
+}
+body.dark-mode .custom-confirm-box h2,
+body.dark-mode .custom-confirm-box p {
+  color: white;
+}
 
 /* ==========================================
    6. LE BUREAU & LOOK RACCOURCI
    ========================================== */
 #bureau-canvas {
-    width: 100%; max-width: 800px; height: 450px; 
-    background: #2c3e50; margin: 20px auto; 
-    position: relative; border-radius: 10px; 
-    border: 5px solid #34495e; overflow: hidden; 
+  width: 100%;
+  max-width: 800px;
+  height: 450px;
+  background: #2c3e50;
+  margin: 20px auto;
+  position: relative;
+  border-radius: 10px;
+  border: 5px solid #34495e;
+  overflow: hidden;
 }
 
-.icone-bureau { 
-    width: 90px; text-align: center; color: white; 
-    position: absolute; cursor: grab; z-index: 100;
-    display: flex; flex-direction: column; align-items: center;
+.icone-bureau {
+  width: 90px;
+  text-align: center;
+  color: white;
+  position: absolute;
+  cursor: grab;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.icone-bureau i { 
-    font-size: 45px; 
-    display: block; 
-    pointer-events: none; 
-    position: relative;
+.icone-bureau i {
+  font-size: 45px;
+  display: block;
+  pointer-events: none;
+  position: relative;
 }
 
 .icone-bureau i::after {
-    content: "➔"; 
-    position: absolute;
-    bottom: -2px;
-    left: -5px;
-    width: 14px;
-    height: 14px;
-    background: white;
-    border: 1px solid #777;
-    color: #0078d7; 
-    font-size: 9px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 2px;
-    transform: rotate(-45deg);
-    text-shadow: none; 
-    z-index: 20;
+  content: "➔";
+  position: absolute;
+  bottom: -2px;
+  left: -5px;
+  width: 14px;
+  height: 14px;
+  background: white;
+  border: 1px solid #777;
+  color: #0078d7;
+  font-size: 9px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  transform: rotate(-45deg);
+  text-shadow: none;
+  z-index: 20;
 }
 
 /* ==========================================
    7. BOUTONS JS & ENTETES COURS
    ========================================== */
 .btn-cours {
-    background-color: #27ae60; color: white; border: none;
-    padding: 15px 40px; font-size: 1.1rem; font-weight: bold;
-    border-radius: 50px; cursor: pointer; transition: 0.3s;
-    margin: 20px auto; display: block;
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 0.3s;
+  margin: 20px auto;
+  display: block;
 }
 
-.btn-cours:disabled { opacity: 0.5; cursor: not-allowed; background-color: #bdc3c7 !important; }
+.btn-cours:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #bdc3c7 !important;
+}
 
 .entete-cours {
-    background: white; max-width: 800px; margin: 20px auto;
-    padding: 20px; border-radius: 15px; text-align: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-left: 8px solid #3498db;
+  background: white;
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  border-left: 8px solid #3498db;
 }
 
 .consigne-majeure {
-    font-size: 1.1rem; color: #555; background: #f8f9fa;
-    padding: 10px 20px; border-radius: 8px; display: inline-block;
+  font-size: 1.1rem;
+  color: #555;
+  background: #f8f9fa;
+  padding: 10px 20px;
+  border-radius: 8px;
+  display: inline-block;
 }
 
 /* ==========================================
    8. EFFETS SPECIFIQUES PAGE POINTEUR
    ========================================== */
-.carte-pointeur.p-lien:hover { cursor: pointer !important; }
-.carte-pointeur.p-texte:hover { cursor: text !important; }
-.carte-pointeur.p-chargement:hover { cursor: wait !important; }
-.carte-pointeur.p-interdit:hover { cursor: not-allowed !important; }
+.carte-pointeur.p-lien:hover {
+  cursor: pointer !important;
+}
+.carte-pointeur.p-texte:hover {
+  cursor: text !important;
+}
+.carte-pointeur.p-chargement:hover {
+  cursor: wait !important;
+}
+.carte-pointeur.p-interdit:hover {
+  cursor: not-allowed !important;
+}
 
 .carte-pointeur p span {
-    font-size: 0.85rem;
-    color: #7f8c8d;
-    font-weight: normal;
+  font-size: 0.85rem;
+  color: #7f8c8d;
+  font-weight: normal;
 }
 
 /* ==========================================
    9. PIED DE PAGE ET CONTACT
    ========================================== */
 footer {
-    background-color: #2c3e50;
-    color: white;
-    text-align: center;
-    padding: 40px 20px;
-    margin-top: 50px;
-    border-top: 3px solid #3498db;
+  background-color: #2c3e50;
+  color: white;
+  text-align: center;
+  padding: 40px 20px;
+  margin-top: 50px;
+  border-top: 3px solid #3498db;
 }
 
 .contact-card {
-    background: white; 
-    padding: 30px; 
-    border-radius: 15px; 
-    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
 }
 
 /* ==========================================
    10. ADAPTATION MOBILE
    ========================================== */
 @media (max-width: 768px) {
-    .cours-container { grid-template-columns: 1fr; padding: 10px; }
-    header nav ul { flex-direction: column; gap: 15px; padding: 10px 0; }
+  .cours-container {
+    grid-template-columns: 1fr;
+    padding: 10px;
+  }
+  header nav ul {
+    flex-direction: column;
+    gap: 15px;
+    padding: 10px 0;
+  }
 }
 
 /* ==========================================
    11. EXPLORATEUR (NOUVEAU MENU)
    ========================================== */
 .dropdown-menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: white;
-    border: 1px solid #d1d1d1;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-    z-index: 9999;
-    min-width: 180px;
-    border-radius: 4px;
-    padding: 5px 0;
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #d1d1d1;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  min-width: 180px;
+  border-radius: 4px;
+  padding: 5px 0;
 }
 
 .dropdown-item {
-    padding: 10px 15px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 13px;
-    cursor: pointer;
-    color: #333;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  cursor: pointer;
+  color: #333;
 }
 
-.dropdown-item:hover { background: #f0f0f0; }
-.dropdown-item i { color: #0078d4; width: 16px; }
+.dropdown-item:hover {
+  background: #f0f0f0;
+}
+.dropdown-item i {
+  color: #0078d4;
+  width: 16px;
+}
 
 /* ==========================================
    12. FENÊTRE DE CONFIRMATION MODALE
    ========================================== */
 .custom-confirm-overlay {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    backdrop-filter: blur(3px);
-    opacity: 0;
-    animation: fadeIn 0.3s forwards;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  animation: fadeIn 0.3s forwards;
 }
 
-@keyframes fadeIn { to { opacity: 1; } }
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
 
 .custom-confirm-box {
-    background: white;
-    padding: 30px;
-    border-radius: 15px;
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    animation: popIn 0.3s ease;
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  animation: popIn 0.3s ease;
 }
 
 @keyframes popIn {
-    from { transform: scale(0.9); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .custom-confirm-box h2 {
-    margin-top: 0;
-    color: #2c3e50;
-    font-size: 1.5rem;
+  margin-top: 0;
+  color: #2c3e50;
+  font-size: 1.5rem;
 }
 
 .custom-confirm-box p {
-    color: #7f8c8d;
-    margin-bottom: 25px;
-    line-height: 1.5;
+  color: #7f8c8d;
+  margin-bottom: 25px;
+  line-height: 1.5;
 }
 
 .confirm-btns {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
 }
 
 .btn-confirm {
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.2s;
-    font-size: 1rem;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+  font-size: 1rem;
 }
 
-.btn-yes { background-color: #2ecc71; color: white; }
-.btn-yes:hover { background-color: #27ae60; }
+.btn-yes {
+  background-color: #2ecc71;
+  color: white;
+}
+.btn-yes:hover {
+  background-color: #27ae60;
+}
 
-.btn-no { background-color: #e74c3c; color: white; }
-.btn-no:hover { background-color: #c0392b; }
+.btn-no {
+  background-color: #e74c3c;
+  color: white;
+}
+.btn-no:hover {
+  background-color: #c0392b;
+}
+
+.icone-bureau,
+.mail-row,
+.btn-card,
+.btn-cours {
+  -webkit-user-select: none;
+  user-select: none;
+}

@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mission : Lire ses e-mails</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      /* Fenêtre Gmail */
+      #window-gmail {
+        display: none;
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        right: 20px;
+        bottom: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        z-index: 500;
+        flex-direction: column;
+        border: 1px solid #ccc;
+      }
+
+      .gmail-header {
+        background: #f6f8fc;
+        padding: 12px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .gmail-content {
+        flex: 1;
+        overflow-y: auto;
+      }
+
+      /* Style de la ligne du mail */
+      .mail-row {
+        border-bottom: 1px solid #eee;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+
+      .mail-header-line {
+        display: flex;
+        padding: 15px 20px;
+        align-items: center;
+        background-color: #f2f6fc;
+        font-weight: bold;
+        color: #333;
+      }
+
+      /* État Lu */
+      .mail-row.is-read .mail-header-line {
+        background-color: white;
+        font-weight: normal;
+        color: #5f6368;
+      }
+
+      .mail-icon-status {
+        margin-right: 15px;
+        width: 20px;
+      }
+      .mail-sender {
+        width: 150px;
+      }
+      .mail-subject {
+        flex: 1;
+      }
+
+      /* Badge d'état à droite */
+      .status-badge {
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+      }
+      .unread-tag {
+        background: #ffeded;
+        color: #d93025;
+      }
+      .read-tag {
+        background: #e6f4ea;
+        color: #1e8e3e;
+        display: none;
+      }
+
+      .mail-row.is-read .unread-tag {
+        display: none;
+      }
+      .mail-row.is-read .read-tag {
+        display: inline-block;
+      }
+
+      /* Corps du message (caché par défaut) */
+      .mail-body {
+        display: none;
+        padding: 15px 55px;
+        background-color: #fafafa;
+        border-top: 1px dashed #ddd;
+        font-style: italic;
+        color: #444;
+        line-height: 1.4;
+      }
+
+      .mail-row.open .mail-body {
+        display: block;
+      }
+    </style>
+  </head>
+  <body class="page-cours">
+    <header>
+      <nav>
+        <ul>
+          <li>
+            <a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a>
+          </li>
+          <li>
+            <button
+              onclick="toggleModeSombre()"
+              class="btn-dark-toggle"
+              id="theme-icon"
+            >
+              🌙 Mode Sombre
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="contenu-cours">
+      <section class="entete-cours" style="border-left-color: #ea4335">
+        <h1><i class="fas fa-envelope"></i> Mission : Lecture du Courrier</h1>
+        <p id="consigne-mail" class="consigne-majeure">
+          Double-cliquez sur Gmail, puis
+          <strong>cliquez sur chaque mail</strong> pour lire le message.
+        </p>
+      </section>
+
+      <div id="bureau-canvas">
+        <div
+          class="icone-bureau"
+          ondblclick="ouvrirGmail()"
+          style="top: 20px; left: 20px"
+        >
+          <i
+            class="fas fa-envelope-square"
+            style="color: #ea4335; font-size: 55px"
+          ></i>
+          <span>Gmail</span>
+        </div>
+
+        <div id="window-gmail">
+          <div class="gmail-header">
+            <span style="color: #ea4335; font-weight: bold"
+              ><i class="fas fa-envelope"></i> Boîte de réception (<span
+                id="count-non-lu"
+                >3</span
+              >)</span
+            >
+            <button
+              onclick="fermerGmail()"
+              style="
+                cursor: pointer;
+                border: 1px solid #ccc;
+                background: #fff;
+                padding: 2px 10px;
+                border-radius: 4px;
+              "
+            >
+              Fermer [X]
+            </button>
+          </div>
+
+          <div class="gmail-content">
+            <div class="mail-row" onclick="toggleMail(this)">
+              <div class="mail-header-line">
+                <div class="mail-icon-status">
+                  <i class="fas fa-envelope"></i>
+                </div>
+                <div class="mail-sender">Impôts</div>
+                <div class="mail-subject">Votre avis d'imposition</div>
+                <div class="status-badge unread-tag">Non lu</div>
+                <div class="status-badge read-tag">Lu</div>
+              </div>
+              <div class="mail-body">
+                "Bonjour, votre déclaration a bien été traitée. Vous pouvez la
+                consulter dans votre espace personnel."
+              </div>
+            </div>
+
+            <div class="mail-row" onclick="toggleMail(this)">
+              <div class="mail-header-line">
+                <div class="mail-icon-status">
+                  <i class="fas fa-envelope"></i>
+                </div>
+                <div class="mail-sender">Marie</div>
+                <div class="mail-subject">Dîner de dimanche</div>
+                <div class="status-badge unread-tag">Non lu</div>
+                <div class="status-badge read-tag">Lu</div>
+              </div>
+              <div class="mail-body">
+                "Salut ! On se voit dimanche vers 19h ? J'apporte le dessert.
+                Bisous !"
+              </div>
+            </div>
+
+            <div class="mail-row" onclick="toggleMail(this)">
+              <div class="mail-header-line">
+                <div class="mail-icon-status">
+                  <i class="fas fa-envelope"></i>
+                </div>
+                <div class="mail-sender">Boulanger</div>
+                <div class="mail-subject">Commande prête</div>
+                <div class="status-badge unread-tag">Non lu</div>
+                <div class="status-badge read-tag">Lu</div>
+              </div>
+              <div class="mail-body">
+                "Votre commande n°452 est prête à être retirée au magasin. À
+                bientôt !"
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 30px; margin-bottom: 50px">
+        <button
+          id="btn-valider-mail"
+          class="btn-cours"
+          onclick="validerCours('mail')"
+          disabled
+        >
+          <i class="fas fa-check-circle"></i> Mission accomplie !
+        </button>
+      </div>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+      let mailsRestants = 3;
+
+      function ouvrirGmail() {
+        document.getElementById("window-gmail").style.display = "flex";
+      }
+
+      function fermerGmail() {
+        document.getElementById("window-gmail").style.display = "none";
+      }
+
+      function toggleMail(element) {
+        // On alterne l'ouverture/fermeture du corps du mail
+        element.classList.toggle("open");
+
+        // Si c'est la première fois qu'on l'ouvre (il n'est pas encore marqué comme lu)
+        if (!element.classList.contains("is-read")) {
+          element.classList.add("is-read");
+          // Change l'icône de l'enveloppe
+          element.querySelector(".mail-icon-status i").className =
+            "fas fa-envelope-open";
+
+          mailsRestants--;
+          document.getElementById("count-non-lu").innerText = mailsRestants;
+
+          if (mailsRestants === 0) {
+            const btn = document.getElementById("btn-valider-mail");
+            btn.disabled = false;
+            btn.style.backgroundColor = "#27ae60";
+            document.getElementById("consigne-mail").innerHTML =
+              "🎉 Excellent ! Vous avez lu tous vos messages.";
+            document.getElementById("consigne-mail").style.color = "#27ae60";
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
