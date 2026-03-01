@@ -99,7 +99,9 @@
         leaveDrop(ev);
         const data = ev.dataTransfer.getData("text");
         if (data === "mon-cv") {
-            alert("Attention ! Ne jetez pas votre CV, rangez-le plutôt dans Mes Documents.");
+            // alert("Attention ! Ne jetez pas votre CV, rangez-le plutôt dans Mes Documents.");
+            // Utilise la fonction de ton script.js :
+            afficherMessage("Attention !", "Ne jetez pas votre CV, rangez-le plutôt dans Mes Documents.");
         } else {
             document.getElementById(data).style.display = "none";
             objetsRestants--;
@@ -131,4 +133,5 @@
     }
 </script>
 </body>
+
 </html>
