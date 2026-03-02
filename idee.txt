@@ -17,6 +17,7 @@ Le menu Démarrer
 Introduction générale à Windows
 L’explorateur Windows, l’arborescence des répertoires, le rangement etc…
 Expliquer les extensions de fichiers
+Expliquer fichiers compressés
 
 3 – Internet :
 Les navigateurs (edge, chrome, firefox etc….)
