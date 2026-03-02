@@ -16,6 +16,7 @@ Les icônes et raccourcis
 Le menu Démarrer
 Introduction générale à Windows
 L’explorateur Windows, l’arborescence des répertoires, le rangement etc…
+Expliquer les extensions de fichiers
 
 3 – Internet :
 Les navigateurs (edge, chrome, firefox etc….)
