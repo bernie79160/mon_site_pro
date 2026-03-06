@@ -301,7 +301,11 @@
 
         // --- GESTION MODALE JS ---
         function ouvrirModale() {
-            if (!dossierActuel) { afficherMessage("attention", "Merci de relire la question !"); return; }
+            // 1. On affiche le message d'erreur
+            if (!dossierActuel) { afficherMessage("attention", "Merci de relire la question !");
+            // 2. ON AJOUTE CETTE LIGNE : On referme le menu immédiatement
+            document.getElementById('menu-nouveau').style.display = 'none';
+            return; }
             document.getElementById('menu-nouveau').style.display = 'none';
             document.getElementById('modal-nouveau').style.display = 'flex';
             document.getElementById('modal-input').focus();
@@ -444,6 +448,7 @@
 </body>
 
 </html>
+
 
 
 
