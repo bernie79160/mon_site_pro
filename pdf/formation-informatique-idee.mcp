@@ -1,0 +1,394 @@
+```yaml
+mcp_version: "1.0"
+
+project:
+  name: Plateforme Apprendre l'Informatique
+  type: plateforme pédagogique intranet
+  description: >
+    Plateforme web pédagogique destinée aux débutants, seniors et personnes
+    peu à l'aise avec l'informatique. L'objectif est d'apprendre les bases
+    de l'utilisation d'un ordinateur de manière simple et interactive.
+
+  objectives:
+    - Apprendre les bases de Windows
+    - Comprendre Internet et la navigation
+    - Apprendre à utiliser une messagerie email
+    - Découvrir Microsoft Word
+    - Proposer des exercices interactifs simples
+    - Permettre un suivi pédagogique
+
+  target_users:
+    - debutants
+    - seniors
+    - adultes_en_reconversion
+    - associations
+    - mediathèques
+    - centres_de_formation
+
+  pedagogical_constraints:
+    interface:
+      font_size: large
+      colors: soft
+      layout: centered
+      readability: high
+      complexity: low
+
+    design_rules:
+      - textes courts
+      - boutons larges
+      - icones explicites
+      - navigation simple
+      - pas de surcharge visuelle
+      - animations douces
+
+technology_stack:
+
+  frontend:
+    languages:
+      - HTML
+      - CSS
+      - JavaScript
+
+    architecture:
+      type: multi_page_application
+
+    principles:
+      - simplicité
+      - accessibilité
+      - rapidité
+      - faible javascript
+
+    ui_patterns:
+      - grandes cartes
+      - boutons pédagogiques
+      - illustrations
+      - exercices interactifs
+
+  backend:
+    language: Java
+    framework: Spring Boot
+    security: Spring Security
+    api_style: REST
+
+  database:
+    type: PostgreSQL
+
+  infrastructure:
+    containerization: Docker
+    reverse_proxy: Nginx
+    deployment: intranet_server
+
+architecture:
+
+  frontend_structure:
+
+    root:
+      - index.html
+      - login.html
+      - dashboard.html
+
+    modules:
+      - windows.html
+      - internet.html
+      - email.html
+      - word.html
+
+    folders:
+
+      css:
+        - style.css
+        - layout.css
+        - components.css
+
+      js:
+        - app.js
+        - exercises.js
+        - navigation.js
+
+      images:
+        - icons
+        - illustrations
+
+      components:
+        - lesson-card
+        - exercise-box
+        - validation-button
+
+  backend_structure:
+
+    src/main/java/com/formation
+
+      config:
+        - security_config
+        - cors_config
+
+      controller:
+        - auth_controller
+        - module_controller
+        - lesson_controller
+        - exercise_controller
+        - progress_controller
+
+      service:
+        - auth_service
+        - lesson_service
+        - progress_service
+
+      repository:
+        - user_repository
+        - lesson_repository
+        - exercise_repository
+
+      model:
+        - user
+        - module
+        - lesson
+        - exercise
+        - progress
+
+      dto:
+        - login_request
+        - lesson_response
+
+  infrastructure:
+
+    docker:
+      - backend
+      - postgres
+      - nginx
+
+    network:
+      access: intranet
+
+database_schema:
+
+  users:
+    fields:
+      - id
+      - email
+      - password
+      - role
+      - created_at
+
+  modules:
+    fields:
+      - id
+      - title
+      - description
+      - order
+
+  lessons:
+    fields:
+      - id
+      - module_id
+      - title
+      - content
+      - order
+
+  exercises:
+    fields:
+      - id
+      - lesson_id
+      - type
+      - instructions
+
+  progress:
+    fields:
+      - id
+      - user_id
+      - lesson_id
+      - completed
+      - completion_date
+
+learning_modules:
+
+  windows:
+
+    lessons:
+      - introduction_windows
+      - souris
+      - barres_defilement
+      - bureau_windows
+      - icones_raccourcis
+      - menu_demarrer
+      - explorateur
+      - organisation_fichiers
+      - extensions_fichiers
+      - fichiers_compresses
+
+    exercises:
+      - clic_simple
+      - double_clic
+      - clic_droit
+      - molette
+      - glisser_deposer
+
+  internet:
+
+    lessons:
+      - navigateurs
+      - comprendre_page_web
+      - liens_et_boutons
+      - favoris
+      - historique
+      - securite
+      - mots_de_passe
+
+  email:
+
+    lessons:
+      - creation_adresse
+      - envoyer_mail
+      - repondre_mail
+      - piece_jointe
+      - transfert_mail
+
+  word:
+
+    lessons:
+      - presentation_word
+      - ruban_et_onglets
+      - mise_en_forme
+      - premier_document
+
+features:
+
+  authentication:
+    - login
+    - logout
+    - password_hashing
+
+  roles:
+    - admin
+    - formateur
+    - apprenant
+
+  tracking:
+    - progression_utilisateur
+    - modules_completes
+    - statistiques
+
+  interface:
+    - dashboard
+    - navigation_modules
+    - affichage_progression
+
+future_features:
+
+  simulations:
+    - bureau_windows_simule
+    - boite_mail_simulee
+    - drag_and_drop_fichiers
+
+  pedagogy:
+    - badges
+    - validation_exercices
+    - certification_fin_module
+
+ai_prompts_library:
+
+  generate_backend:
+    description: >
+      Générer un backend Spring Boot complet basé sur la structure MCP.
+
+    prompt: |
+      Tu es un architecte logiciel senior.
+      Génère un backend Spring Boot pour cette plateforme pédagogique.
+
+      Fonctionnalités :
+      - authentification
+      - gestion modules
+      - gestion leçons
+      - gestion exercices
+      - suivi progression utilisateur
+
+      Utiliser :
+      - Spring Boot
+      - Spring Security
+      - PostgreSQL
+      - API REST
+
+  generate_frontend:
+    description: >
+      Générer les pages HTML pédagogiques.
+
+    prompt: |
+      Génère une page HTML pédagogique simple pour une plateforme
+      d'apprentissage informatique destinée aux seniors.
+
+      Contraintes :
+      - gros boutons
+      - texte lisible
+      - design clair
+      - exercice interactif simple
+
+  generate_exercise:
+    description: >
+      Générer un exercice interactif JavaScript.
+
+    prompt: |
+      Génère un exercice interactif en JavaScript permettant
+      d'apprendre à utiliser la souris :
+
+      - clic
+      - double clic
+      - clic droit
+      - glisser déposer
+
+  generate_database:
+    description: >
+      Générer le schéma PostgreSQL.
+
+    prompt: |
+      Génère un schéma PostgreSQL pour une plateforme
+      de formation avec les tables :
+
+      users
+      modules
+      lessons
+      exercises
+      progress
+
+  generate_docker:
+    description: >
+      Générer le déploiement.
+
+    prompt: |
+      Génère un docker-compose pour une plateforme comprenant :
+
+      - backend Spring Boot
+      - PostgreSQL
+      - Nginx
+
+      avec réseau interne intranet.
+
+development_rules:
+
+  code_quality:
+    - code simple
+    - commentaires pédagogiques
+    - structure claire
+
+  frontend_rules:
+    - pas de framework lourd
+    - javascript simple
+    - accessibilité
+
+  backend_rules:
+    - architecture propre
+    - séparation controller/service/repository
+
+deployment:
+
+  environment: intranet
+
+  url_example:
+    - http://formation.local
+    - http://intranet-formation
+
+  security:
+    - authentification obligatoire
+    - mots de passe chiffrés
+    - accès rôles
+
+```
