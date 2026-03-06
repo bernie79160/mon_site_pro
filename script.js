@@ -2,7 +2,7 @@
 // 1. SYSTÈME DE PROGRESSION ET THÈME
 // ==========================================
 
-const ordreCours = ['pointeur', 'informatique', 'windows', 'explorateur', 'bureau', 'clavier', 'word', 'excel', 'powerpoint'];
+const ordreCours = ['pointeur', 'informatique', 'windows', 'explorateur', 'bureau', 'clavier', 'word', 'excel', 'powerpoint', 'mail'];
 
 window.addEventListener('DOMContentLoaded', () => {
     chargerTheme();
@@ -155,4 +155,5 @@ function drop(ev, typeCible) {
         // Utilisation de notre nouvelle fonction au lieu de alert()
         afficherMessage("Oups !", "Ce n'est pas le bon dossier !");
     }
+
 }
