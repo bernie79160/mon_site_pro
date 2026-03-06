@@ -412,7 +412,7 @@
                     txt.innerHTML = `Bravo ! <strong>Double-cliquez</strong> sur <strong>${obj.nom}</strong> au centre pour entrer dedans.`;
                 } else {
                     let manquants = obj.enfants.filter(e => !obj.faitsEnfants.includes(e));
-                    txt.innerHTML = `Super ! Créez maintenant : <strong>${manquants.join(' et ')}</strong>`;
+                    txt.innerHTML = `Super ! Créez maintenant 2 Nouveaux dossiers: <strong>${manquants.join(' et ')}</strong>`;
                 }
             } else {
                 txt.innerHTML = `Dossier ${dossierActuel} terminé ! Sélectionnez un autre dossier à gauche.`;
@@ -444,4 +444,5 @@
 </body>
 
 </html>
+
 
