@@ -301,7 +301,7 @@
 
         // --- GESTION MODALE JS ---
         function ouvrirModale() {
-            if (!dossierActuel) { afficherMessage("Sélectionnez d'abord un dossier à gauche !"); return; }
+            if (!dossierActuel) { afficherMessage("attention", "Merci de relire la question !"); return; }
             document.getElementById('menu-nouveau').style.display = 'none';
             document.getElementById('modal-nouveau').style.display = 'flex';
             document.getElementById('modal-input').focus();
@@ -444,6 +444,7 @@
 </body>
 
 </html>
+
 
 
 
