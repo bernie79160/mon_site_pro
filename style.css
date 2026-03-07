@@ -155,7 +155,7 @@ header nav ul li a:hover {
 }
 
 /* --- GESTION DES COULEURS PAR THÈME --- */
-/* On applique la couleur à la bordure, à l'icône ET au bouton */
+/* On applique la couleur de la bordure, à l'icône et au bouton */
 
 .theme-internet {
   border-top-color: #3498db !important;

@@ -13,6 +13,7 @@ const ordreCours = [
   "pointeur",
   "informatique",
   "windows",
+  "barredefil",
   "explorateur",
   "bureau",
   "clavier",

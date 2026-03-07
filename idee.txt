@@ -7,10 +7,12 @@ Création du site analyse des besoins :
 
 Objectif :
 
+Créer un espace formateur : fait par "Steven"
+
 Créer un site web professionnel et pédagogique pour apprendre :
 1 – Windows :
-La souris (clic gauche, double clic, clic droit, molette)
-Les barres de défilement
+La souris (clic gauche, double clic, clic droit)
+Les barres de défilement : fait par "Bernie"
 Le bureau Windows
 Les icônes et raccourcis
 Le menu Démarrer

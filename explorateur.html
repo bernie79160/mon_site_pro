@@ -16,7 +16,7 @@
             border-radius: 5px;
             background: white;
             overflow: hidden;
-            position: relative; /* Pour positionner la modale par rapport à l'explorateur */
+            position: relative;
         }
 
         .explorer-main {
@@ -31,6 +31,49 @@
             border-right: 1px solid #d1d1d1;
             overflow-y: auto;
             padding: 10px 0;
+        }
+
+        /* --- CORRECTION MODE SOMBRE --- */
+        body.dark-mode .sidebar {
+            background: #2d2d2d;
+            border-right-color: #444;
+        }
+        body.dark-mode .tree-item {
+            color: #eee;
+        }
+        body.dark-mode .tree-item:hover {
+            background: #3d3d3d;
+        }
+        body.dark-mode .tree-item.active {
+            background: #004a80;
+            color: white;
+        }
+        body.dark-mode .win-explorer {
+            background: #1e1e1e;
+            border-color: #444;
+        }
+        body.dark-mode .explorer-toolbar {
+            background: #333;
+            border-bottom-color: #444;
+            color: white;
+        }
+        body.dark-mode .content-area {
+            background: #1e1e1e;
+        }
+        body.dark-mode .address-bar {
+            background: #2d2d2d;
+            border-color: #444;
+            color: white;
+        }
+
+        /* NOUVELLE CORRECTION : Texte de mission et icône en mode sombre */
+        body.dark-mode .entete-cours h2, 
+        body.dark-mode .entete-cours h2 i {
+            color: white !important;
+        }
+        body.dark-mode .entete-cours {
+            background-color: #2d2d2d !important;
+            border-color: #444 !important;
         }
 
         .tree-item {
@@ -103,22 +146,29 @@
             box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
             z-index: 100;
         }
+        
+        body.dark-mode .dropdown-menu {
+            background: #2d2d2d;
+            border-color: #444;
+        }
 
         .dropdown-item {
             padding: 8px 15px;
             cursor: pointer;
         }
         .dropdown-item:hover { background: #f0f0f0; }
+        body.dark-mode .dropdown-item:hover { background: #3d3d3d; }
 
         .folder-item {
             display: inline-block;
             cursor: pointer;
             text-align: center;
             padding: 10px;
-            width: 80px;
+            width: 100px;
             margin: 5px;
         }
         .folder-item:hover { background: #f0f0f0; border-radius: 4px; }
+        body.dark-mode .folder-item:hover { background: #333; }
         
         .address-bar {
             background: white;
@@ -129,9 +179,8 @@
             min-width: 200px;
         }
 
-        /* --- STYLES FENÊTRE MODALE --- */
         .modal-overlay {
-            display: none; /* Caché par défaut */
+            display: none;
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
@@ -149,6 +198,7 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             text-align: center;
         }
+        body.dark-mode .modal-box { background: #2d2d2d; color: white; }
 
         .modal-box h3 { margin-top: 0; }
 
@@ -175,13 +225,22 @@
 <body class="page-cours" onload="demarrerChrono()">
 
     <header>
-        <nav><ul><li><a href="index.html"><i class="fas fa-arrow-left"></i> Quitter le cours</a></li></ul></nav>
+        <nav>
+            <ul>
+                <li><a href="index.html"><i class="fas fa-arrow-left"></i> Quitter le cours</a></li>
+                <li>
+                    <button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">
+                        🌙 Mode Sombre
+                    </button>
+                </li>
+            </ul>
+        </nav>
     </header>
 
     <main class="contenu-cours">
-        <div id="box-instruction" class="entete-cours" style="background: white; padding: 15px; margin-bottom: 15px; border-radius: 5px;">
+        <div id="box-instruction" class="entete-cours" style="padding: 15px; margin-bottom: 15px; border-radius: 5px;">
             <h2 id="titre-mission"><i class="fas fa-tasks"></i> Mission : L'Arborescence</h2>
-            <p id="texte-instruction" class="consigne-majeure">Cliquez sur le dossier Document à gauche pour commencer l'organisation.</p>
+            <p id="texte-instruction" class="consigne-majeure">Cliquez sur le dossier Documents à gauche pour commencer l'organisation.</p>
             <button id="btn-valider-exercice" class="btn-card" style="display:none; background-color: #2ecc71;" onclick="validerCoursExplorateur()">Terminer l'exercice</button>
         </div>
 
@@ -298,13 +357,16 @@
             majConsigneLocal();
         }
 
-        // --- GESTION MODALE JS ---
         function ouvrirModale() {
-            // 1. On affiche le message d'erreur
-            if (!dossierActuel) { afficherMessage("attention", "Merci de relire la question !");
-            // 2. ON AJOUTE CETTE LIGNE : On referme le menu immédiatement
-            document.getElementById('menu-nouveau').style.display = 'none';
-            return; }
+            if (!dossierActuel) { 
+                if (typeof afficherMessage === "function") {
+                    afficherMessage("Attention", "Sélectionnez d'abord un dossier à gauche !");
+                } else {
+                    alert("Sélectionnez d'abord un dossier à gauche !");
+                }
+                document.getElementById('menu-nouveau').style.display = 'none';
+                return; 
+            }
             document.getElementById('menu-nouveau').style.display = 'none';
             document.getElementById('modal-nouveau').style.display = 'flex';
             document.getElementById('modal-input').focus();
@@ -324,7 +386,6 @@
             majInterface();
             fermerModale();
         }
-        // -------------------------
 
         function verifierObjectifDossier(nom) {
             let obj = objectifs[dossierActuel];
@@ -333,21 +394,13 @@
             if (!estDansSousDossier) {
                 if (nomTape === obj.nom) {
                     obj.fait = true;
-                    // alert("Parfait ! Dossier racine créé.");
-                } else {
-                    // alert(`Nom incorrect. Attendu : ${obj.nom}`);
                 }
             } else {
                 let enfantTrouve = obj.enfants.find(e => e.toUpperCase() === nomTape);
                 if (enfantTrouve) {
                     if (!obj.faitsEnfants.includes(enfantTrouve)) {
                         obj.faitsEnfants.push(enfantTrouve);
-                        // alert("Succès ! Sous-dossier créé.");
-                    } else {
-                        // alert("Ce dossier existe déjà.");
                     }
-                } else {
-                    // alert(`Nom incorrect. Attendu : ${obj.enfants.join(' ou ')}`);
                 }
             }
         }
@@ -415,7 +468,7 @@
                     txt.innerHTML = `Bravo ! <strong>Double-cliquez</strong> sur <strong>${obj.nom}</strong> au centre pour entrer dedans.`;
                 } else {
                     let manquants = obj.enfants.filter(e => !obj.faitsEnfants.includes(e));
-                    txt.innerHTML = `Super ! Créez maintenant 2 Nouveaux dossiers: <strong>${manquants.join(' et ')}</strong>`;
+                    txt.innerHTML = `Super ! Créez maintenant : <strong>${manquants.join(' et ')}</strong>`;
                 }
             } else {
                 txt.innerHTML = `Dossier ${dossierActuel} terminé ! Sélectionnez un autre dossier à gauche.`;
@@ -435,11 +488,8 @@
             });
             rafraichirArborescence();
             if(dossierActuel) majInterface();
-            
             document.getElementById('texte-instruction').innerHTML = "🎉 Félicitations Bernard ! L'arborescence est complète (Corrigé).";
             document.getElementById('btn-valider-exercice').style.display = "block";
-            
-            // alert("Le corrigé a été appliqué ! Tous les dossiers ont été créés.");
         }
 
         majInterface();

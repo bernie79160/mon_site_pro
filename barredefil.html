@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manipuler les barres de défilement</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .fenetre-windows {
+            width: 100%;
+            max-width: 800px;
+            height: 450px;
+            background: #fff;
+            margin: 20px auto;
+            border: 3px solid #0078d7;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .barre-titre {
+            background: linear-gradient(90deg, #0078d7, #00bcf2);
+            padding: 8px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .zone-defilement {
+            flex: 1;
+            overflow: scroll; 
+            background: #f0f0f0;
+        }
+
+        .contenu-geant {
+            width: 1500px; /* Réduit de 2000 à 1500 pour trouver plus vite */
+            height: 1200px; 
+            padding: 40px;
+            background-image: 
+                linear-gradient(45deg, #e5e5f7 25%, transparent 25%), 
+                linear-gradient(-45deg, #e5e5f7 25%, transparent 25%), 
+                linear-gradient(45deg, transparent 75%, #e5e5f7 75%), 
+                linear-gradient(-45deg, transparent 75%, #e5e5f7 75%);
+            background-size: 100px 100px;
+            position: relative; /* Indispensable pour placer le bouton par rapport à ce contenu */
+        }
+
+        /* STYLE DES BARRES AVEC FLÈCHES */
+        .zone-defilement::-webkit-scrollbar { width: 20px; height: 20px; }
+        .zone-defilement::-webkit-scrollbar-track { background: #f1f1f1; }
+        .zone-defilement::-webkit-scrollbar-thumb { background: #c1c1c1; border: 2px solid #f1f1f1; }
+        
+        .zone-defilement::-webkit-scrollbar-button:single-button {
+            background-color: #f1f1f1;
+            display: block;
+            background-size: 10px;
+            background-repeat: no-repeat;
+            background-position: center;
+            border: 1px solid #ccc;
+        }
+
+        .zone-defilement::-webkit-scrollbar-button:single-button:vertical:decrement {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='%23555'><polygon points='50,20 10,80 90,80'/></svg>");
+        }
+        .zone-defilement::-webkit-scrollbar-button:single-button:vertical:increment {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='%23555'><polygon points='50,80 10,20 90,20'/></svg>");
+        }
+        .zone-defilement::-webkit-scrollbar-button:single-button:horizontal:decrement {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='%23555'><polygon points='20,50 80,10 80,90'/></svg>");
+        }
+        .zone-defilement::-webkit-scrollbar-button:single-button:horizontal:increment {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='%23555'><polygon points='80,50 20,10 20,90'/></svg>");
+        }
+
+        /* LE BOUTON CACHÉ */
+        .tresor-cache {
+            position: absolute;
+            top: 1000px; 
+            left: 1200px; 
+            background: white;
+            padding: 30px;
+            border: 4px solid #2ecc71;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body class="page-cours">
+
+<header>
+    <nav>
+        <ul>
+            <li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a></li>
+            <li><button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">🌙 Mode Sombre</button></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="contenu-cours">
+    <section class="entete-cours">
+        <h1><i class="fas fa-arrows-alt"></i> Apprivoiser les ascenseurs</h1>
+        <p class="consigne-majeure">
+            Utilisez les <strong>flèches</strong> et les <strong>barres grises</strong> pour explorer ce grand document.
+        </p>
+    </section>
+
+    <div class="fenetre-windows">
+        <div class="barre-titre">
+            <span><i class="fas fa-search"></i> Exercice de vue panoramique</span>
+            <div><i class="fas fa-times"></i></div>
+        </div>
+
+        <div class="zone-defilement">
+            <div class="contenu-geant">
+                <div style="background: white; padding: 20px; border-radius: 8px; width: 400px; border-left: 10px solid #f1c40f;">
+                    <h3><i class="fas fa-info-circle"></i> Mode d'emploi</h3>
+                    <p>Faites glisser la barre du bas vers la <strong>droite</strong> et la barre de droite vers le <strong>bas</strong>.</p>
+                    <p>Le bouton de validation vous attend tout au bout !</p>
+                </div>
+
+                <div class="tresor-cache">
+                    <h3 style="color: #2ecc71;">🎉 Bravo Bernard !</h3>
+                    <p>Vous avez réussi à manipuler les ascenseurs.</p>
+                    <button class="btn-card" onclick="validerCours('barredefil')" style="background-color: #2ecc71; color: white; width: auto; padding: 15px 30px;">
+                        Valider l'exercice et revenir
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
