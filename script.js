@@ -30,13 +30,13 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-//function chargerTheme() {
-//  if (localStorage.getItem("theme") === "dark") {
-//    document.body.classList.add("dark-mode");
-//    const btn = document.getElementById("theme-icon");
-//    if (btn) btn.textContent = "☀️ Mode Clair";
-//  }
-//}
+function chargerTheme() {
+  if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark-mode");
+    const btn = document.getElementById("theme-icon");
+    if (btn) btn.textContent = "☀️ Mode Clair";
+  }
+}
 
 function toggleModeSombre() {
   const isSombre = document.body.classList.toggle("dark-mode");
@@ -499,3 +499,4 @@ function effacerDonnees() {
         ouvrirDashboard(); // Rafraîchit l'affichage (affichera "Aucun élève")
     }
 }
+
