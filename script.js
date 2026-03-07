@@ -11,6 +11,7 @@ function demarrerChrono() {
 
 const ordreCours = [
   "pointeur",
+  "barredefil",
   "informatique",
   "windows",
   "barredefil",
@@ -508,3 +509,4 @@ function effacerDonnees() {
         ouvrirDashboard(); // Rafraîchit l'affichage (affichera "Aucun élève")
     }
 }
+
