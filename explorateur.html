@@ -172,7 +172,7 @@
         .btn-cancel { background: #ccc; color: #333; }
     </style>
 </head>
-<body class="page-cours">
+<body class="page-cours" onload="demarrerChrono()">
 
     <header>
         <nav><ul><li><a href="index.html"><i class="fas fa-arrow-left"></i> Quitter le cours</a></li></ul></nav>
@@ -249,7 +249,6 @@
         </div>
     </main>
 
-    <script src="script.js"></script>
     <script>
         let dossierActuel = ""; 
         let estDansSousDossier = false;
@@ -302,7 +301,7 @@
         // --- GESTION MODALE JS ---
         function ouvrirModale() {
             // 1. On affiche le message d'erreur
-            if (!dossierActuel) { afficherMessage("attention", "Merci de vérifier à nouveau la question !");
+            if (!dossierActuel) { afficherMessage("attention", "Merci de relire la question !");
             // 2. ON AJOUTE CETTE LIGNE : On referme le menu immédiatement
             document.getElementById('menu-nouveau').style.display = 'none';
             return; }
@@ -445,12 +444,7 @@
 
         majInterface();
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="script.js"></script>
 </body>
-
 </html>
-
-
-
-
-
-

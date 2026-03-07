@@ -292,6 +292,12 @@ body.dark-mode .custom-confirm-box p {
   color: white;
 }
 
+body.dark-mode .entete-cours {
+  background-color: #3d3d3d;
+}
+body.dark-mode .consigne-majeure {
+  background-color: #5a5a5a;
+}
 /* ==========================================
    6. LE BUREAU & LOOK RACCOURCI
    ========================================== */

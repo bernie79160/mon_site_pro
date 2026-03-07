@@ -1,152 +1,457 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mon Site Pro - Accueil</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/png" href="favicon.png">
-</head>
-<body>
-
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Open+Sans:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+  </head>
+  <body>
     <header>
-        <nav>
-            <ul>
-                <li><a href="#accueil"><i class="fas fa-home"></i> Accueil</a></li>
-                <li><a href="#services"><i class="fas fa-graduation-cap"></i> Cours</a></li>
-                <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
-                <li>
-                    <button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">
-                        🌙 Mode Sombre
-                    </button>
-                </li>
-            </ul>
-        </nav>
-    </header>
-
-    <main id="accueil">
-        <div style="text-align: center; padding: 20px 0;">
-            <button onclick="localStorage.clear(); location.reload();" class="btn-reset-global" style="padding: 10px 20px; cursor: pointer; border-radius: 5px; border: 1px solid #ccc; background: #fff;">
-                <i class="fas fa-trash"></i> Réinitialiser ma progression
+      <nav>
+        <ul>
+          <li>
+            <a href="#accueil"><i class="fas fa-home"></i> Accueil</a>
+          </li>
+          <li>
+            <a href="#services"><i class="fas fa-graduation-cap"></i> Cours</a>
+          </li>
+          <li>
+            <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
+          </li>
+          <li>
+            <button
+              onclick="toggleModeSombre()"
+              class="btn-dark-toggle"
+              id="theme-icon"
+            >
+              🌙 Mode Sombre
             </button>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <div
+      id="login-modal"
+      style="
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+      "
+    >
+      <div
+        style="
+          background: white;
+          width: 350px;
+          padding: 30px;
+          border-radius: 10px;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+          text-align: center;
+        "
+      >
+        <h2 style="margin-top: 0; color: #333">
+          <i class="fas fa-user-circle"></i> Bienvenue
+        </h2>
+        <p style="color: #666; font-size: 0.9rem; margin-bottom: 20px">
+          Veuillez vous identifier pour suivre votre progression.
+        </p>
+
+        <input
+          type="text"
+          id="login-nom"
+          placeholder="Votre prénom (ex: Bernard)"
+          autocomplete="off"
+          style="
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            text-align: center;
+          "
+        />
+
+        <div
+          style="
+            text-align: center;
+            font-size: 0.85rem;
+            color: #555;
+            margin-bottom: 15px;
+          "
+        >
+          <label style="cursor: pointer"
+            ><input
+              type="checkbox"
+              id="check-admin"
+              onclick="togglePassword()"
+            />
+            Je suis le formateur</label
+          >
         </div>
 
-        <section id="services">
-            <div style="max-width: 800px; margin: 0 auto; text-align: center; padding: 0 20px;">
-                <div class="progress-container">
-                    <div class="progress-bar-bg">
-                        <div id="progress-fill"></div>
-                    </div>
-                    <p style="font-weight: 600;">Votre progression globale : <span id="progress-text">0%</span></p>
-                </div>
-                <h2 style="margin: 40px 0; font-size: 2rem;"><i class="fas fa-graduation-cap"></i> Nos Cours</h2>
+        <input
+          type="password"
+          id="login-mdp"
+          placeholder="Mot de passe"
+          style="
+            display: none;
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            text-align: center;
+          "
+        />
+
+        <button
+          class="btn-confirm"
+          onclick="seConnecter()"
+          style="
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+          "
+        >
+          Commencer
+        </button>
+      </div>
+    </div>
+
+    <div
+      id="user-info"
+      style="text-align: center; margin-bottom: 20px; display: none"
+    >
+      <span class="badge-succes" style="background: #3498db"
+        ><i class="fas fa-user"></i> <span id="nom-affichage"></span
+      ></span>
+      <span
+        class="badge-succes"
+        id="badge-admin"
+        style="background: #e74c3c; display: none"
+        ><i class="fas fa-crown"></i> Mode Admin</span
+      >
+      <p style="font-size: 0.8rem; color: #7f8c8d; margin-top: 5px">
+        Visites totales du site : <strong id="compteur-visite">0</strong>
+      </p>
+      <button
+        id="btn-dashboard"
+        class="btn-card"
+        style="display: none; background-color: #f39c12; margin: 10px auto"
+        onclick="ouvrirDashboard()"
+      >
+        <i class="fas fa-chart-bar"></i> Voir les résultats des élèves
+      </button>
+      <button
+        onclick="seDeconnecter()"
+        style="
+          background: none;
+          border: none;
+          color: #e74c3c;
+          cursor: pointer;
+          text-decoration: underline;
+          font-size: 0.8rem;
+        "
+      >
+        Se déconnecter
+      </button>
+    </div>
+    <main id="accueil">
+      <div style="text-align: center; padding: 20px 0">
+        <div
+          id="admin-access-zone"
+          style="text-align: center; margin: 20px 0; display: none"
+        >
+          <button
+            onclick="ouvrirDashboard()"
+            style="
+              background: #f39c12;
+              color: white;
+              border: none;
+              padding: 10px 20px;
+              border-radius: 5px;
+              cursor: pointer;
+              font-weight: bold;
+            "
+          >
+            <i class="fas fa-tools"></i> Ouvrir l'Espace Formateur
+          </button>
+        </div>
+        <button
+          onclick="
+            localStorage.clear();
+            location.reload();
+          "
+          class="btn-reset-global"
+          style="
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background: #fff;
+          "
+        >
+          <i class="fas fa-trash"></i> Réinitialiser ma progression
+        </button>
+      </div>
+
+      <section id="services">
+        <div
+          style="
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 0 20px;
+          "
+        >
+          <div class="progress-container">
+            <div class="progress-bar-bg">
+              <div id="progress-fill"></div>
             </div>
+            <p style="font-weight: 600">
+              Votre progression globale : <span id="progress-text">0%</span>
+            </p>
+          </div>
+          <h2 style="margin: 40px 0; font-size: 2rem">
+            <i class="fas fa-graduation-cap"></i> Nos Cours
+          </h2>
+        </div>
 
-            <div class="cours-container">
-                <div id="card-pointeur" class="cours-card theme-internet">
-                    <span id="badge-pointeur" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
-                    <i class="fas fa-mouse-pointer"></i>
-                    <h3>Les formes du pointeur</h3>
-                    <p>Découvrez pourquoi la flèche change de forme.</p>
-                    <button class="btn-card" onclick="ouvrirCours('pointeur')">Découvrir</button>
-                </div>
+        <div class="cours-container">
+          <div id="card-pointeur" class="cours-card theme-internet">
+            <span id="badge-pointeur" class="badge-succes"
+              ><i class="fas fa-medal"></i> Terminé</span
+            >
+            <i class="fas fa-mouse-pointer"></i>
+            <h3>Les formes du pointeur</h3>
+            <p>Découvrez pourquoi la flèche change de forme.</p>
+            <button class="btn-card" onclick="ouvrirCours('pointeur')">
+              Découvrir
+            </button>
+          </div>
 
-                <div id="card-informatique" class="cours-card theme-windows">
-                    <span id="badge-informatique" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
-                    <i class="fas fa-desktop"></i>
-                    <h3>L'univers informatique</h3>
-                    <p>Maitriser la souris et les bases.</p>
-                    <button class="btn-card" onclick="ouvrirCours('informatique')">Découvrir</button>
-                </div>
+          <div id="card-informatique" class="cours-card theme-windows">
+            <span id="badge-informatique" class="badge-succes"
+              ><i class="fas fa-medal"></i> Terminé</span
+            >
+            <i class="fas fa-desktop"></i>
+            <h3>L'univers informatique</h3>
+            <p>Maitriser la souris et les bases.</p>
+            <button class="btn-card" onclick="ouvrirCours('informatique')">
+              Découvrir
+            </button>
+          </div>
 
-                <div id="card-windows" class="cours-card theme-windows">
-                    <span id="badge-windows" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
-                    <i class="fab fa-windows"></i>
-                    <h3>L'univers Windows</h3>
-                    <p>Apprivoiser le bureau et le menu démarrer.</p>
-                    <button class="btn-card" onclick="ouvrirCours('windows')">Découvrir</button>
-                </div>
+          <div id="card-windows" class="cours-card theme-windows">
+            <span id="badge-windows" class="badge-succes"
+              ><i class="fas fa-medal"></i> Terminé</span
+            >
+            <i class="fab fa-windows"></i>
+            <h3>L'univers Windows</h3>
+            <p>Apprivoiser le bureau et le menu démarrer.</p>
+            <button class="btn-card" onclick="ouvrirCours('windows')">
+              Découvrir
+            </button>
+          </div>
 
-                <div id="card-explorateur" class="cours-card theme-windows">
-                    <span id="badge-explorateur" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
-                    <i class="fas fa-folder-open"></i>
-                    <h3>L'Explorateur</h3>
-                    <p>Gérer ses dossiers et fichiers.</p>
-                    <button class="btn-card" onclick="ouvrirCours('explorateur')">Découvrir</button>
-                </div>
+          <div id="card-explorateur" class="cours-card theme-windows">
+            <span id="badge-explorateur" class="badge-succes"
+              ><i class="fas fa-medal"></i> Terminé</span
+            >
+            <i class="fas fa-folder-open"></i>
+            <h3>L'Explorateur</h3>
+            <p>Gérer ses dossiers et fichiers.</p>
+            <button class="btn-card" onclick="ouvrirCours('explorateur')">
+              Découvrir
+            </button>
+          </div>
 
-                <div id="card-bureau" class="cours-card theme-windows">
-                    <span id="badge-bureau" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
-                    <i class="fas fa-window-restore"></i>
-                    <h3>Le Bureau et les Icônes</h3>
-                    <p>Apprenez à utiliser les raccourcis.</p>
-                    <button class="btn-card" onclick="ouvrirCours('bureau')">Découvrir</button>
-                </div>
+          <div id="card-bureau" class="cours-card theme-windows">
+            <span id="badge-bureau" class="badge-succes"
+              ><i class="fas fa-medal"></i> Terminé</span
+            >
+            <i class="fas fa-window-restore"></i>
+            <h3>Le Bureau et les Icônes</h3>
+            <p>Apprenez à utiliser les raccourcis.</p>
+            <button class="btn-card" onclick="ouvrirCours('bureau')">
+              Découvrir
+            </button>
+          </div>
 
-                <div id="card-clavier" class="cours-card theme-windows">
-                    <span id="badge-clavier" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
-                    <i class="fas fa-keyboard"></i>
-                    <h3>Découvrir le Clavier</h3>
-                    <p>Apprivoiser les touches principales.</p>
-                    <button class="btn-card" onclick="ouvrirCours('clavier')">Découvrir</button>
-                </div>
+          <div id="card-clavier" class="cours-card theme-windows">
+            <span id="badge-clavier" class="badge-succes"
+              ><i class="fas fa-medal"></i> Terminé</span
+            >
+            <i class="fas fa-keyboard"></i>
+            <h3>Découvrir le Clavier</h3>
+            <p>Apprivoiser les touches principales.</p>
+            <button class="btn-card" onclick="ouvrirCours('clavier')">
+              Découvrir
+            </button>
+          </div>
 
-                <div id="card-word" class="cours-card theme-word">
-                    <span id="badge-word" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
-                    <i class="fas fa-file-word"></i>
-                    <h3>Écrire avec Word</h3>
-                    <p>Créez vos courriers et documents.</p>
-                    <button class="btn-card" onclick="ouvrirCours('word')">Découvrir</button>
-                </div>
+          <div id="card-word" class="cours-card theme-word">
+            <span id="badge-word" class="badge-succes"
+              ><i class="fas fa-medal"></i> Terminé</span
+            >
+            <i class="fas fa-file-word"></i>
+            <h3>Écrire avec Word</h3>
+            <p>Créez vos courriers et documents.</p>
+            <button class="btn-card" onclick="ouvrirCours('word')">
+              Découvrir
+            </button>
+          </div>
 
-                <div id="card-excel" class="cours-card theme-excel">
-                    <span id="badge-excel" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
-                    <i class="fas fa-file-excel"></i>
-                    <h3>Calculer avec Excel</h3>
-                    <p>Créez des tableaux simples.</p>
-                    <button class="btn-card" onclick="ouvrirCours('excel')">Découvrir</button>
-                </div>
+          <div id="card-excel" class="cours-card theme-excel">
+            <span id="badge-excel" class="badge-succes"
+              ><i class="fas fa-medal"></i> Terminé</span
+            >
+            <i class="fas fa-file-excel"></i>
+            <h3>Calculer avec Excel</h3>
+            <p>Créez des tableaux simples.</p>
+            <button class="btn-card" onclick="ouvrirCours('excel')">
+              Découvrir
+            </button>
+          </div>
 
-                <div id="card-powerpoint" class="cours-card theme-powerpoint">
-                    <span id="badge-powerpoint" class="badge-succes"><i class="fas fa-medal"></i> Terminé</span>
-                    <i class="fas fa-file-powerpoint"></i>
-                    <h3>Présenter avec PowerPoint</h3>
-                    <p>Réalisez des diaporamas.</p>
-                    <button class="btn-card" onclick="ouvrirCours('powerpoint')">Découvrir</button>
-                </div>
+          <div id="card-powerpoint" class="cours-card theme-powerpoint">
+            <span id="badge-powerpoint" class="badge-succes"
+              ><i class="fas fa-medal"></i> Terminé</span
+            >
+            <i class="fas fa-file-powerpoint"></i>
+            <h3>Présenter avec PowerPoint</h3>
+            <p>Réalisez des diaporamas.</p>
+            <button class="btn-card" onclick="ouvrirCours('powerpoint')">
+              Découvrir
+            </button>
+          </div>
 
-                <div id="card-mail" class="cours-card theme-internet">
-                    <span id="badge-mail" class="badge-succes">
-                    <i class="fas fa-medal"></i> Terminé</span>
-                    <i class="fas fa-envelope"></i>
-                    <h3>Utiliser sa messagerie</h3>
-                    <p>Apprenez à ouvrir et lire vos mails.</p>
-                    <button class="btn-card" onclick="ouvrirCours('mail')">Découvrir</button>
-                </div>
-            </div> 
-        </section>
+          <div id="card-mail" class="cours-card theme-internet">
+            <span id="badge-mail" class="badge-succes">
+              <i class="fas fa-medal"></i> Terminé</span
+            >
+            <i class="fas fa-envelope"></i>
+            <h3>Utiliser sa messagerie</h3>
+            <p>Apprenez à ouvrir et lire vos mails.</p>
+            <button class="btn-card" onclick="ouvrirCours('mail')">
+              Découvrir
+            </button>
+          </div>
+        </div>
+      </section>
     </main>
 
-    <section id="contact" style="max-width: 600px; margin: 50px auto; padding: 20px; text-align: center;">
-        <h2><i class="fas fa-envelope"></i> Me Contacter</h2>
-        <div class="contact-card">
-            <form id="form-contact">
-                <input type="text" placeholder="Ton nom" style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;">
-                <input type="email" placeholder="ton@email.com" style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;">
-                <textarea placeholder="Ton message" rows="4" style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;"></textarea>
-                <button type="submit" class="btn-card" style="width: 100%;">Envoyer le message</button>
-            </form>
-        </div>
+    <section
+      id="contact"
+      style="
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        text-align: center;
+      "
+    >
+      <h2><i class="fas fa-envelope"></i> Me Contacter</h2>
+      <div class="contact-card">
+        <form id="form-contact">
+          <input
+            type="text"
+            placeholder="Ton nom"
+            style="
+              width: 100%;
+              padding: 12px;
+              margin-bottom: 15px;
+              border-radius: 8px;
+              border: 1px solid #ddd;
+              box-sizing: border-box;
+            "
+          />
+          <input
+            type="email"
+            placeholder="ton@email.com"
+            style="
+              width: 100%;
+              padding: 12px;
+              margin-bottom: 15px;
+              border-radius: 8px;
+              border: 1px solid #ddd;
+              box-sizing: border-box;
+            "
+          />
+          <textarea
+            placeholder="Ton message"
+            rows="4"
+            style="
+              width: 100%;
+              padding: 12px;
+              margin-bottom: 15px;
+              border-radius: 8px;
+              border: 1px solid #ddd;
+              box-sizing: border-box;
+            "
+          ></textarea>
+          <button type="submit" class="btn-card" style="width: 100%">
+            Envoyer le message
+          </button>
+        </form>
+      </div>
     </section>
 
     <footer>
-        <p>&copy; 2026 Bernard TELLIER - Tous droits réservés.</p>
+      <p>&copy; 2026 Bernard TELLIER - Tous droits réservés.</p>
     </footer>
 
     <script src="script.js"></script>
-</body>
 
+    <div id="admin-dashboard" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 2000; justify-content: center; align-items: center;">
+      <div style="background: white; width: 90%; max-width: 800px; max-height: 85vh; padding: 30px; border-radius: 12px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5); overflow-y: auto; position: relative;">
+        
+        <h2 style="color: #f39c12; margin-top: 0; border-bottom: 2px solid #f39c12; padding-bottom: 10px;">
+            <i class="fas fa-crown"></i> Espace Formateur
+        </h2>
+
+        <div style="overflow-x: auto; margin-top: 20px">
+            <table style="width: 100%; border-collapse: collapse; text-align: left; min-width: 500px;">
+                <thead>
+                    <tr style="background-color: #f8f9fa; border-bottom: 2px solid #dee2e6;">
+                        <th style="padding: 12px">Nom de l'élève</th>
+                        <th style="padding: 12px">Cours terminés</th>
+                        <th style="padding: 12px">Détail des temps</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-etudiants"></tbody>
+            </table>
+        </div>
+
+        <div style="margin-top: 30px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #eee; padding-top: 20px;">
+            <div style="display: flex; gap: 10px;">
+                <button class="btn-corrige" onclick="effacerDonnees()" style="background-color: #e74c3c; padding: 10px 15px; border-radius: 5px; color: white; border: none; cursor: pointer;"><i class="fas fa-trash"></i> Réinitialiser la machine</button>
+            </div>
+            <button class="btn-cancel" onclick="fermerDashboard()" style="padding: 10px 25px; border-radius: 5px; border: 1px solid #ccc; cursor: pointer; background: #f8f9fa;">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
-
