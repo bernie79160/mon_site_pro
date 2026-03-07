@@ -2,144 +2,229 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Initiation au Clavier</title>
+    <title>Maîtriser le Clavier</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/png" href="favicon.png">
     <style>
-        .touche-visuelle {
-            font-size: 5rem;
-            background: white;
-            padding: 20px 50px;
-            border-radius: 15px;
-            border-bottom: 8px solid #bdc3c7;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            color: #2c3e50;
-            min-width: 150px;
-            text-align: center;
-            margin: 20px auto;
-        }
         .clavier-container {
             text-align: center;
             background: #ecf0f1;
             padding: 40px;
             border-radius: 15px;
-            max-width: 600px;
+            max-width: 800px;
             margin: 0 auto;
         }
-        .feedback-touche { color: #3498db; font-weight: bold; height: 30px; }
+        
+        /* Zone d'affichage de la touche demandée */
+        .touche-visuelle {
+            font-size: 4rem;
+            background: white;
+            padding: 20px 40px;
+            border-radius: 15px;
+            border-bottom: 8px solid #bdc3c7;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            color: #2c3e50;
+            display: inline-block;
+            min-width: 120px;
+            margin: 20px;
+            font-weight: bold;
+        }
+
+        /* Indicateur de touches maintenues */
+        .modificateurs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .pastille {
+            padding: 8px 15px;
+            background: #bdc3c7;
+            color: white;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .pastille.active {
+            background: #3498db;
+            transform: scale(1.1);
+        }
+
+        .feedback-touche { 
+            font-size: 1.5rem;
+            height: 40px;
+            margin-top: 20px;
+        }
+
+        .instruction-detail {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+
+        /* Mode sombre spécifique */
+        body.dark-mode .clavier-container { background: #2c3e50; }
+        body.dark-mode .touche-visuelle { background: #34495e; color: white; border-bottom-color: #2c3e50; }
     </style>
 </head>
-<body class="page-cours" onload="demarrerChrono()">
+<body class="page-cours">
 <header>
     <nav>
         <ul>
             <li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a></li>
-            <li>
-                <button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">
-                    🌙 Mode Sombre
-                </button>
-            </li>
+            <li><button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">🌙 Mode Sombre</button></li>
         </ul>
     </nav>
 </header>
 
-    <main class="contenu-cours">
-        <section class="entete-cours">
-            <h1><i class="fas fa-keyboard"></i> Mission Clavier</h1>
-            <p id="consigne-clavier" class="consigne-majeure">
-                Appuyez sur la touche demandée sur votre <strong>vrai clavier</strong>.
-            </p>
-        </section>
+<main class="contenu-cours">
+    <section class="entete-cours">
+        <h1><i class="fas fa-keyboard"></i> Mission Clavier : Maîtrise totale</h1>
+        <p id="consigne-clavier" class="consigne-majeure">
+            Apprenez à utiliser les touches <strong>Maj</strong>, <strong>Alt Gr</strong> et <strong>Ctrl</strong>.
+        </p>
+    </section>
 
-        <div class="clavier-container">
-            <div id="nom-touche" style="font-size: 1.2rem; color: #7f8c8d;">Appuyez sur :</div>
-            <div id="affichage-touche" class="touche-visuelle">A</div>
-            <div id="feedback" class="feedback-touche"></div>
+    <div class="clavier-container">
+        <div class="modificateurs">
+            <span id="mod-shift" class="pastille">MAJ (Shift)</span>
+            <span id="mod-ctrl" class="pastille">CTRL</span>
+            <span id="mod-altgr" class="pastille">ALT GR</span>
         </div>
 
-        <div class="actions-cours" style="text-align: center; margin-top: 30px;">
-            <p>Progression : <span id="compteur-clavier">0</span> / 10</p>
-            <button id="btn-valider-clavier" class="btn-cours" style="background-color: #2980b9; opacity: 0.5;" onclick="validerCours('clavier')" disabled>
-                Je connais mon clavier
-            </button>
+        <div id="instruction-texte" class="instruction-detail">Appuyez sur :</div>
+        <div id="affichage-touche" class="touche-visuelle">-</div>
+        <div id="feedback" class="feedback-touche"></div>
+    </div>
+
+    <div class="actions-cours" style="text-align: center; margin-top: 30px;">
+        <p>Objectif : <span id="compteur-clavier">0</span> / <span id="total-clavier">0</span></p>
+        <div class="progress-bar-bg" style="max-width: 300px; margin: 10px auto;">
+            <div id="barre-clavier" style="width: 0%; height: 10px; background: #27ae60; transition: 0.3s;"></div>
         </div>
-    </main>
+        <button id="btn-valider-clavier" class="btn-cours" style="background-color: #2980b9; opacity: 0.5;" onclick="validerCours('clavier')" disabled>
+            Je connais mon clavier
+        </button>
+    </div>
+</main>
 
-    <script>
-        const touchesAMontrer = [
-            { code: 'a', nom: 'La lettre A' },
-            { code: ' ', nom: 'La barre ESPACE' },
-            { code: 'e', nom: 'La lettre E' },
-            { code: 'Enter', nom: 'La touche ENTRÉE' },
-            { code: 'i', nom: 'La lettre I' },
-            { code: 'Backspace', nom: 'La touche EFFACER (←)' },
-            { code: 'm', nom: 'La lettre M' },
-            { code: 'o', nom: 'La lettre O' },
-            { code: 'u', nom: 'La lettre U' },
-            { code: 'Enter', nom: 'La touche ENTRÉE pour finir' }
-        ];
 
-        let indexActuel = 0;
-        const affichage = document.getElementById('affichage-touche');
-        const feedback = document.getElementById('feedback');
-        const nomTouche = document.getElementById('nom-touche');
-        const compteur = document.getElementById('compteur-clavier');
 
-        // Mettre à jour l'affichage au début
-        majTouche();
+<script>
+    const exercices = [
+        // BASES
+        { code: 'a', nom: 'la lettre A', desc: 'Appui simple' },
+        { code: ' ', nom: 'Espace', desc: 'La grande barre en bas' },
+        
+        // MAJUSCULES (Shift + Touche)
+        { code: 'B', nom: 'B majuscule', desc: 'Maintenez MAJ (↑) et appuyez sur B' },
+        { code: 'M', nom: 'M majuscule', desc: 'Maintenez MAJ (↑) et appuyez sur M' },
+        
+        // SYMBOLES DU HAUT (Shift + Chiffre)
+        { code: '1', nom: 'le chiffre 1', desc: 'Maintenez MAJ (↑) et appuyez sur & (en haut)' },
+        { code: '.', nom: 'le Point (.)', desc: 'Maintenez MAJ (↑) et appuyez sur la virgule' },
+        
+        // ALT GR (Symboles complexes)
+        { code: '@', nom: 'le signe @ (Arobase)', desc: 'Maintenez ALT GR et appuyez sur la touche 0 (à)' },
+        { code: '€', nom: 'le signe € (Euro)', desc: 'Maintenez ALT GR et appuyez sur la touche E' },
+        
+        // TOUCHES TECHNIQUES
+        { code: 'Enter', nom: 'Entrée', desc: 'Pour valider ou aller à la ligne' },
+        { code: 'Backspace', nom: 'Effacer', desc: 'La touche retour (←) en haut à droite' },
+        { code: 'Control', nom: 'Touche CTRL', desc: 'Appuyez seule sur la touche Contrôle' }
+    ];
 
-        window.addEventListener('keydown', function(event) {
-            if (indexActuel >= touchesAMontrer.length) return;
+    let indexActuel = 0;
+    const affichage = document.getElementById('affichage-touche');
+    const feedback = document.getElementById('feedback');
+    const instruction = document.getElementById('instruction-texte');
+    const compteur = document.getElementById('compteur-clavier');
+    const totalAff = document.getElementById('total-clavier');
+    const barre = document.getElementById('barre-clavier');
 
-            const toucheAttendue = touchesAMontrer[indexActuel].code;
-            const toucheAppuyee = event.key;
+    totalAff.innerText = exercices.length;
 
-            if (toucheAppuyee.toLowerCase() === toucheAttendue.toLowerCase()) {
-                indexActuel++;
-                compteur.innerText = indexActuel;
-                feedback.innerHTML = "✅ Bien joué !";
-                feedback.style.color = "#27ae60";
-                
-                if (indexActuel < touchesAMontrer.length) {
-                    setTimeout(majTouche, 500);
-                } else {
-                    finirExercice();
-                }
-            } else {
-                feedback.innerHTML = "❌ Essayez encore...";
-                feedback.style.color = "#e74c3c";
-            }
-        });
+    // Gestion visuelle des modificateurs (MAJ, CTRL, ALTGR)
+    window.addEventListener('keydown', (e) => mettreAJourModificateurs(e, true));
+    window.addEventListener('keyup', (e) => mettreAJourModificateurs(e, false));
 
-        function majTouche() {
-            feedback.innerHTML = "";
-            const item = touchesAMontrer[indexActuel];
-            nomTouche.innerText = "Appuyez sur : " + item.nom;
-            
-            // Affichage spécial pour les touches muettes
-            if(item.code === ' ') affichage.innerText = "␣";
-            else if(item.code === 'Enter') affichage.innerText = "↵";
-            else if(item.code === 'Backspace') affichage.innerText = "⌫";
-            else affichage.innerText = item.code.toUpperCase();
+    function mettreAJourModificateurs(e, isDown) {
+        if (e.shiftKey) document.getElementById('mod-shift').classList.add('active');
+        else document.getElementById('mod-shift').classList.remove('active');
+        
+        if (e.ctrlKey) document.getElementById('mod-ctrl').classList.add('active');
+        else document.getElementById('mod-ctrl').classList.remove('active');
+        
+        if (e.altKey || e.key === 'AltGraph') document.getElementById('mod-altgr').classList.add('active');
+        else document.getElementById('mod-altgr').classList.remove('active');
+
+        // Empêcher les raccourcis navigateur (ex: Ctrl+S) pendant l'exercice
+        if (e.ctrlKey && (e.key === 's' || e.key === 'p')) e.preventDefault();
+    }
+
+    // Gestion du test de touche
+    window.addEventListener('keydown', function(event) {
+        if (indexActuel >= exercices.length) return;
+
+        const exercice = exercices[indexActuel];
+        
+        // Comparaison (on vérifie la touche brute ou le résultat produit)
+        if (event.key === exercice.code) {
+            reussite();
+        } 
+    });
+
+    function reussite() {
+        indexActuel++;
+        compteur.innerText = indexActuel;
+        barre.style.width = (indexActuel / exercices.length * 100) + "%";
+        feedback.innerHTML = "✅ Super !";
+        feedback.style.color = "#27ae60";
+        
+        if (indexActuel < exercices.length) {
+            setTimeout(prochainExo, 600);
+        } else {
+            finirExercice();
         }
+    }
 
-        function finirExercice() {
-            affichage.innerText = "🎉";
-            nomTouche.innerText = "Bravo !";
-            document.getElementById('consigne-clavier').innerHTML = "Vous êtes prêt pour le traitement de texte !";
-            const btn = document.getElementById('btn-valider-clavier');
-            btn.disabled = false;
-            btn.style.opacity = "1";
-        }
-    </script>
+    function prochainExo() {
+        feedback.innerHTML = "";
+        const item = exercices[indexActuel];
+        instruction.innerText = item.desc + " :";
+        
+        // Symboles spéciaux pour l'affichage
+        if(item.code === ' ') affichage.innerText = "ESPACE";
+        else if(item.code === 'Enter') affichage.innerText = "ENTRÉE";
+        else if(item.code === 'Backspace') affichage.innerText = "EFFACER";
+        else if(item.code === 'Control') affichage.innerText = "CTRL";
+        else affichage.innerText = item.code;
+    }
+
+    function finirExercice() {
+        affichage.innerText = "🏆";
+        instruction.innerText = "Félicitations !";
+        feedback.innerHTML = "Le clavier n'a plus de secret pour vous.";
+        document.getElementById('consigne-clavier').innerHTML = "Vous maîtrisez les combinaisons de touches !";
+        const btn = document.getElementById('btn-valider-clavier');
+        btn.disabled = false;
+        btn.style.opacity = "1";
+        if (typeof confetti === 'function') confetti();
+    }
+
+    // Lancement
+    prochainExo();
+</script>
 
 <footer>
     <p>&copy; 2026 Bernard TELLIER - Tous droits réservés.</p>
 </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <script src="script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script src="script.js"></script>
 </body>
-
 </html>
