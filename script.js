@@ -64,22 +64,44 @@ function mettreAJourProgression() {
 }
 
 function appliquerVerrouillageVisuel() {
-  // On récupère l'utilisateur
   let user = JSON.parse(localStorage.getItem("utilisateurActuel"));
   
-  // SI ADMIN : On ne verrouille rien du tout visuellement
-  if (user && user.isAdmin) return; 
-
-  ordreCours.forEach((cours, index) => {
-    if (index === 0) return;
-    const precedentFait = localStorage.getItem("cours-" + ordreCours[index - 1]) === "done";
-    const carte = document.getElementById("card-" + cours);
-
-    if (carte && !precedentFait && localStorage.getItem("cours-" + cours) !== "done") {
-      carte.classList.add("card-locked");
-      // Optionnel : on désactive aussi le bouton ici pour être sûr
+  // SI ADMIN : Tout est coloré et actif
+  if (user && user.isAdmin) {
+    document.querySelectorAll(".cours-card").forEach(carte => {
+      carte.classList.remove("card-locked");
+      carte.style.opacity = "1";
+      carte.style.filter = "none";
       const btn = carte.querySelector('.btn-card');
-      if(btn) btn.disabled = true;
+      if(btn) btn.disabled = false;
+    });
+    return;
+  }
+
+  // POUR LES ÉLÈVES : On boucle sur l'ordre des cours
+  ordreCours.forEach((cours, index) => {
+    const carte = document.getElementById("card-" + cours);
+    const estFait = localStorage.getItem("cours-" + cours) === "done";
+    
+    // Le premier cours est toujours débloqué, sinon il faut que le précédent soit "done"
+    const precedentFait = index === 0 ? true : localStorage.getItem("cours-" + ordreCours[index - 1]) === "done";
+
+    if (carte) {
+      if (estFait || precedentFait) {
+        // Cours accessible ou déjà réussi : en couleur
+        carte.classList.remove("card-locked");
+        carte.style.opacity = "1";
+        carte.style.filter = "none";
+        const btn = carte.querySelector('.btn-card');
+        if(btn) btn.disabled = false;
+      } else {
+        // Cours verrouillé : on le grise
+        carte.classList.add("card-locked");
+        carte.style.opacity = "0.4"; // Plus sombre
+        carte.style.filter = "grayscale(100%)"; // Noir et blanc
+        const btn = carte.querySelector('.btn-card');
+        if(btn) btn.disabled = true;
+      }
     }
   });
 }
@@ -276,50 +298,36 @@ function seConnecter() {
     return;
   }
 
-  // 1. On récupère d'abord le carnet complet
   let carnetStr = localStorage.getItem("carnetEtudiants");
   let carnet = carnetStr ? JSON.parse(carnetStr) : {};
 
-  // 2. On regarde si cet élève existe déjà
   let user;
   if (carnet[nom]) {
-    // Si oui, on reprend son profil (avec ses temps déjà faits !)
     user = carnet[nom];
+    // IMPORTANT : On restaure les badges "done" pour ce profil précis
+    if (user.tempsParCours) {
+      for (let cours in user.tempsParCours) {
+        localStorage.setItem("cours-" + cours, "done");
+      }
+    }
   } else {
-    // Si non, on crée un nouveau profil vide
     user = { nom: nom, isAdmin: false, tempsParCours: {} };
   }
 
-  // 3. Gestion de l'admin
-  if (isFormateur) {
-    if (mdp === "1234") {
-      user.isAdmin = true;
-    } else {
-      alert("Mot de passe admin incorrect.");
-      return;
-    }
-  } else {
-    // Si on se connecte en mode élève, on s'assure qu'il n'est pas admin
-    user.isAdmin = false;
+  if (isFormateur && mdp === "1234") {
+    user.isAdmin = true;
   }
 
-  // 4. On sauvegarde et on rafraîchit
   localStorage.setItem("utilisateurActuel", JSON.stringify(user));
-  verifierConnexion();
 
-  // NOUVEAU : Restaurer les badges de progression de cet élève précis
-  if (user.tempsParCours) {
-    for (let cours in user.tempsParCours) {
-      localStorage.setItem("cours-" + cours, "done");
-    }
-  }
-
-  // 4. On sauvegarde et on rafraîchit
-  localStorage.setItem("utilisateurActuel", JSON.stringify(user));
+  // Mise à jour visuelle complète
   verifierConnexion();
-  
-  // On force le rafraîchissement des badges et de la barre
   mettreAJourProgression();
+  
+  // On force le rafraîchissement du verrouillage pour griser les cours suivants
+  if (document.querySelector(".cours-card")) {
+      appliquerVerrouillageVisuel();
+  }
 }
 
 function nettoyerInterface() {
@@ -499,4 +507,3 @@ function effacerDonnees() {
         ouvrirDashboard(); // Rafraîchit l'affichage (affichera "Aucun élève")
     }
 }
-
