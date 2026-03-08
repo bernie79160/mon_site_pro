@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gérer son Bureau et ses Dossiers</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <style>
+        .cible-depot {
+            position: absolute; width: 130px; height: 150px; border: 3px dashed rgba(255,255,255,0.3);
+            border-radius: 15px; color: white; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; background: rgba(0,0,0,0.2); transition: all 0.3s;
+        }
+        .cible-depot * { pointer-events: none; }
+
+        #corbeille { bottom: 20px; right: 20px; }
+        #dossier-rangement { bottom: 20px; right: 170px; }
+        
+        .survol-corbeille { background: rgba(231, 76, 60, 0.4) !important; border-color: #e74c3c !important; }
+        .survol-rangement { background: rgba(46, 204, 113, 0.4) !important; border-color: #2ecc71 !important; }
+    </style>
+</head>
+<body class="page-cours" onload="demarrerChrono()">
+
+<header>
+    <nav>
+        <ul>
+            <li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a></li>
+            <li><button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">🌙 Mode Sombre</button></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="contenu-cours">
+    <section class="entete-cours">
+        <h1><i class="fas fa-desktop"></i> Nettoyage et Rangement</h1>
+        <p id="consigne-bureau" class="consigne-majeure">Jetez les <strong>fichiers gris</strong> et rangez <strong>votre CV bleu</strong>.</p>
+    </section>
+
+    <div id="bureau-canvas">
+        <div id="file1" class="icone-bureau" draggable="true" ondragstart="drag(event)" style="top: 30px; left: 30px;">
+            <i class="fas fa-file-alt" style="color: #bdc3c7;"></i><span>Note_vide.txt</span>
+        </div>
+        <div id="file2" class="icone-bureau" draggable="true" ondragstart="drag(event)" style="top: 150px; left: 30px;">
+            <i class="fas fa-file-image" style="color: #bdc3c7;"></i><span>Photo_floue.jpg</span>
+        </div>
+        <div id="file3" class="icone-bureau" draggable="true" ondragstart="drag(event)" style="top: 270px; left: 30px;">
+            <i class="fas fa-file-archive" style="color: #bdc3c7;"></i><span>Vieux_dossier.zip</span>
+        </div>
+        
+        <div id="mon-cv" class="icone-bureau" draggable="true" ondragstart="drag(event)" style="top: 30px; left: 180px;">
+            <i class="fas fa-file-word" style="color: #3498db;"></i><span>Mon_CV.docx</span>
+        </div>
+
+        <div id="dossier-rangement" class="cible-depot" ondrop="dropRangement(event)" ondragover="allowDrop(event)" ondragleave="leaveDrop(event)">
+            <i class="fas fa-folder" style="font-size: 50px; color: #f1c40f; margin-bottom: 10px;"></i>
+            <span>MES DOCUMENTS</span>
+        </div>
+
+        <div id="corbeille" class="cible-depot" ondrop="dropCorbeille(event)" ondragover="allowDrop(event)" ondragleave="leaveDrop(event)">
+            <i class="fas fa-trash-alt" style="font-size: 50px; margin-bottom: 10px;"></i>
+            <span>CORBEILLE</span>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 30px; margin-bottom: 50px;">
+        <button id="btn-valider-bureau" class="btn-cours" onclick="validerCours('bureau')" disabled>
+            <i class="fas fa-check-circle"></i> C'est tout propre !
+        </button>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2026 Bernard TELLIER - Tous droits réservés.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script src="script.js"></script>
+<script>
+    let objetsRestants = 4;
+
+    function allowDrop(ev) {
+        ev.preventDefault();
+        if (ev.currentTarget.id === "corbeille") ev.currentTarget.classList.add("survol-corbeille");
+        if (ev.currentTarget.id === "dossier-rangement") ev.currentTarget.classList.add("survol-rangement");
+    }
+
+    function leaveDrop(ev) {
+        ev.currentTarget.classList.remove("survol-corbeille", "survol-rangement");
+    }
+
+    function drag(ev) {
+        ev.dataTransfer.setData("text", ev.target.id);
+    }
+
+    function dropCorbeille(ev) {
+        ev.preventDefault();
+        leaveDrop(ev);
+        const data = ev.dataTransfer.getData("text");
+        if (data === "mon-cv") {
+            // alert("Attention ! Ne jetez pas votre CV, rangez-le plutôt dans Mes Documents.");
+            // Utilise la fonction de ton script.js :
+            afficherMessage("Attention !", "Ne jetez pas votre CV, rangez-le plutôt dans Mes Documents.");
+        } else {
+            document.getElementById(data).style.display = "none";
+            objetsRestants--;
+            verifierFin();
+        }
+    }
+
+    function dropRangement(ev) {
+        ev.preventDefault();
+        leaveDrop(ev);
+        const data = ev.dataTransfer.getData("text");
+        if (data === "mon-cv") {
+            document.getElementById(data).style.display = "none";
+            objetsRestants--;
+            verifierFin();
+        } else {
+            //alert("Ce fichier est inutile, jetez-le à la corbeille.");
+            afficherMessage("Attention !", "Ce fichier est inutile, jetez-le à la corbeille.");
+        }
+    }
+
+    function verifierFin() {
+        if (objetsRestants === 0) {
+            const btn = document.getElementById("btn-valider-bureau");
+            btn.disabled = false;
+            btn.style.backgroundColor = "#27ae60";
+            document.getElementById("consigne-bureau").innerHTML = "🎉 Excellent ! Le bureau est parfaitement rangé.";
+            document.getElementById("consigne-bureau").style.color = "#27ae60";
+        }
+    }
+</script>
+</body>
+
+</html>
+
+

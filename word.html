@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cours Word - Écrire ses premiers textes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <style>
+        /* Styles spécifiques pour le simulateur Word */
+        .logiciel-word {
+            width: 100%; max-width: 800px; margin: 30px auto;
+            background: #f3f2f1; border: 2px solid #2b579a; border-radius: 5px; overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .ruban-word {
+            background: white; border-bottom: 1px solid #ddd; padding: 10px;
+            display: flex; gap: 15px; align-items: center; justify-content: center;
+        }
+        .btn-word {
+            padding: 8px 15px; border: 1px solid #ddd; background: white; cursor: pointer; border-radius: 3px;
+        }
+        .btn-word:hover { background: #ebebeb; }
+        .feuille-blanche {
+            width: 90%; max-width: 600px; height: 250px; background: white;
+            margin: 20px auto; box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 30px; outline: none; font-size: 1.2rem;
+            font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.5;
+            overflow-y: auto; text-align: left;
+        }
+        .feuille-blanche:empty:before { content: "Cliquez ici pour écrire..."; color: #aaa; }
+        
+        /* Centrage des sections de cours */
+        .etape-cours {
+            max-width: 800px;
+            margin: 20px auto;
+            text-align: center;
+        }
+        .etape-cours ul {
+            list-style: none;
+            padding: 0;
+            display: inline-block;
+            text-align: left;
+        }
+        .etape-cours ul li {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body class="page-cours" onload="demarrerChrono()">
+
+   <header>
+    <nav>
+        <ul>
+            <li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a></li>
+            <li>
+                <button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">
+                    🌙 Mode Sombre
+                </button>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+    <main class="contenu-cours">
+        <section class="entete-cours">
+            <h1><i class="fas fa-file-word" style="color: #2b579a;"></i> Écrire avec Word</h1>
+            <p class="consigne-majeure">Word est votre papier et votre stylo numérique.</p>
+        </section>
+
+        <section class="etape-cours" style="background: #e1eaf6; padding: 20px; border-radius: 15px; border: 1px solid #2b579a;">
+            <h2><i class="fas fa-edit"></i> À vous d'essayer !</h2>
+            <p id="consigne-word" style="font-weight: bold; color: #2b579a; margin-bottom: 20px;">
+                1. Cliquez dans la feuille blanche et écrivez "Bonjour".
+            </p>
+
+            <div class="logiciel-word">
+                <div class="ruban-word">
+                    <button class="btn-word" onclick="modifierTexte('bold')"><strong>G</strong></button>
+                    <button class="btn-word" onclick="modifierTexte('italic')"><i>I</i></button>
+                    <button class="btn-word" onclick="modifierTexte('underline')"><u>S</u></button>
+                    <button class="btn-word" onclick="modifierTexte('foreColor', 'red')"><i class="fas fa-font" style="color: red;"></i></button>
+                </div>
+                <div id="editeur" class="feuille-blanche" contenteditable="true"></div>
+            </div>
+        </section>
+
+        <section class="etape-cours">
+            <h2>1. Le Ruban (votre trousse à outils)</h2>
+            <p>Tout en haut de Word se trouve le <strong>Ruban</strong>. C'est là que vous choisirez vos outils :</p>
+            
+            <ul>
+                <li><i class="fas fa-bold" style="color: #2c3e50; margin-right: 10px;"></i> <strong>G (Gras) :</strong> Pour écrire plus épais.</li>
+                <li><i class="fas fa-italic" style="color: #2c3e50; margin-right: 10px;"></i> <em>I (Italique) :</em> Pour pencher le texte.</li>
+                <li><i class="fas fa-underline" style="color: #2c3e50; margin-right: 10px;"></i> <u>S (Souligné) :</u> Pour souligner les mots importants.</li>
+            </ul>
+        </section>
+
+        <div style="text-align: center; margin-top: 40px; margin-bottom: 50px;">
+            <button id="btn-valider-word" class="btn-cours" onclick="validerCours('word')" disabled style="opacity: 0.5;">
+                <i class="fas fa-check-circle"></i> J'ai compris l'utilisation de Word
+            </button>
+        </div>
+    </main>
+
+    <script>
+        const editeur = document.getElementById('editeur');
+        const consigne = document.getElementById('consigne-word');
+        const btnValider = document.getElementById('btn-valider-word');
+        let texteSaisi = false;
+
+        editeur.addEventListener('input', () => {
+            const texte = editeur.innerText.trim();
+            if (texte.length >= 3 && !texteSaisi) {
+                texteSaisi = true;
+                consigne.innerHTML = "2. Maintenant, <strong>sélectionnez le texte</strong> et cliquez sur le <strong>G</strong> en haut.";
+            }
+        });
+
+        function modifierTexte(commande, valeur = null) {
+            document.execCommand(commande, false, valeur);
+            editeur.focus();
+            if (texteSaisi) {
+                consigne.innerHTML = "✅ Parfait ! Vous savez maintenant utiliser Word.";
+                consigne.style.color = "#27ae60";
+                btnValider.disabled = false;
+                btnValider.style.opacity = "1";
+                btnValider.style.cursor = "pointer";
+            }
+        }
+    </script>
+
+<footer>
+    <p>&copy; 2026 Bernard TELLIER - Tous droits réservés.</p>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
