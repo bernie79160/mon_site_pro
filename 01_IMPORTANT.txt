@@ -1,0 +1,4 @@
+à faire très rapidement :
+
+1 - Page d'inscription avec récupération 'id' pour compteur visite (donc création bdd ident)
+2 - Retirer le "Bravo Bernard" par "Bravo 'id' 
