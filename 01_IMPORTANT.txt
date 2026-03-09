@@ -1,4 +1,36 @@
 à faire très rapidement :
 
 1 - Page d'inscription avec récupération 'id' pour compteur visite (donc création bdd ident)
+
 2 - Retirer le "Bravo Bernard" par "Bravo 'id' 
+
+VOICI EN DÉTAIL LE RÉFÉRENCEMENT DE LA FORMATION QUE L'ON DOIT DONNER
+
+Module 1
+
+Se familiariser avec les outils numérique (ordinateur, tablette, smartphone)
+Contraintes et avantages des matériels Sécuriser le poste de travail et le nomadisme Organiser son environnement numérique Stocker des informations
+Organiser et gérer son quotidien via le numérique Les démarches administratives en ligne
+Sécurité et éco responsabilité des achats en ligne Optimiser sa mobilité
+Rechercher, traiter et communiquer de l'information personnelle et professionnelle
+La navigation sur le Web La messagerie
+//Le respect de la citoyenneté numérique, usage éthique et responsable (Néo_Terra)//
+
+Module 2
+
+Connaître et maîtriser les fonctions de base et avancées des logiciels libres
+et Pack Office (traitement texte, tableur, diaporama, ...) Se connecter à différents outils numérique
+Acquérir les bases d'une communication écrite et visuelle efficace.
+Créer des animations ou des présentations
+Élaborer des présentations en utilisant les effets offerts par le logiciel Rédiger un Cv et une lettre de motivation
+Utiliser le tableur pour créer des tableaux, graphiques, bases de données Planifier et organiser son activité avec les outils informatiques
+
+Module 3
+
+Utiliser le numérique pour s'insérer professionnellement
+Mettre en ligne un Cv et une lettre de motivation
+Les réseaux professionnels et sociaux: créer, optimiser et enrichir son profil, Repérer les communautés / réseaux professionnels en lien avec son domaine d'activité
+Utiliser un navigateur, des outils en ligne, partagés Utiliser les outils Google, un agenda partagé
+Utiliser les recherches avancées sur le Web, les options de sa messagerie électronique
+//Créer un sondage ou questionnaire en ligne Connaître les bonnes pratiques et les règles d'usage: RGPD (Néo_Terra)//
+
