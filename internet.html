@@ -3,69 +3,328 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cours Internet - Naviguer en sécurité</title>
+    <title>Cours Internet - Guide Complet Interactif</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/png" href="favicon.png">
+    <style>
+        .guide-container { max-width: 900px; margin: 0 auto; }
+        .section-internet { 
+            background: white; padding: 25px; border-radius: 15px; margin-bottom: 25px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-left: 8px solid #3498db;
+        }
+        body.dark-mode .section-internet { background: #2d2d2d; color: white; border-left-color: #2980b9; }
+
+        /* Style navigateurs */
+        .grid-icones { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px; justify-content: center; }
+        .item-icone { text-align: center; width: 130px; cursor: pointer; transition: all 0.3s ease; padding: 15px; border-radius: 12px; background: #f8f9fa; border: 2px solid transparent; color: #333;}
+        body.dark-mode .item-icone { background: #3d3d3d; color: #eee; }
+        .item-icone:hover { transform: translateY(-5px); }
+        .item-icone i { font-size: 3rem; display: block; margin-bottom: 10px; }
+        .item-icone.vu { border-color: #27ae60; background: #e8f5e9; }
+
+        /* Fenêtre Modale Simulation */
+        .modal-browser { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+        .window-content { width: 95%; max-width: 1000px; height: 85vh; background: white; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; border: 1px solid #aaa; }
+        .window-header { padding: 8px 15px; display: flex; justify-content: flex-end; background: #eee; border-bottom: 1px solid #ccc; }
+        .close-btn { cursor: pointer; font-size: 1.5rem; color: #555; }
+        .browser-toolbar { display: flex; align-items: center; padding: 10px 15px; gap: 12px; border-bottom: 1px solid #ccc; background: #f1f3f4; }
+        .address-bar-container { flex: 1; display: flex; align-items: center; background: white; border-radius: 20px; padding: 6px 15px; border: 1px solid #ccc; font-size: 0.85rem; color: #333; }
+        .web-page-content { flex: 1; background: #fff; overflow-y: auto; }
+        .img-real-browser { width: 100%; height: auto; display: block; }
+
+        /* Styles Sécurité */
+        .critere { font-size: 0.9rem; margin: 5px 0; color: #e74c3c; transition: 0.3s; }
+        .critere.valide { color: #27ae60; }
+        .pass-meter { height: 12px; background: #eee; border-radius: 6px; margin: 15px 0; overflow: hidden; }
+        .pass-fill { height: 100%; width: 0%; transition: 0.5s; background: #e74c3c; }
+
+        /* Moteurs */
+        .moteur-card { display: flex; align-items: center; gap: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 10px; margin-bottom: 15px; cursor: pointer; background: white; color: #333; }
+        
+        /* --- SECTION 4 : BOUTONS GRIS / VERT / ROUGE --- */
+        .admin-test-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+        .admin-card { 
+            background: #eee; border: 2px solid #ccc; padding: 15px; border-radius: 10px; 
+            cursor: pointer; text-align: center; color: #444; transition: all 0.3s ease; 
+        }
+        .admin-card:hover { border-color: #3498db; background: #f5f5f5; }
+        .admin-card.correct { background: #27ae60 !important; color: white !important; border-color: #219150; cursor: default; }
+        .admin-card.wrong { background: #e74c3c !important; color: white !important; border-color: #c0392b; }
+        .url-box { font-family: monospace; font-size: 0.85rem; background: rgba(0,0,0,0.1); padding: 5px; border-radius: 5px; display: block; margin-top: 10px; }
+
+        /* Achats */
+        .achat-flex { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
+        .produit-card { background: white; border: 2px solid #ddd; padding: 15px; border-radius: 10px; width: 280px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); color: #333; cursor: pointer;}
+        .phone-sim { width: 200px; height: 350px; background: #333; border-radius: 25px; border: 6px solid #555; margin: 20px auto; position: relative; color: white; padding: 20px; }
+        .sms-box { background: white; color: #333; padding: 12px; border-radius: 10px; font-size: 0.85rem; margin-top: 60px; border-left: 5px solid #3498db; }
+        .btn-buy { background: #e67e22; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; }
+
+        /* Tri N°6 */
+        .tri-container { display: flex; flex-direction: column; align-items: center; gap: 20px; margin-top: 20px; }
+        .info-a-trier { background: #3498db; color: white; padding: 15px 25px; border-radius: 30px; font-weight: bold; cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .dossiers-tri { display: flex; gap: 30px; width: 100%; justify-content: center; }
+        .dossier-cible { width: 180px; padding: 20px 10px; border: 3px dashed #ccc; border-radius: 15px; text-align: center; cursor: pointer; color: #333; }
+
+        /* --- MODALE DE FÉLICITATION STYLISÉE --- */
+        #customAlert { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; backdrop-filter: blur(3px); }
+        .alert-box { background: white; padding: 35px; border-radius: 20px; text-align: center; max-width: 400px; width: 85%; border-top: 10px solid #27ae60; box-shadow: 0 20px 40px rgba(0,0,0,0.4); animation: popScale 0.4s cubic-bezier(0.17, 0.89, 0.32, 1.49); }
+        @keyframes popScale { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .alert-box i { font-size: 5rem; color: #27ae60; margin-bottom: 20px; }
+        .alert-box h3 { font-size: 1.8rem; margin-bottom: 10px; color: #2c3e50; }
+        .alert-box p { font-size: 1.1rem; color: #7f8c8d; margin-bottom: 25px; }
+
+        .icon-title { font-size: 1.8rem; color: #3498db; margin-right: 15px; }
+        .badge-eco { background: #27ae60; color: white; padding: 3px 10px; border-radius: 20px; font-size: 0.7rem; }
+    </style>
 </head>
 <body class="page-cours" onload="demarrerChrono()">
 
-   <header>
+<header>
     <nav>
         <ul>
             <li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a></li>
-            <li>
-                <button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">
-                    🌙 Mode Sombre
-                </button>
-            </li>
+            <li><button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">🌙 Mode Sombre</button></li>
         </ul>
     </nav>
 </header>
 
-    <main class="contenu-cours">
-        <section class="entete-cours">
-            <h1><i class="fas fa-globe"></i> Naviguer sur Internet</h1>
-            <p class="introduction">Internet est une immense bibliothèque. Voici comment l'utiliser sans crainte.</p>
-        </section>
+<main class="contenu-cours guide-container">
+    <section class="entete-cours">
+        <h1><i class="fas fa-globe"></i> Maîtriser Internet</h1>
+        <p class="introduction">Utilisez les vrais outils et apprenez à déjouer les pièges.</p>
+    </section>
 
-        <section class="etape-cours">
-            <h2>1. Votre fenêtre sur le monde</h2>
-            <p>Pour aller sur Internet, on utilise un logiciel appelé <strong>Navigateur</strong> (comme Chrome, Firefox ou Edge).</p>
-            
-            <p>L'élément le plus important est la <strong>Barre d'adresse</strong> tout en haut. C'est là qu'on tape le nom du site où l'on veut aller.</p>
-        </section>
-
-        <section class="etape-cours">
-            <h2>2. Le petit cadenas fermé</h2>
-            <p>C'est votre garde du corps numérique. Avant de donner votre nom ou de payer en ligne, vérifiez toujours qu'il y a un <strong>petit cadenas</strong> à gauche de l'adresse du site.</p>
-            <div class="comparaison">
-                <p><i class="fas fa-lock" style="color: #27ae60;"></i> <strong>Cadenas fermé :</strong> Le site est sécurisé.</p>
-                <p><i class="fas fa-unlock" style="color: #e74c3c;"></i> <strong>Pas de cadenas :</strong> Prudence, ne donnez aucune information !</p>
-            </div>
-        </section>
-
-        <section class="etape-cours">
-            <h2>3. Le courrier électronique (Email)</h2>
-            <p>Un email, c'est comme une lettre postale, mais instantanée. Elle a toujours une structure fixe :</p>
-            <ul>
-                <li><strong>De :</strong> C'est vous (l'expéditeur).</li>
-                <li><strong>À :</strong> L'adresse de votre ami (le destinataire).</li>
-                <li><strong>Objet :</strong> Le titre de votre message.</li>
-            </ul>
-            
-        </section>
-
-        <div class="actions-cours">
-            <button class="btn-validation" onclick="validerCours('internet')">J'ai terminé la leçon Internet !</button>
+    <section class="section-internet">
+        <h2><i class="fas fa-window-maximize icon-title"></i> 1. Les Navigateurs</h2>
+        <p>Cliquez sur chaque icône pour voir l'image réelle du logiciel :</p>
+        <div class="grid-icones">
+            <div class="item-icone" id="btn-chrome" onclick="ouvrirNavigateur('chrome')"><i class="fab fa-chrome" style="color: #4285F4;"></i>Chrome</div>
+            <div class="item-icone" id="btn-firefox" onclick="ouvrirNavigateur('firefox')"><i class="fab fa-firefox-browser" style="color: #E66000;"></i>Firefox</div>
+            <div class="item-icone" id="btn-edge" onclick="ouvrirNavigateur('edge')"><i class="fab fa-edge" style="color: #0078D7;"></i>Edge</div>
+            <div class="item-icone" id="btn-safari" onclick="ouvrirNavigateur('safari')"><i class="fab fa-safari" style="color: #00AEEF;"></i>Safari</div>
         </div>
-    </main>
+    </section>
 
-<footer>
-    <p>&copy; 2026 Bernard TELLIER - Tous droits réservés.</p>
-</footer>
+    <section class="section-internet" style="border-left-color: #e74c3c;">
+        <h2><i class="fas fa-shield-alt icon-title" style="color:#e74c3c;"></i> 2. La Sécurité : Votre Coffre-fort</h2>
+        <div class="securite-box">
+            <p>Respectez les 4 règles pour ouvrir le coffre :</p>
+            <input type="text" id="pass-tester" placeholder="Tapez votre mot de passe..." oninput="testerPass()" style="width:100%; padding:12px; border:1px solid #ccc; border-radius:5px; text-align:center; color:#333;">
+            <div class="pass-meter"><div id="pass-fill" class="pass-fill"></div></div>
+            <div style="text-align:left; color:#333;">
+                <div id="rule-len" class="critere"><i class="fas fa-times-circle"></i> 12 caractères minimum</div>
+                <div id="rule-maj" class="critere"><i class="fas fa-times-circle"></i> 1 Majuscule minimum</div>
+                <div id="rule-num" class="critere"><i class="fas fa-times-circle"></i> 1 chiffre minimum</div>
+                <div id="rule-spe" class="critere"><i class="fas fa-times-circle"></i> 2 caractères spéciaux (&, @, ?, !, #)</div>
+            </div>
+            <div id="coffre-visuel" style="font-size: 3rem; text-align:center; color: #95a5a6; margin-top:10px;"><i class="fas fa-lock"></i></div>
+        </div>
+    </section>
 
-    <script src="script.js"></script>
+    <section class="section-internet" style="border-left-color: #2ecc71;">
+        <h2><i class="fas fa-search icon-title" style="color:#2ecc71;"></i> 3. Moteurs de recherche</h2>
+        <div class="moteur-card" onclick="choisirMoteur('Google')">
+            <i class="fab fa-google" style="font-size:2rem; color:#4285F4; margin: 0 15px;"></i>
+            <div style="flex:1"><strong>Google</strong><br><small>Le plus rapide et complet mais le plus gourmant en données.</small></div>
+        </div>
+        <div class="moteur-card" onclick="choisirMoteur('Lilo')">
+            <i class="fas fa-tint" style="font-size:2rem; color:#3498db; margin: 0 15px;"></i>
+            <div style="flex:1"><strong>Lilo</strong> <span class="badge-eco">ÉCO_RESPONSABLE</span><br><small>Finance des projets sociaux.</small></div>
+        </div>
+        <div class="moteur-card" onclick="choisirMoteur('Ecosia')">
+            <i class="fas fa-tree" style="font-size:2rem; color:#27ae60; margin: 0 15px;"></i>
+            <div style="flex:1"><strong>Ecosia</strong> <span class="badge-eco">ÉCO_RESPONSABLE</span><br><small>Plante des arbres grâce à vos recherches.</small></div>
+        </div>
+        <div id="moteur-feedback" style="display:none; color:#27ae60; text-align:center; font-weight:bold; margin-top:10px;">✅ Choix enregistré !</div>
+    </section>
+
+    <section class="section-internet" style="border-left-color: #f1c40f;">
+        <h2><i class="fas fa-file-invoice icon-title" style="color:#f1c40f;"></i> 4. Administration : Le réflexe .gouv.fr</h2>
+        <p>Trouvez les <strong>deux sites officiels</strong> :</p>
+        <div class="admin-test-container">
+            <div class="admin-card" id="site-1" onclick="testerAdmin(1, true)"><strong>Impôts</strong><br><span class="url-box">www.impots.gouv.fr</span></div>
+            <div class="admin-card" id="site-2" onclick="testerAdmin(2, false)"><strong>Remboursement</strong><br><span class="url-box">www.secu-france.com</span></div>
+            <div class="admin-card" id="site-3" onclick="testerAdmin(3, false)"><strong>Ma Retraite</strong><br><span class="url-box">www.retraite-info.biz</span></div>
+            <div class="admin-card" id="site-4" onclick="testerAdmin(4, true)"><strong>Santé</strong><br><span class="url-box">www.ameli.fr</span></div>
+        </div>
+        <p id="admin-feedback" style="margin-top:15px; font-weight:bold; text-align:center; min-height:24px;"></p>
+    </section>
+
+    <section class="section-internet" style="border-left-color: #e67e22;">
+        <h2><i class="fas fa-shopping-cart icon-title" style="color:#e67e22;"></i> 5. Les Achats : Apprenez à comparer</h2>
+        <div class="achat-flex" id="etape-achat-1">
+            <div class="produit-card" onclick="choisirAchat('faux')">
+                <span class="fake-url-mini"><i class="fas fa-unlock" style="color:#e74c3c"></i> http://super-soldes.biz</span>
+                <div class="avis-box"><strong>Marc :</strong> "Arnaque ! Jamais reçu."</div>
+                <button class="btn-buy" style="background:#95a5a6; margin-top:10px;">Acheter</button>
+            </div>
+            <div class="produit-card" onclick="choisirAchat('vrai')">
+                <span class="fake-url-mini"><i class="fas fa-lock" style="color:#27ae60"></i> https://www.boutique-fiable.fr</span>
+                <div class="avis-box"><strong>Léa :</strong> "Livraison rapide et sécurisée."</div>
+                <button class="btn-buy" style="margin-top:10px;">Acheter en sécurité</button>
+            </div>
+        </div>
+        <div id="etape-achat-2" style="display:none; text-align:center; margin-top:20px;">
+            <div class="phone-sim">
+                <div class="sms-box">BANQUE : Code secret : <br><strong style="font-size:1.2rem; color:#e67e22;">9315</strong></div>
+                <input type="text" id="sms-input" maxlength="4" placeholder="Code..." style="width:100%; margin-top:30px; padding:8px; text-align:center; color: #333;">
+                <button class="btn-buy" style="margin-top:15px; background:#3498db;" onclick="validerSMS()">Confirmer</button>
+            </div>
+        </div>
+        <p id="achat-feedback" style="margin-top:15px; font-weight:bold; text-align:center; min-height:24px;"></p>
+    </section>
+
+    <section class="section-internet" style="border-left-color: #9b59b6;">
+        <h2><i class="fas fa-user-lock icon-title" style="color:#9b59b6;"></i> 6. Vie privée : Trier l'information</h2>
+        <p style="color: #666; font-style: italic; margin-bottom: 15px;">Cliquez sur le bon dossier en fonction de ce qui s'affiche dans l'info bleu</p>
+        <div class="tri-container">
+            <div id="info-bulle" class="info-a-trier">Cliquez pour commencer</div>
+            <div class="dossiers-tri">
+                <div class="dossier-cible perso" onclick="trierInfo('perso')"><i class="fas fa-home"></i><br><strong>PRIVÉ</strong></div>
+                <div class="dossier-cible pro" onclick="trierInfo('pro')"><i class="fas fa-briefcase"></i><br><strong>PUBLIC</strong></div>
+            </div>
+            <p id="tri-feedback" style="font-weight:bold; height:24px;"></p>
+            <p style="font-size:0.8rem; color:#666;">Infos restantes : <span id="nb-restant">5</span></p>
+        </div>
+    </section>
+
+    <div class="actions-cours" style="text-align: center; margin-top: 40px; padding-bottom: 40px;">
+        <button id="btn-valider-internet" class="btn-card" style="background-color: #95a5a6; cursor: not-allowed; min-width: 300px;" disabled onclick="validerCours('internet')">
+            Réussissez tous les ateliers pour valider
+        </button>
+    </div>
+</main>
+
+<div id="customAlert">
+    <div class="alert-box">
+        <i class="fas fa-check-circle"></i>
+        <h3 id="alertTitle">Félicitations !</h3>
+        <p id="alertMsg">C'est une excellente réponse.</p>
+        <button class="btn-buy" style="margin-top:10px; background:#27ae60;" onclick="closeAlert()">Continuer</button>
+    </div>
+</div>
+
+<div id="browserModal" class="modal-browser">
+    <div id="win-content" class="window-content">
+        <div class="window-header"><span class="close-btn" onclick="fermerNavigateur()"><i class="fas fa-times-circle"></i></span></div>
+        <div class="window-body">
+            <div class="browser-toolbar">
+                <div class="address-bar-container"><i class="fas fa-lock"></i><span id="fake-url"></span></div>
+            </div>
+            <div class="web-page-content" id="web-content"></div>
+        </div>
+    </div>
+</div>
+
+<footer><p>&copy; 2026 Bernard TELLIER - Tous droits réservés.</p></footer>
+
+<script>
+    let vus = { chrome: false, firefox: false, edge: false, safari: false, coffre: false, moteur: false, admin: 0, achat: false, tri: false };
+
+    // --- NAVIGATEURS ---
+    function ouvrirNavigateur(id) {
+        const pages = {
+            chrome: { url: "https://www.google.fr", img: "images/google_chrome.jpg" },
+            firefox: { url: "https://fr.wikipedia.org", img: "images/firefox.jpg" },
+            edge: { url: "https://www.bing.com", img: "images/microsoft_edge.jpg" },
+            safari: { url: "https://www.apple.fr", img: "images/safari.jpg" }
+        };
+        const data = pages[id];
+        document.getElementById('fake-url').innerText = data.url;
+        document.getElementById('web-content').innerHTML = `<img src="${data.img}" class="img-real-browser">`;
+        document.getElementById('browserModal').style.display = 'flex';
+        vus[id] = true; document.getElementById('btn-' + id).classList.add('vu');
+        verifierTout();
+    }
+    function fermerNavigateur() { document.getElementById('browserModal').style.display = 'none'; }
+
+    // --- COFFRE-FORT ---
+    function testerPass() {
+        const p = document.getElementById('pass-tester').value;
+        const checks = { len: p.length >= 12, maj: /[A-Z]/.test(p), num: /[0-9]/.test(p), spe: (p.match(/[^A-Za-z0-9]/g) || []).length >= 2 };
+        updateCritere('rule-len', checks.len, "12 caractères minimum");
+        updateCritere('rule-maj', checks.maj, "1 Majuscule minimum");
+        updateCritere('rule-num', checks.num, "1 chiffre minimum");
+        updateCritere('rule-spe', checks.spe, "2 caractères spéciaux");
+        let score = (Object.values(checks).filter(v => v).length) * 25;
+        document.getElementById('pass-fill').style.width = score + "%";
+        if(score === 100) { vus.coffre = true; document.getElementById('coffre-visuel').innerHTML = '<i class="fas fa-lock-open" style="color:#27ae60"></i>'; verifierTout(); }
+    }
+    function updateCritere(id, ok, txt) {
+        const el = document.getElementById(id);
+        el.className = ok ? "critere valide" : "critere";
+        el.innerHTML = `<i class="fas fa-${ok?'check-circle':'times-circle'}"></i> ${txt}`;
+    }
+
+    // --- MOTEURS ---
+    function choisirMoteur(n) { document.getElementById('moteur-feedback').style.display='block'; vus.moteur = true; verifierTout(); }
+
+    // --- ADMINISTRATION (LOGIQUE COULEURS + MODALE) ---
+    function testerAdmin(id, isCorrect) {
+        const el = document.getElementById('site-' + id);
+        if (el.classList.contains('correct') || el.classList.contains('wrong')) return;
+
+        if(isCorrect) { 
+            el.classList.add('correct'); 
+            vus.admin++; 
+            showCongrats("Bravo Bernard !", "C'est bien un site officiel sécurisé de l'État.");
+        } else { 
+            el.classList.add('wrong'); 
+            document.getElementById('admin-feedback').innerHTML = "<span style='color:#e74c3c;'>Attention ! Ce site est frauduleux, regardez l'adresse.</span>";
+        }
+        verifierTout();
+    }
+
+    function showCongrats(title, msg) {
+        document.getElementById('alertTitle').innerText = title;
+        document.getElementById('alertMsg').innerText = msg;
+        document.getElementById('customAlert').style.display = 'flex';
+    }
+    function closeAlert() { document.getElementById('customAlert').style.display = 'none'; }
+
+    // --- ACHATS ---
+    function choisirAchat(type) {
+        const fb = document.getElementById('achat-feedback');
+        if(type === 'faux') fb.innerHTML = "<span style='color:#e74c3c;'>Attention : Pas de cadenas + avis négatifs = Danger !</span>";
+        else { document.getElementById('etape-achat-1').style.display = 'none'; document.getElementById('etape-achat-2').style.display = 'block'; fb.innerHTML = ""; }
+    }
+    function validerSMS() {
+        if(document.getElementById('sms-input').value === '9315') {
+            document.getElementById('etape-achat-2').innerHTML = `<p style="color:#27ae60;font-weight:bold;">Achat sécurisé validé !</p>`;
+            vus.achat = true; verifierTout();
+        }
+    }
+
+    // --- TRI INFO ---
+    const listeInfos = [{ txt: "Numéro de carte bleue", cat: "perso" }, { txt: "Mes diplômes (CV)", cat: "pro" }, { txt: "Mot de passe Email", cat: "perso" }, { txt: "Mes compétences pro", cat: "pro" }, { txt: "Photo de mes enfants", cat: "perso" }];
+    let indexTri = 0;
+    function chargerInfoTri() {
+        if(indexTri < listeInfos.length) {
+            document.getElementById('info-bulle').innerText = listeInfos[indexTri].txt;
+            document.getElementById('nb-restant').innerText = listeInfos.length - indexTri;
+        } else {
+            document.getElementById('info-bulle').style.display = 'none';
+            document.getElementById('tri-feedback').innerHTML = "<span style='color:#27ae60;'>Parfait ! Tri terminé.</span>";
+            vus.tri = true; verifierTout();
+        }
+    }
+    function trierInfo(choix) {
+        if(indexTri >= listeInfos.length) return;
+        const fb = document.getElementById('tri-feedback');
+        if(choix === listeInfos[indexTri].cat) { fb.innerHTML = "<span style='color:#27ae60;'>Oui !</span>"; indexTri++; setTimeout(chargerInfoTri, 800); }
+        else fb.innerHTML = "<span style='color:#e74c3c;'>Attention, cette info est sensible !</span>";
+    }
+    chargerInfoTri();
+
+    function verifierTout() {
+        if (vus.chrome && vus.firefox && vus.edge && vus.safari && vus.coffre && vus.moteur && vus.admin >= 2 && vus.achat && vus.tri) {
+            const btn = document.getElementById('btn-valider-internet');
+            btn.disabled = false; btn.style.backgroundColor = "#27ae60"; btn.style.cursor = "pointer";
+            btn.innerHTML = "Valider la leçon Internet";
+        }
+    }
+</script>
+<script src="script.js"></script>
 </body>
-
 </html>
