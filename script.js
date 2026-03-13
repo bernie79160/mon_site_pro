@@ -11,7 +11,7 @@ let chronoDebut = 0;
 function demarrerChrono() { chronoDebut = Date.now(); }
 
 /** L'ordre exact des fichiers HTML pour la progression */
-const ordreCours = ["pointeur", "barredefil", "informatique", "windows", "explorateur", "bureau", "clavier", "internet","word", "excel", "powerpoint", "mail"];
+const ordreCours = ["pointeur", "barredefil", "informatique", "windows", "explorateur", "bureau", "clavier", "internet", "mail", "word", "excel", "powerpoint", ];
 
 window.addEventListener("DOMContentLoaded", () => {
     chargerTheme();
