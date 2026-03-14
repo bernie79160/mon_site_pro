@@ -175,7 +175,7 @@ function verifierConnexion() {
     } else {
         let user = JSON.parse(userStr);
         document.getElementById("login-modal").style.display = "none";
-        document.getElementById("user-info").style.display = "block";
+        document.getElementById("user-info").style.display = "flex";
         document.getElementById("nom-affichage").innerText = user.nom;
         if(user.id) document.getElementById("id-affichage").innerText = "ID: " + user.id;
         
