@@ -54,10 +54,16 @@
       </div>
     </div>
 
-    <div id="user-info" style="text-align: center; padding: 15px; background: rgba(52, 152, 219, 0.1); display: none; margin-bottom:20px;">
-        <strong><i class="fas fa-user"></i> <span id="nom-affichage"></span></strong> | <span id="id-affichage" style="font-family:monospace; background:#eee; padding:2px 5px; border-radius:3px;">ID: ---</span>
+    <div id="user-info">
+      <div class="user-main-line">
+        <strong><i class="fas fa-user"></i> <span id="nom-affichage"></span></strong> 
+        | <span id="id-affichage" style="font-family:monospace; background:#eee; padding:2px 5px; border-radius:3px;">ID: ---</span>
         <button onclick="seDeconnecter()" style="color: #e74c3c; cursor: pointer; border: none; background: none; text-decoration: underline; margin-left: 10px;">Déconnexion</button>
-        <button id="admin-access-zone" onclick="ouvrirDashboard()" style="display:none; background: #f39c12; color: white; border-radius: 5px; border: none; padding: 5px 10px; margin-left: 10px;">Dashboard</button>
+      </div>
+
+      <button id="admin-access-zone" onclick="ouvrirDashboard()" style="display:none;">
+        <i class="fas fa-chart-line"></i> Dashboard
+      </button>
     </div>
 
     <main id="accueil">

@@ -683,3 +683,49 @@ body.dark-mode #admin-dashboard tbody tr:nth-child(even) {
     display: block;
     margin-top: 2px;
 }
+
+/* ==========================================
+   14. BANDEAU UTILISATEUR (CENTRE & COLONNE)
+   ========================================== */
+#user-info {
+    display: none; /* Sera géré par le JavaScript */
+    flex-direction: column; /* Force l'empilement vertical */
+    align-items: center;    /* Centre tout horizontalement */
+    justify-content: center;
+    gap: 15px;
+    padding: 20px;
+    background: rgba(52, 152, 219, 0.1);
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+/* Ligne contenant le Nom, l'ID et la Déconnexion */
+.user-main-line {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 1.1rem;
+}
+
+/* Style spécifique du bouton Dashboard quand il est en dessous */
+#admin-access-zone {
+    background-color: #f39c12;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+#admin-access-zone:hover {
+    background-color: #e67e22;
+    transform: translateY(-2px);
+}
+
+/* Adaptation mode sombre */
+body.dark-mode #user-info {
+    background: rgba(255, 255, 255, 0.05);
+}

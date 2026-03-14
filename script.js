@@ -25,6 +25,14 @@ let currentAuthMode = 'login';
 
 function switchAuthMode(mode) {
     currentAuthMode = mode;
+    
+    // --- CORRECTIF : Si on passe en inscription, on décoche et on cache le mode formateur ---
+    const checkAdmin = document.getElementById('check-admin');
+    if (mode === 'register' && checkAdmin) {
+        checkAdmin.checked = false;
+        togglePassword(); // On remet l'affichage à zéro (cache le MDP)
+    }
+
     document.getElementById('tab-login').classList.toggle('active', mode === 'login');
     document.getElementById('tab-register').classList.toggle('active', mode === 'register');
     document.getElementById('login-only-zone').style.display = mode === 'login' ? 'block' : 'none';
@@ -36,8 +44,16 @@ function switchAuthMode(mode) {
 }
 
 function handleAuth() {
-    const prenom = document.getElementById('login-nom').value.trim();
-    if(!prenom) { alert("Veuillez entrer votre prénom"); return; }
+    const isFormateur = document.getElementById('check-admin').checked;
+    let prenom = document.getElementById('login-nom').value.trim();
+
+    // Si on est formateur, on définit un nom par défaut
+    if (isFormateur) {
+        prenom = "Administrateur"; 
+    } else {
+        // Si c'est un élève, le prénom est obligatoire
+        if(!prenom) { alert("Veuillez entrer votre prénom"); return; }
+    }
 
     let carnet = JSON.parse(localStorage.getItem("carnetEtudiants") || "{}");
 
@@ -52,7 +68,6 @@ function handleAuth() {
         alert("✅ Inscription réussie !\n\nIMPORTANT : Notez votre Identifiant :\n" + newID);
         location.reload();
     } else {
-        const isFormateur = document.getElementById('check-admin').checked;
         if(isFormateur) {
             if(document.getElementById('login-mdp').value === "1234") {
                 localStorage.setItem('utilisateurActuel', JSON.stringify({ nom: prenom, isAdmin: true }));
@@ -73,6 +88,17 @@ function handleAuth() {
 
 function seDeconnecter() {
     localStorage.removeItem("utilisateurActuel");
+    // 2. ON DÉCOCHE LA CASE FORMATEUR (La ligne à ajouter)
+    const checkAdmin = document.getElementById("check-admin");
+    if (checkAdmin) {
+        checkAdmin.checked = false;
+    }
+
+    // 3. On cache aussi le mot de passe s'il était affiché
+    const mdpInput = document.getElementById("login-mdp");
+    if (mdpInput) {
+        mdpInput.style.display = "none";
+    }
     // On nettoie aussi les marqueurs de cours pour le prochain
     ordreCours.forEach(c => localStorage.removeItem("cours-" + c));
     location.reload();
@@ -175,7 +201,7 @@ function verifierConnexion() {
     } else {
         let user = JSON.parse(userStr);
         document.getElementById("login-modal").style.display = "none";
-        document.getElementById("user-info").style.display = "block";
+        document.getElementById("user-info").style.display = "flex";
         document.getElementById("nom-affichage").innerText = user.nom;
         if(user.id) document.getElementById("id-affichage").innerText = "ID: " + user.id;
         
@@ -237,7 +263,23 @@ function toggleModeSombre() {
 
 function togglePassword() {
     const isChecked = document.getElementById("check-admin").checked;
-    document.getElementById("login-mdp").style.display = isChecked ? "block" : "none";
+    const mdpInput = document.getElementById("login-mdp");
+    const loginNom = document.getElementById("login-nom");
+    const loginIdZone = document.getElementById("login-only-zone");
+
+    if (isChecked) {
+        // Mode Formateur
+        mdpInput.style.display = "block";
+        loginNom.style.display = "none";   // On cache le prénom
+        if(loginIdZone) loginIdZone.style.display = "none"; // On cache l'ID
+    } else {
+        // Mode Élève
+        mdpInput.style.display = "none";
+        loginNom.style.display = "block";  // On réaffiche le prénom
+        if(currentAuthMode === 'login') {
+            if(loginIdZone) loginIdZone.style.display = "block";
+        }
+    }
 }
 
 function ouvrirCours(nom) { window.location.href = nom + ".html"; }
