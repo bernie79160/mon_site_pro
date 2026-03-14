@@ -201,5 +201,33 @@
     </div>
 
     <script src="script.js"></script>
+    <div id="admin-dashboard" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 2000; justify-content: center; align-items: center;">
+      <div style="background: white; width: 90%; max-width: 800px; max-height: 85vh; padding: 30px; border-radius: 12px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5); overflow-y: auto; position: relative;">
+        
+        <h2 style="color: #f39c12; margin-top: 0; border-bottom: 2px solid #f39c12; padding-bottom: 10px;">
+            <i class="fas fa-crown"></i> Espace Formateur
+        </h2>
+
+        <div style="overflow-x: auto; margin-top: 20px">
+            <table style="width: 100%; border-collapse: collapse; text-align: left; min-width: 500px;">
+                <thead>
+                    <tr style="background-color: #f8f9fa; border-bottom: 2px solid #dee2e6;">
+                        <th style="padding: 12px">Nom de l'élève</th>
+                        <th style="padding: 12px">Cours terminés</th>
+                        <th style="padding: 12px">Détail des temps</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-etudiants"></tbody>
+            </table>
+        </div>
+
+        <div style="margin-top: 30px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #eee; padding-top: 20px;">
+            <div style="display: flex; gap: 10px;">
+                <button class="btn-corrige" onclick="effacerDonnees()" style="background-color: #e74c3c; padding: 10px 15px; border-radius: 5px; color: white; border: none; cursor: pointer;"><i class="fas fa-trash"></i> Réinitialiser la machine</button>
+            </div>
+            <button class="btn-cancel" onclick="fermerDashboard()" style="padding: 10px 25px; border-radius: 5px; border: 1px solid #ccc; cursor: pointer; background: #f8f9fa;">Fermer</button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
