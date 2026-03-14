@@ -298,6 +298,21 @@ body.dark-mode .entete-cours {
 body.dark-mode .consigne-majeure {
   background-color: #5a5a5a;
 }
+
+/* Correction pour la boîte de connexion en mode sombre */
+body.dark-mode #login-modal > div {
+    background: #2d2d2d !important;
+    color: white !important;
+}
+body.dark-mode #login-modal h2, 
+body.dark-mode #login-modal label {
+    color: white !important;
+}
+body.dark-mode #login-modal input {
+    background: #444;
+    color: white;
+    border-color: #666;
+}
 /* ==========================================
    6. LE BUREAU & LOOK RACCOURCI
    ========================================== */
