@@ -229,16 +229,107 @@ function togglePassword() {
 }
 
 function ouvrirCours(nom) { window.location.href = nom + ".html"; }
-function ouvrirDashboard() { document.getElementById("admin-dashboard").style.display = "flex"; générerTableauAdmin(); }
-function fermerDashboard() { document.getElementById("admin-dashboard").style.display = "none"; }
+// ==========================================
+// 4. FONCTIONS DU TABLEAU DE BORD ADMIN
+// ==========================================
 
-function générerTableauAdmin() {
+/**
+ * Ouvre la fenêtre modale du dashboard et génère le tableau des résultats
+ */
+function ouvrirDashboard() {
     const tbody = document.getElementById("tbody-etudiants");
-    const etudiants = JSON.parse(localStorage.getItem("carnetEtudiants") || "{}");
-    tbody.innerHTML = "";
-    Object.values(etudiants).forEach(u => {
-        let tr = document.createElement("tr");
-        tr.innerHTML = `<td style="padding:10px">${u.nom} (${u.id})</td><td>${Object.keys(u.tempsParCours || {}).length}</td><td>Connecté</td>`;
-        tbody.appendChild(tr);
-    });
+    if (!tbody) return;
+
+    tbody.innerHTML = ""; // Nettoyage préalable
+
+    // Récupération du carnet global
+    const etudiantsStr = localStorage.getItem("carnetEtudiants");
+    const etudiants = etudiantsStr ? JSON.parse(etudiantsStr) : {};
+
+    const nomsEtudiants = Object.keys(etudiants);
+
+    if (nomsEtudiants.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="3" style="text-align:center; padding: 30px; color: #7f8c8d;">
+                    <i class="fas fa-user-slash" style="font-size: 2rem; display: block; margin-bottom: 10px;"></i>
+                    Aucun élève enregistré sur cet ordinateur.
+                </td>
+            </tr>`;
+    } else {
+        nomsEtudiants.forEach(nom => {
+            const user = etudiants[nom];
+            let tempsHtml = "";
+            let nbCours = 0;
+
+            // Génération des badges de temps pour chaque cours
+      for (const cours in user.tempsParCours) {
+        const totalSec = user.tempsParCours[cours];
+        const min = Math.floor(totalSec / 60);
+        const sec = totalSec % 60;
+    
+          // On force le badge à rester "tranquille" dans sa case avec un style Inline fort
+          tempsHtml += `
+          <span style="
+            background: #34495e !important; 
+            color: white !important; 
+            padding: 4px 8px !important; 
+            border-radius: 4px !important; 
+            font-size: 0.75rem !important; 
+            display: inline-block !important;
+            position: static !important;
+            margin: 2px !important;
+            width: auto !important;
+            height: auto !important;
+            transform: none !important;
+            box-shadow: none !important;">
+            ${cours} : ${min}m ${sec}s</span>`;
+          nbCours++;
+          }
+
+          // Création de la ligne du tableau
+          const tr = document.createElement("tr");
+          tr.style.borderBottom = "1px solid #eee";
+          tr.innerHTML = `
+            <td style="padding: 12px; font-weight: bold; color: #2c3e50; white-space: nowrap;">
+                <i class="fas fa-user-graduate"></i> ${user.nom}
+            </td>
+            <td style="padding: 12px; text-align: center;">
+              <span style="background: #ecf0f1; padding: 4px 10px; border-radius: 20px; font-weight: 600;">
+                ${nbCours} / 10
+              </span>
+            </td>
+            <td style="padding: 12px; display: flex; flex-wrap: wrap; gap: 5px; min-width: 250px;">
+              ${tempsHtml || '<em style="color:#bdc3c7;">Aucun temps enregistré</em>'}
+            </td>
+          `;
+          tbody.appendChild(tr);
+      });
+    }
+
+    // Affichage de la modale
+    document.getElementById("admin-dashboard").style.display = "flex";
+}
+
+/**
+ * Ferme la fenêtre modale du dashboard
+ */
+function fermerDashboard() {
+    const dashboard = document.getElementById("admin-dashboard");
+    if (dashboard) dashboard.style.display = "none";
+}
+
+/**
+ * Supprime TOUTES les données de progression de TOUS les élèves
+ */
+function effacerDonnees() {
+    const confirmation = confirm("⚠️ ATTENTION\n\nCela va effacer définitivement la progression et les temps de TOUS les élèves sur cet ordinateur.\n\nContinuer ?");
+    
+    if (confirmation) {
+        localStorage.removeItem("carnetEtudiants");
+        // On peut aussi supprimer les "done" individuels si besoin
+        ordreCours.forEach(c => localStorage.removeItem("cours-" + c));
+        
+        ouvrirDashboard(); // Rafraîchit l'affichage (affichera "Aucun élève")
+    }
 }
