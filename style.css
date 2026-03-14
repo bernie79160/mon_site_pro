@@ -600,3 +600,86 @@ footer {
   -webkit-user-select: none;
   user-select: none;
 }
+
+/* ==========================================
+   13. PANEL ADMIN (DASHBOARD)
+   ========================================== */
+
+/* Conteneur principal du tableau */
+#admin-dashboard table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: white;
+    color: #333;
+    border-radius: 8px;
+    overflow: hidden; /* Pour que les coins arrondis fonctionnent */
+}
+
+/* En-tête du tableau */
+#admin-dashboard thead {
+    background-color: #f39c12; /* Orange pour l'admin */
+    color: white;
+}
+
+#admin-dashboard th {
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+
+/* Cellules du tableau */
+#admin-dashboard td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+/* Style des petits badges de temps (m et s) */
+.badge-temps {
+    display: inline-block;
+    background: #34495e;
+    color: #ecf0f1;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: 'monospace';
+    font-size: 11px;
+    margin: 2px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Lignes alternées (Zebrure) */
+#admin-dashboard tbody tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+/* Mode Sombre pour le Dashboard */
+body.dark-mode #admin-dashboard .custom-confirm-box {
+    background-color: #2d2d2d;
+}
+
+body.dark-mode #admin-dashboard table {
+    background-color: #3d3d3d;
+    color: white;
+}
+
+body.dark-mode #admin-dashboard thead {
+    background-color: #d35400; /* Orange plus foncé en mode sombre */
+}
+
+body.dark-mode #admin-dashboard td {
+    border-bottom-color: #444;
+}
+
+body.dark-mode #admin-dashboard tbody tr:nth-child(even) {
+    background-color: #333;
+}
+
+/* Petit texte sous le nom (pour l'ID) */
+#admin-dashboard td small {
+    color: #7f8c8d;
+    display: block;
+    margin-top: 2px;
+}
