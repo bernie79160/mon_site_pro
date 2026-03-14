@@ -178,9 +178,12 @@ function verifierConnexion() {
         document.getElementById("user-info").style.display = "block";
         document.getElementById("nom-affichage").innerText = user.nom;
         if(user.id) document.getElementById("id-affichage").innerText = "ID: " + user.id;
-
+        
         if (user.isAdmin) {
-            document.getElementById("admin-access-zone").style.display = "block";
+            const btnAdmin = document.getElementById("admin-access-zone");
+            if (btnAdmin) {
+                btnAdmin.style.setProperty("display", "inline-block", "important");
+            }
         }
         mettreAJourProgression();
         appliquerVerrouillageVisuel();
