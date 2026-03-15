@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Cours 2 - Mise en page et Listes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <style>
+        .logiciel-word {
+            width: 100%; max-width: 900px; margin: 30px auto;
+            background: #f3f2f1; border: 1px solid #a1a1a1; border-radius: 4px; overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); display: flex; flex-direction: column;
+        }
+        .word-title-bar { background: #2b579a; color: white; padding: 8px 15px; display: flex; align-items: center; gap: 10px; font-size: 0.9rem; }
+        .ruban-word { background: #fff; border-bottom: 1px solid #d1d1d1; display: flex; padding: 5px 10px; gap: 2px; }
+        .ruban-groupe { display: flex; flex-direction: column; align-items: center; padding: 5px 10px; border-right: 1px solid #e1e1e1; }
+        .groupe-label { font-size: 0.7rem; color: #666; text-transform: uppercase; margin-top: auto; padding-top: 5px; }
+        .groupe-outils { display: flex; gap: 5px; align-items: center; flex: 1; }
+        .btn-tool { background: transparent; border: 1px solid transparent; padding: 8px; cursor: pointer; border-radius: 3px; display: flex; flex-direction: column; align-items: center; gap: 3px; color: #333; }
+        .btn-tool:hover { background: #edebe9; border-color: #d1d1d1; }
+        .btn-tool.active { background: #cce4f7; border-color: #0078d4; }
+
+        .workspace-word { background: #e1e1e1; padding: 20px; overflow-y: auto; height: 450px; display: flex; justify-content: center; position: relative; }
+        .feuille-blanche { width: 21cm; min-height: 29.7cm; background: white; padding: 50px; box-shadow: 0 0 10px rgba(0,0,0,0.1); outline: none; font-size: 1.2rem; font-family: 'Calibri', sans-serif; color: #000; line-height: 1.5; }
+
+        ::selection { background: #b3d7ff; color: black; }
+        body.dark-mode .workspace-word { background: #252525; }
+        
+        .kb-key { background: #eee; border: 1px solid #aaa; padding: 2px 6px; border-radius: 4px; font-family: sans-serif; font-size: 0.8rem; box-shadow: 0 2px 0 #ccc; }
+    </style>
+</head>
+<body class="page-cours" onload="demarrerChrono()">
+
+<header>
+    <nav>
+        <ul>
+            <li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a></li>
+            <li><button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">🌙 Mode Sombre</button></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="contenu-cours">
+    <section class="entete-cours">
+        <h1><i class="fas fa-file-word" style="color: #2b579a;"></i> Word : La mise en page</h1>
+        <p class="introduction">Apprenez à organiser votre texte pour le rendre plus lisible.</p>
+    </section>
+
+    <section class="section-instruction">
+        <div class="conseil-flash" id="box-consigne" style="padding: 15px; border-radius: 10px; margin-bottom: 10px; transition: 0.3s; border-left: 5px solid #2b579a;">
+            <p id="consigne-word"><i class="fas fa-keyboard"></i> <strong>Mission 1 :</strong> Écrivez le mot <strong>LISTE DE COURSES</strong> en majuscules.</p>
+        </div>
+
+        <div class="logiciel-word">
+            <div class="word-title-bar"><i class="fas fa-save"></i> <span>Document2 - Word</span></div>
+            <div class="ruban-word">
+                <div class="ruban-groupe">
+                    <div style="display:flex; gap:5px;">
+                        <button class="btn-tool" onclick="appliquer('bold')"><i class="fas fa-bold"></i><span>Gras</span></button>
+                        <button class="btn-tool" onclick="appliquer('underline')"><i class="fas fa-underline"></i><span>Souligné</span></button>
+                    </div>
+                    <div class="groupe-label">Police</div>
+                </div>
+                <div class="ruban-groupe">
+                    <div style="display:flex; gap:5px;">
+                        <button class="btn-tool" onclick="appliquer('justifyCenter')" id="btn-center"><i class="fas fa-align-center"></i><span>Centrer</span></button>
+                        <button class="btn-tool" onclick="appliquer('insertUnorderedList')" id="btn-list"><i class="fas fa-list-ul"></i><span>Puces</span></button>
+                    </div>
+                    <div class="groupe-label">Paragraphe</div>
+                </div>
+            </div>
+
+            <div class="workspace-word">
+                <div id="editeur" class="feuille-blanche" contenteditable="true" onmouseup="verifierSelection()"></div>
+            </div>
+        </div>
+    </section>
+
+    <div style="text-align: center; margin: 40px 0;">
+        <button id="btn-valider-word" class="btn-card" onclick="validerCours('word_2')" disabled style="background-color: #95a5a6; cursor: not-allowed; min-width: 250px;">
+            Valider ce deuxième cours
+        </button>
+    </div>
+</main>
+
+<footer><p>&copy; 2026 Bernard TELLIER - Tous droits réservés.</p></footer>
+
+<script>
+    const editeur = document.getElementById('editeur');
+    const consigne = document.getElementById('consigne-word');
+    const boxConsigne = document.getElementById('box-consigne');
+    const btnValider = document.getElementById('btn-valider-word');
+    
+    let etape = 1;
+
+    editeur.addEventListener('input', () => {
+        if (etape === 1 && editeur.innerText.toUpperCase().includes("LISTE DE COURSES")) {
+            etape = 2;
+            consigne.innerHTML = "<i class='fas fa-mouse-pointer'></i> <strong>Mission 2 :</strong> Bien ! <u>Sélectionnez</u> le titre (double-clic) et cliquez sur <strong>Centrer</strong> dans le ruban.";
+            boxConsigne.style.background = "#fff3cd";
+        }
+    });
+
+    function verifierSelection() {
+        const sel = window.getSelection().toString().trim().toUpperCase();
+        if (etape === 2 && sel === "LISTE DE COURSES") {
+            etape = 3;
+            consigne.innerHTML = "✅ <strong>Titre prêt !</strong> Cliquez maintenant sur le bouton <strong>Centrer</strong>.";
+        }
+    }
+
+    function appliquer(cmd) {
+        document.execCommand(cmd, false, null);
+        editeur.focus();
+
+        if (etape === 3 && cmd === 'justifyCenter') {
+            etape = 3.5; // Nouvelle étape intermédiaire
+            consigne.innerHTML = "<i class='fas fa-keyboard'></i> <strong>Attention :</strong> Appuyez sur la touche <span class='kb-key'>Verr Maj</span> (ou Caps Lock) pour <strong>repasser en minuscules</strong>, puis appuyez sur la touche <span class='kb-key'>Entrée</span> pour aller à la ligne.";
+            boxConsigne.style.background = "#f8d7da";
+            boxConsigne.style.borderLeftColor = "#dc3545";
+        }
+
+        if (etape === 4 && cmd === 'insertUnorderedList') {
+            etape = 5;
+            consigne.innerHTML = "📝 <strong>Dernière étape :</strong> Écrivez 'Pommes', 'Pain' et 'Lait' (en minuscules).";
+            boxConsigne.style.background = "#fff3cd";
+        }
+    }
+
+    // Gestion des touches spécifiques (Entrée)
+    editeur.addEventListener('keydown', (e) => {
+        if (etape === 3.5 && e.key === "Enter") {
+            etape = 4;
+            consigne.innerHTML = "<i class='fas fa-list-ul'></i> <strong>Mission 3 :</strong> Parfait. Cliquez maintenant sur le bouton <strong>Puces</strong> pour commencer la liste.";
+            boxConsigne.style.background = "#e1eaf6";
+            boxConsigne.style.borderLeftColor = "#2b579a";
+        }
+    });
+
+    editeur.addEventListener('keyup', (e) => {
+        if (etape === 5 && editeur.innerText.length > 35) {
+            etape = 6;
+            consigne.innerHTML = "🎉 <strong>Bravo Bernard !</strong> Vous savez maintenant créer un document propre et organisé.";
+            boxConsigne.style.background = "#d4edda";
+            boxConsigne.style.borderLeftColor = "#28a745";
+            btnValider.disabled = false;
+            btnValider.style.backgroundColor = "#27ae60";
+            btnValider.style.cursor = "pointer";
+            if (typeof confetti === "function") confetti();
+        }
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

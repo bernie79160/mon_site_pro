@@ -8,136 +8,249 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/png" href="favicon.png">
     <style>
-        /* Styles spécifiques pour le simulateur Word */
+        /* --- STYLE SIMULATEUR WORD RÉALISTE --- */
         .logiciel-word {
-            width: 100%; max-width: 800px; margin: 30px auto;
-            background: #f3f2f1; border: 2px solid #2b579a; border-radius: 5px; overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            width: 100%; max-width: 900px; margin: 30px auto;
+            background: #f3f2f1; border: 1px solid #a1a1a1; border-radius: 4px; overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); display: flex; flex-direction: column;
         }
+
+        /* Barre de titre bleue Word */
+        .word-title-bar {
+            background: #2b579a; color: white; padding: 8px 15px;
+            display: flex; align-items: center; gap: 10px; font-size: 0.9rem;
+        }
+
+        /* Ruban Word */
         .ruban-word {
-            background: white; border-bottom: 1px solid #ddd; padding: 10px;
-            display: flex; gap: 15px; align-items: center; justify-content: center;
+            background: #fff; border-bottom: 1px solid #d1d1d1;
+            display: flex; padding: 5px 10px; gap: 2px; align-items: stretch;
         }
-        .btn-word {
-            padding: 8px 15px; border: 1px solid #ddd; background: white; cursor: pointer; border-radius: 3px;
+
+        /* Groupes d'outils */
+        .ruban-groupe {
+            display: flex; flex-direction: column; align-items: center;
+            padding: 5px 10px; border-right: 1px solid #e1e1e1;
         }
-        .btn-word:hover { background: #ebebeb; }
+        .groupe-label {
+            font-size: 0.7rem; color: #666; text-transform: uppercase; margin-top: auto; padding-top: 5px;
+        }
+        .groupe-outils { display: flex; gap: 5px; align-items: center; flex: 1; }
+
+        /* Boutons du ruban */
+        .btn-tool {
+            background: transparent; border: 1px solid transparent;
+            padding: 8px; cursor: pointer; border-radius: 3px;
+            display: flex; flex-direction: column; align-items: center; gap: 3px;
+            color: #333; transition: 0.2s;
+        }
+        .btn-tool:hover { background: #edebe9; border-color: #d1d1d1; }
+        .btn-tool span { font-size: 0.75rem; }
+
+        /* Zone de travail (Feuille) */
+        .workspace-word {
+            background: #e1e1e1; padding: 20px; overflow-y: auto; height: 450px;
+            display: flex; justify-content: center; position: relative;
+        }
         .feuille-blanche {
-            width: 90%; max-width: 600px; height: 250px; background: white;
-            margin: 20px auto; box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            padding: 30px; outline: none; font-size: 1.2rem;
-            font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.5;
-            overflow-y: auto; text-align: left;
+            width: 21cm; min-height: 29.7cm; background: white;
+            padding: 50px; box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            outline: none; font-size: 1.3rem; text-align: left;
+            font-family: 'Calibri', 'Segoe UI', sans-serif; color: #000; line-height: 1.5;
         }
-        .feuille-blanche:empty:before { content: "Cliquez ici pour écrire..."; color: #aaa; }
-        
-        /* Centrage des sections de cours */
-        .etape-cours {
-            max-width: 800px;
-            margin: 20px auto;
-            text-align: center;
+
+        /* Aide à la sélection */
+        .tooltip-selection {
+            position: absolute; background: #2b579a; color: white; padding: 6px 12px;
+            border-radius: 4px; font-size: 0.85rem; pointer-events: none; display: none;
+            z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
-        .etape-cours ul {
-            list-style: none;
-            padding: 0;
-            display: inline-block;
-            text-align: left;
-        }
-        .etape-cours ul li {
-            margin-bottom: 10px;
-            font-size: 1.1rem;
-        }
+
+        ::selection { background: #b3d7ff; color: black; }
+
+        body.dark-mode .logiciel-word { border-color: #444; }
+        body.dark-mode .workspace-word { background: #252525; }
     </style>
 </head>
 <body class="page-cours" onload="demarrerChrono()">
 
-   <header>
+<header>
     <nav>
         <ul>
             <li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a></li>
-            <li>
-                <button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">
-                    🌙 Mode Sombre
-                </button>
-            </li>
+            <li><button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">🌙 Mode Sombre</button></li>
         </ul>
     </nav>
 </header>
 
-    <main class="contenu-cours">
-        <section class="entete-cours">
-            <h1><i class="fas fa-file-word" style="color: #2b579a;"></i> Écrire avec Word</h1>
-            <p class="consigne-majeure">Word est votre papier et votre stylo numérique.</p>
-        </section>
+<div id="selection-helper" class="tooltip-selection">Suivez les instructions...</div>
 
-        <section class="etape-cours" style="background: #e1eaf6; padding: 20px; border-radius: 15px; border: 1px solid #2b579a;">
-            <h2><i class="fas fa-edit"></i> À vous d'essayer !</h2>
-            <p id="consigne-word" style="font-weight: bold; color: #2b579a; margin-bottom: 20px;">
-                1. Cliquez dans la feuille blanche et écrivez "Bonjour".
-            </p>
+<main class="contenu-cours">
+    <section class="entete-cours">
+        <h1><i class="fas fa-file-word" style="color: #2b579a;"></i> Écrire avec Word</h1>
+        <p class="introduction">Maîtrisez les 3 façons de sélectionner du texte comme un pro.</p>
+    </section>
 
-            <div class="logiciel-word">
-                <div class="ruban-word">
-                    <button class="btn-word" onclick="modifierTexte('bold')"><strong>G</strong></button>
-                    <button class="btn-word" onclick="modifierTexte('italic')"><i>I</i></button>
-                    <button class="btn-word" onclick="modifierTexte('underline')"><u>S</u></button>
-                    <button class="btn-word" onclick="modifierTexte('foreColor', 'red')"><i class="fas fa-font" style="color: red;"></i></button>
-                </div>
-                <div id="editeur" class="feuille-blanche" contenteditable="true"></div>
-            </div>
-        </section>
-
-        <section class="etape-cours">
-            <h2>1. Le Ruban (votre trousse à outils)</h2>
-            <p>Tout en haut de Word se trouve le <strong>Ruban</strong>. C'est là que vous choisirez vos outils :</p>
-            
-            <ul>
-                <li><i class="fas fa-bold" style="color: #2c3e50; margin-right: 10px;"></i> <strong>G (Gras) :</strong> Pour écrire plus épais.</li>
-                <li><i class="fas fa-italic" style="color: #2c3e50; margin-right: 10px;"></i> <em>I (Italique) :</em> Pour pencher le texte.</li>
-                <li><i class="fas fa-underline" style="color: #2c3e50; margin-right: 10px;"></i> <u>S (Souligné) :</u> Pour souligner les mots importants.</li>
-            </ul>
-        </section>
-
-        <div style="text-align: center; margin-top: 40px; margin-bottom: 50px;">
-            <button id="btn-valider-word" class="btn-cours" onclick="validerCours('word')" disabled style="opacity: 0.5;">
-                <i class="fas fa-check-circle"></i> J'ai compris l'utilisation de Word
-            </button>
+    <section class="section-instruction">
+        <div class="conseil-flash" id="box-consigne" style="padding: 15px; border-radius: 10px; margin-bottom: 10px; transition: 0.3s;">
+            <p id="consigne-word"><i class="fas fa-keyboard"></i> <strong>Mission 1 :</strong> Cliquez sur la feuille et écrivez le mot <strong>ORDINATEUR</strong>.</p>
         </div>
-    </main>
 
-    <script>
-        const editeur = document.getElementById('editeur');
-        const consigne = document.getElementById('consigne-word');
-        const btnValider = document.getElementById('btn-valider-word');
-        let texteSaisi = false;
+        <div class="logiciel-word">
+            <div class="word-title-bar">
+                <i class="fas fa-save"></i>
+                <span>Document1 - Word</span>
+            </div>
 
-        editeur.addEventListener('input', () => {
-            const texte = editeur.innerText.trim();
-            if (texte.length >= 3 && !texteSaisi) {
-                texteSaisi = true;
-                consigne.innerHTML = "2. Maintenant, <strong>sélectionnez le texte</strong> et cliquez sur le <strong>G</strong> en haut.";
-            }
-        });
+            <div class="ruban-word">
+                <div class="ruban-groupe">
+                    <div class="groupe-outils">
+                        <button class="btn-tool" title="Coller"><i class="fas fa-paste"></i><span>Coller</span></button>
+                    </div>
+                    <div class="groupe-label">Presse-papier</div>
+                </div>
 
-        function modifierTexte(commande, valeur = null) {
-            document.execCommand(commande, false, valeur);
-            editeur.focus();
-            if (texteSaisi) {
-                consigne.innerHTML = "✅ Parfait ! Vous savez maintenant utiliser Word.";
-                consigne.style.color = "#27ae60";
-                btnValider.disabled = false;
-                btnValider.style.opacity = "1";
-                btnValider.style.cursor = "pointer";
-            }
-        }
-    </script>
+                <div class="ruban-groupe">
+                    <div class="groupe-outils">
+                        <button class="btn-tool" onclick="appliquerStyle('bold')" id="btn-bold"><i class="fas fa-bold"></i><span>Gras</span></button>
+                        <button class="btn-tool" onclick="appliquerStyle('italic')"><i class="fas fa-italic"></i><span>Italique</span></button>
+                        <button class="btn-tool" onclick="appliquerStyle('underline')"><i class="fas fa-underline"></i><span>Souligné</span></button>
+                        <button class="btn-tool" onclick="appliquerStyle('foreColor', 'red')"><i class="fas fa-font" style="color: red; border-bottom: 2px solid red;"></i><span>Couleur</span></button>
+                    </div>
+                    <div class="groupe-label">Police</div>
+                </div>
+
+                <div class="ruban-groupe">
+                    <div class="groupe-outils">
+                        <button class="btn-tool" onclick="appliquerStyle('justifyLeft')"><i class="fas fa-align-left"></i></button>
+                        <button class="btn-tool" onclick="appliquerStyle('justifyCenter')"><i class="fas fa-align-center"></i></button>
+                    </div>
+                    <div class="groupe-label">Paragraphe</div>
+                </div>
+            </div>
+
+            <div class="workspace-word" onmousemove="updateTooltip(event)">
+                <div id="editeur" class="feuille-blanche" contenteditable="true" onmouseup="verifierSelection()"></div>
+            </div>
+        </div>
+    </section>
+
+    <div style="text-align: center; margin: 40px 0;">
+        <button id="btn-valider-word" class="btn-card" onclick="validerCours('word')" disabled style="background-color: #95a5a6; cursor: not-allowed; min-width: 250px;">
+            Terminer la leçon Word
+        </button>
+    </div>
+</main>
 
 <footer>
     <p>&copy; 2026 Bernard TELLIER - Tous droits réservés.</p>
 </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <script src="script.js"></script>
-</body>
+<script>
+    const editeur = document.getElementById('editeur');
+    const consigne = document.getElementById('consigne-word');
+    const boxConsigne = document.getElementById('box-consigne');
+    const helper = document.getElementById('selection-helper');
+    const btnValider = document.getElementById('btn-valider-word');
+    
+    let etape = 1;
+    let typeDernierClic = "";
 
+    editeur.addEventListener('input', () => {
+        if (etape === 1 && editeur.innerText.toUpperCase().includes("ORDINATEUR")) {
+            etape = 2;
+            consigne.innerHTML = "<i class='fas fa-mouse-pointer'></i> <strong>Mission 2 (Le Balayage) :</strong> Cliquez avant le O, maintenez appuyé et glissez jusqu'au R pour sélectionner le mot.";
+            boxConsigne.style.background = "#fff3cd";
+        }
+    });
+
+    editeur.addEventListener('click', (e) => {
+        if (e.detail === 2) typeDernierClic = "double";
+        if (e.detail === 3) typeDernierClic = "triple";
+        setTimeout(() => { typeDernierClic = ""; }, 400);
+    });
+
+    function updateTooltip(e) {
+        let msg = "";
+        if (etape === 2) msg = "Cliquez et glissez sur le mot !";
+        if (etape === 4) msg = "Faites un double-clic rapide sur SÉLECTION !";
+        if (etape === 6) msg = "Cliquez 3 fois très vite sur le paragraphe !";
+
+        if (msg !== "") {
+            helper.innerText = msg;
+            helper.style.display = "block";
+            helper.style.left = (e.clientX + 15) + "px";
+            helper.style.top = (e.clientY + 15) + "px";
+        } else {
+            helper.style.display = "none";
+        }
+    }
+
+    function verifierSelection() {
+        const selection = window.getSelection().toString().trim().toUpperCase();
+        if (etape === 2 && selection === "ORDINATEUR") {
+            etape = 3;
+            consigne.innerHTML = "✅ <strong>Balayage réussi !</strong> Cliquez sur le bouton <strong>Gras</strong> (G).";
+            boxConsigne.style.background = "#d4edda";
+        }
+        if (etape === 4 && selection === "SÉLECTION") {
+            etape = 5;
+            consigne.innerHTML = "✅ <strong>Double-clic réussi !</strong> Cliquez sur le bouton <strong>Italique</strong> (I).";
+            boxConsigne.style.background = "#d4edda";
+        }
+        if (etape === 6 && selection.length > 50) {
+            etape = 7;
+            consigne.innerHTML = "✅ <strong>Triple-clic réussi !</strong> Changez la <strong>Couleur</strong> en rouge (A).";
+            boxConsigne.style.background = "#d4edda";
+        }
+    }
+
+    function appliquerStyle(commande, valeur = null) {
+        if ((etape === 2 || etape === 4 || etape === 6)) {
+            alert("Sélectionnez d'abord le texte avec la méthode demandée !");
+            return;
+        }
+        document.execCommand(commande, false, valeur);
+        editeur.focus();
+        
+        if (etape === 3 && commande === 'bold') {
+            etape = 4;
+            editeur.innerHTML += "<br><br>Passons maintenant au mot : <strong>SÉLECTION</strong>";
+            consigne.innerHTML = "<i class='fas fa-mouse-pointer'></i> <strong>Mission 3 (Le Double-clic) :</strong> Faites un double-clic rapide sur le mot SÉLECTION.";
+            boxConsigne.style.background = "#e1eaf6";
+        }
+        if (etape === 5 && commande === 'italic') {
+            etape = 6;
+            editeur.innerHTML += "<br><br>Enfin, le triple-clic est magique : il permet de sélectionner tout un paragraphe en une seule fois pour gagner du temps !";
+            consigne.innerHTML = "<i class='fas fa-mouse-pointer'></i> <strong>Mission 4 (Le Triple-clic) :</strong> Faites 3 clics très rapides sur le nouveau paragraphe.";
+            boxConsigne.style.background = "#fff3cd";
+        }
+        if (etape === 7 && commande === 'foreColor') {
+            etape = 8;
+            consigne.innerHTML = "🎉 <strong>Félicitations Bernard !</strong> Vous maîtrisez les 3 méthodes. Cliquez sur le bouton ci-dessous pour la suite.";
+            btnValider.disabled = false;
+            btnValider.style.backgroundColor = "#27ae60";
+            btnValider.style.cursor = "pointer";
+            btnValider.innerHTML = "Valider et passer au cours suivant <i class='fas fa-arrow-right'></i>";
+            
+            // ACTION FINALE : Sauvegarde et redirection
+            btnValider.onclick = () => {
+                if (typeof validerCours === "function") {
+                    validerCours("word"); 
+                    setTimeout(() => { window.location.href = "word_2.html"; }, 500);
+                }
+            };
+            if (typeof confetti === "function") confetti();
+        }
+    }
+
+    window.onload = () => {
+        demarrerChrono();
+        editeur.focus();
+    };
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script src="script.js"></script>
+</body>
 </html>

@@ -9,7 +9,7 @@
 let chronoDebut = 0;
 function demarrerChrono() { chronoDebut = Date.now(); }
 
-const ordreCours = ["pointeur", "barredefil", "informatique", "windows", "explorateur", "bureau", "clavier", "internet", "mail", "word", "excel", "powerpoint"];
+const ordreCours = ["pointeur", "barredefil", "informatique", "windows", "explorateur", "bureau", "clavier", "internet", "mail", "word", "word_2", "excel", "powerpoint"];
 
 window.addEventListener("DOMContentLoaded", () => {
     chargerTheme();
