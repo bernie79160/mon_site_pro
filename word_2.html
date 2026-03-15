@@ -98,7 +98,7 @@
     editeur.addEventListener('input', () => {
         if (etape === 1 && editeur.innerText.toUpperCase().includes("LISTE DE COURSES")) {
             etape = 2;
-            consigne.innerHTML = "<i class='fas fa-mouse-pointer'></i> <strong>Mission 2 :</strong> Bien ! <u>Sélectionnez</u> le titre (double-clic) et cliquez sur <strong>Centrer</strong> dans le ruban.";
+            consigne.innerHTML = "<i class='fas fa-mouse-pointer'></i> <strong>Mission 2 :</strong> Bien ! <u>Sélectionnez</u> le titre (Triple-clic) et cliquez sur <strong>Centrer</strong> dans le ruban.";
             boxConsigne.style.background = "#fff3cd";
         }
     });
@@ -117,7 +117,7 @@
 
         if (etape === 3 && cmd === 'justifyCenter') {
             etape = 3.5; // Nouvelle étape intermédiaire
-            consigne.innerHTML = "<i class='fas fa-keyboard'></i> <strong>Attention :</strong> Appuyez sur la touche <span class='kb-key'>Verr Maj</span> (ou Caps Lock) pour <strong>repasser en minuscules</strong>, puis appuyez sur la touche <span class='kb-key'>Entrée</span> pour aller à la ligne.";
+            consigne.innerHTML = "<i class='fas fa-keyboard'></i> <strong>Attention :</strong> Cliquez dans la feuille blanche pour désélectionnez votre texte avant et Appuyez sur la touche <span class='kb-key'>Verr Maj</span> (ou Caps Lock) pour <strong>repasser en minuscules</strong>, puis appuyez sur la touche <span class='kb-key'>Entrée</span> pour aller à la ligne.";
             boxConsigne.style.background = "#f8d7da";
             boxConsigne.style.borderLeftColor = "#dc3545";
         }
