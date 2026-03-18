@@ -8,6 +8,28 @@
     <link rel="icon" type="image/png" href="favicon.png">
 </head>
 <body class="page-cours" onload="demarrerChrono()">
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+        import { getFirestore, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC86Zk2tjF8Ms006Evi7jh9WJ75EqQt9P0",
+            authDomain: "plateforme-cours-cbce7.firebaseapp.com",
+            projectId: "plateforme-cours-cbce7",
+            storageBucket: "plateforme-cours-cbce7.firebasestorage.app",
+            messagingSenderId: "260883561193",
+            appId: "1:260883561193:web:3fa843c565a11368d88e78"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.db = db;
+        window.fbDoc = doc;
+        window.fbUpdateDoc = updateDoc;
+
+        console.log("☁️ Firebase prêt pour ce cours");
+    </script>
     <header>
     <nav>
         <ul>
