@@ -218,7 +218,35 @@
         </div>
       </div>
     </div>
-    
-    <script src="script.js"></script>
+    <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getFirestore, doc, setDoc, getDoc, updateDoc, collection, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyC86Zk2tjF8Ms006Evi7jh9WJ75EqQt9P0",
+    authDomain: "plateforme-cours-cbce7.firebaseapp.com",
+    projectId: "plateforme-cours-cbce7",
+    storageBucket: "plateforme-cours-cbce7.firebasestorage.app",
+    messagingSenderId: "260883561193",
+    appId: "1:260883561193:web:3fa843c565a11368d88e78"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // On partage TOUTES les fonctions nécessaires avec script.js
+  window.db = db;
+  window.fbDoc = doc;
+  window.fbSetDoc = setDoc;
+  window.fbGetDoc = getDoc;
+  window.fbUpdateDoc = updateDoc;
+  window.fbCollection = collection;
+  window.fbGetDocs = getDocs;
+  window.fbDeleteDoc = deleteDoc; // Ajouté pour le dashboard
+
+  console.log("🚀 Firebase connecté et fonctions partagées !");
+</script>
+
+<script src="script.js"></script>
   </body>
 </html>

@@ -9,7 +9,7 @@
 let chronoDebut = 0;
 function demarrerChrono() { chronoDebut = Date.now(); }
 
-const ordreCours = ["pointeur", "barredefil", "informatique", "windows", "explorateur", "bureau", "clavier", "internet", "mail", "word", "word_2", "excel", "powerpoint"];
+const ordreCours = ["pointeur", "barredefil", "informatique", "windows", "explorateur", "bureau", "clavier", "internet", "mail", "word", "excel", "powerpoint"];
 
 window.addEventListener("DOMContentLoaded", () => {
     chargerTheme();
@@ -43,30 +43,38 @@ function switchAuthMode(mode) {
     if(adminLabel) adminLabel.style.display = mode === 'login' ? 'inline-block' : 'none';
 }
 
-function handleAuth() {
+async function handleAuth() {
+    console.log("--- DÉBUT AUTHENTIFICATION ---");
     const isFormateur = document.getElementById('check-admin').checked;
     let prenom = document.getElementById('login-nom').value.trim();
 
-    // Si on est formateur, on définit un nom par défaut
     if (isFormateur) {
-        prenom = "Administrateur"; 
+        prenom = "Bernard"; 
     } else {
-        // Si c'est un élève, le prénom est obligatoire
         if(!prenom) { alert("Veuillez entrer votre prénom"); return; }
     }
 
-    let carnet = JSON.parse(localStorage.getItem("carnetEtudiants") || "{}");
-
-    if(currentAuthMode === 'register') {
-        const newID = prenom.toUpperCase().substring(0, 3) + "-" + Math.floor(1000 + Math.random() * 9000);
-        let newUser = { nom: prenom, id: newID, isAdmin: false, tempsParCours: {} };
+    // --- MODE INSCRIPTION ---
+if(currentAuthMode === 'register') {
+    console.log("Début de l'inscription pour:", prenom); // Message de contrôle
+    const newID = prenom.toUpperCase().substring(0, 3) + "-" + Math.floor(1000 + Math.random() * 9000);
+    let newUser = { nom: prenom, id: newID, isAdmin: false, tempsParCours: {} };
+    
+    try {
+        const docRef = window.fbDoc(window.db, "eleves", prenom);
+        console.log("Envoi à Firebase..."); 
         
-        carnet[prenom] = newUser;
-        localStorage.setItem('carnetEtudiants', JSON.stringify(carnet));
+        await window.fbSetDoc(docRef, newUser);
+        
+        console.log("Envoi réussi !");
         localStorage.setItem('utilisateurActuel', JSON.stringify(newUser));
-        
-        alert("✅ Inscription réussie !\n\nIMPORTANT : Notez votre Identifiant :\n" + newID);
+        alert("✅ Inscription réussie !\n\nNote ton ID : " + newID);
         location.reload();
+    } catch (e) {
+        console.error("Erreur détaillée :", e); // Affiche l'erreur précise en rouge
+        alert("Erreur Firebase : " + e.message);
+    }
+
     } else {
         if(isFormateur) {
             if(document.getElementById('login-mdp').value === "1234") {
@@ -77,11 +85,36 @@ function handleAuth() {
         }
 
         const enteredID = document.getElementById('login-id').value.trim().toUpperCase();
-        if (carnet[prenom] && carnet[prenom].id === enteredID) {
-            localStorage.setItem('utilisateurActuel', JSON.stringify(carnet[prenom]));
-            location.reload();
-        } else {
-            alert("Prénom ou ID inconnu. Vérifiez bien l'orthographe !");
+        
+        try {
+            // On va chercher le document de l'élève sur Firebase
+            const docRef = window.fbDoc(window.db, "eleves", prenom);
+            const docSnap = await window.fbGetDoc(docRef);
+
+            if (docSnap.exists()) {
+                const userData = docSnap.data();
+                if (userData.id === enteredID) {
+                 // On enregistre les données venues du Cloud dans le navigateur
+                localStorage.setItem('utilisateurActuel', JSON.stringify(userData));
+    
+                 // On force le nettoyage des vieux badges locaux pour mettre les vrais
+                ordreCours.forEach(c => localStorage.removeItem("cours-" + c));
+                if (userData.tempsParCours) {
+                    Object.keys(userData.tempsParCours).forEach(cours => {
+                    localStorage.setItem("cours-" + cours, "done");
+                    });
+                }
+
+                alert("Bonjour " + prenom + " ! Connexion réussie.");
+                location.reload();
+                } else {
+                    alert("ID incorrect pour ce prénom.");
+                }
+            } else {
+                alert("Aucun compte trouvé au nom de : " + prenom);
+            }
+        } catch (e) {
+            alert("Erreur de connexion : " + e.message);
         }
     }
 }
@@ -169,23 +202,31 @@ function appliquerVerrouillageVisuel() {
     });
 }
 
-function validerCours(cours) {
+async function validerCours(cours) {
     let user = JSON.parse(localStorage.getItem("utilisateurActuel"));
     if (user && !user.isAdmin) {
         let tempsSec = Math.floor((Date.now() - chronoDebut) / 1000);
+        
+        // On prépare les données à envoyer
         user.tempsParCours = user.tempsParCours || {};
         user.tempsParCours[cours] = tempsSec;
-        
-        let carnet = JSON.parse(localStorage.getItem("carnetEtudiants") || "{}");
-        carnet[user.nom] = user;
-        localStorage.setItem('carnetEtudiants', JSON.stringify(carnet));
+
+        // 1. Sauvegarde locale (pour l'affichage immédiat)
+        localStorage.setItem("cours-" + cours, "done");
         localStorage.setItem('utilisateurActuel', JSON.stringify(user));
+
+        // 2. SAUVEGARDE SUR FIREBASE (Le plus important)
+        await sauvegarderDonnees({
+            tempsParCours: user.tempsParCours
+        });
+    } else {
+        localStorage.setItem("cours-" + cours, "done");
     }
-    localStorage.setItem("cours-" + cours, "done");
     
+    // Affichage du message de succès
     const div = document.createElement("div");
     div.className = "custom-confirm-overlay";
-    div.innerHTML = `<div class="custom-confirm-box"><h2>🎉 Bravo !</h2><p>Cours validé.</p><button class="btn-card" id="btnOK">Continuer</button></div>`;
+    div.innerHTML = `<div class="custom-confirm-box"><h2>🎉 Bravo !</h2><p>Cours validé et sauvegardé.</p><button class="btn-card" id="btnOK">Continuer</button></div>`;
     document.body.appendChild(div);
     document.getElementById("btnOK").onclick = () => { window.location.href = "index.html"; };
 }
@@ -216,27 +257,53 @@ function verifierConnexion() {
     }
 }
 
-function générerTableauAdmin() {
+async function générerTableauAdmin() {
     const tbody = document.getElementById("tbody-etudiants");
-    const etudiants = JSON.parse(localStorage.getItem("carnetEtudiants") || "{}");
-    tbody.innerHTML = "";
+    tbody.innerHTML = "<tr><td colspan='4' style='text-align:center'>Chargement...</td></tr>";
     
-    Object.values(etudiants).forEach(u => {
-        let tempsHtml = "";
-        for (let c in u.tempsParCours) {
-            let s = u.tempsParCours[c];
-            tempsHtml += `<span class="badge-temps" style="background:#34495e; color:white; padding:2px 6px; border-radius:4px; font-size:11px; margin-right:4px;">${c}: ${Math.floor(s/60)}m${s%60}s</span>`;
-        }
+    try {
+        const querySnapshot = await window.fbGetDocs(window.fbCollection(window.db, "eleves"));
+        tbody.innerHTML = "";
         
-        let tr = document.createElement("tr");
-        tr.style.borderBottom = "1px solid #eee";
-        tr.innerHTML = `
-            <td style="padding:12px"><b>${u.nom}</b><br><small>${u.id}</small></td>
-            <td style="padding:12px; text-align:center">${Object.keys(u.tempsParCours || {}).length} / 12</td>
-            <td style="padding:12px">${tempsHtml || "Aucun cours"}</td>
-        `;
-        tbody.appendChild(tr);
-    });
+        querySnapshot.forEach((docSnapshot) => {
+            const u = docSnapshot.data();
+            const nomDoc = docSnapshot.id; // C'est le prénom utilisé comme clé
+            let tempsHtml = "";
+            for (let c in u.tempsParCours) {
+                let s = u.tempsParCours[c];
+                tempsHtml += `<span class="badge-temps">${c}: ${Math.floor(s/60)}m${s%60}s</span>`;
+            }
+            
+            let tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td style="padding:12px"><b>${u.nom}</b><br><small>${u.id}</small></td>
+                <td style="padding:12px; text-align:center">${Object.keys(u.tempsParCours || {}).length} / 12</td>
+                <td style="padding:12px">${tempsHtml || "Aucun cours"}</td>
+                <td style="padding:12px; text-align:center">
+                    <button onclick="supprimerEleveCloud('${nomDoc}')" style="background:#e74c3c; color:white; border:none; padding:5px 10px; border-radius:5px; cursor:pointer;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    } catch (e) {
+        tbody.innerHTML = "<tr><td colspan='4'>Erreur Firebase.</td></tr>";
+    }
+}
+
+// La fonction magique pour supprimer dans le Cloud
+async function supprimerEleveCloud(prenom) {
+    if(confirm("Supprimer définitivement " + prenom + " ?")) {
+        try {
+            // On utilise window.fbDeleteDoc que tu as défini dans ton index.html
+            await window.fbDeleteDoc(window.fbDoc(window.db, "eleves", prenom));
+            alert("Élève supprimé !");
+            générerTableauAdmin(); 
+        } catch (e) {
+            alert("Erreur : " + e.message);
+        }
+    }
 }
 
 function effacerDonnees() {
@@ -279,6 +346,20 @@ function togglePassword() {
         if(currentAuthMode === 'login') {
             if(loginIdZone) loginIdZone.style.display = "block";
         }
+    }
+}
+
+// Fonction pour sauvegarder n'importe quelle donnée sur Firebase
+async function sauvegarderDonnees(donnees) {
+    const user = JSON.parse(localStorage.getItem('utilisateurActuel'));
+    if (!user || user.isAdmin) return; // On ne sauvegarde pas si c'est Bernard ou si personne n'est connecté
+
+    try {
+        const docRef = window.fbDoc(window.db, "eleves", user.nom);
+        await window.fbUpdateDoc(docRef, donnees);
+        console.log("☁️ Firebase mis à jour :", donnees);
+    } catch (e) {
+        console.error("Erreur de sauvegarde :", e);
     }
 }
 
