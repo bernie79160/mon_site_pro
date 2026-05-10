@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact — Bernard TELLIER</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <style>
+        body { background: #f4f7f9; min-height: 100vh; }
+        .contact-page-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px 60px;
+        }
+        .contact-page-wrapper h1 {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+        .contact-page-wrapper .sous-titre {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 40px;
+            font-size: 1rem;
+        }
+        .contact-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+        .contact-info-card {
+            flex: 1;
+            min-width: 260px;
+            max-width: 360px;
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+        }
+        .contact-info-card h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            display: inline-block;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 18px;
+            color: #34495e;
+        }
+        .info-item i {
+            color: #3498db;
+            width: 20px;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+        .info-item a { color: #3498db; text-decoration: none; }
+        .info-item a:hover { text-decoration: underline; }
+        .contact-form-card {
+            flex: 1.5;
+            min-width: 280px;
+            max-width: 480px;
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+        }
+        .contact-form-card h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            display: inline-block;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: bold; color: #555; margin-bottom: 5px; }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        .form-group textarea { resize: vertical; min-height: 120px; }
+        .btn-envoyer {
+            width: 100%;
+            padding: 14px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-envoyer:hover { background: #2980b9; }
+        .message-envoye {
+            display: none;
+            background: #e8f8f0;
+            border: 1px solid #27ae60;
+            border-radius: 8px;
+            padding: 14px;
+            color: #27ae60;
+            text-align: center;
+            margin-top: 14px;
+            font-weight: bold;
+        }
+        /* Dark mode */
+        body.dark-mode .contact-info-card,
+        body.dark-mode .contact-form-card { background: #2d2d2d; color: #eee; }
+        body.dark-mode .form-group input,
+        body.dark-mode .form-group textarea,
+        body.dark-mode .form-group select { background: #3a3a3a; border-color: #555; color: #eee; }
+        body.dark-mode .form-group label { color: #bbb; }
+        body.dark-mode .contact-info-card h2,
+        body.dark-mode .contact-form-card h2,
+        body.dark-mode .contact-page-wrapper h1 { color: #eee; }
+        body.dark-mode .info-item { color: #ccc; }
+    </style>
+</head>
+<body onload="chargerTheme()">
+<header>
+    <nav>
+        <ul>
+            <li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour à l'accueil</a></li>
+            <li><button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">🌙 Mode Sombre</button></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="contact-page-wrapper">
+    <h1><i class="fas fa-envelope" style="color:#3498db;"></i> Me Contacter</h1>
+    <p class="sous-titre">Une question sur une formation ? Un besoin d'accompagnement ? Écrivez-moi !</p>
+
+    <div class="contact-grid">
+        <!-- Coordonnées -->
+        <div class="contact-info-card">
+            <h2><i class="fas fa-address-card"></i> Coordonnées</h2>
+            <div class="info-item">
+                <i class="fas fa-at"></i>
+                <div><a href="mailto:admin.tellierbe@gmail.com">admin.tellierbe@gmail.com</a></div>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-phone-alt"></i>
+                <div><a href="tel:+33600000000">06 00 00 00 00</a></div>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <div>Poitou-Charentes, France</div>
+            </div>
+            <div class="info-item" style="margin-top:24px;padding-top:16px;border-top:1px solid #eee;">
+                <i class="fas fa-clock"></i>
+                <div>Disponible du lundi au vendredi<br><strong>9h – 17h30</strong></div>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-graduation-cap"></i>
+                <div>Formateur bureautique certifié<br><strong>Word · Excel · PowerPoint</strong></div>
+            </div>
+        </div>
+
+        <!-- Formulaire -->
+        <div class="contact-form-card">
+            <h2><i class="fas fa-paper-plane"></i> Envoyer un message</h2>
+            <form id="form-contact" onsubmit="envoyerMessage(event)">
+                <div class="form-group">
+                    <label for="c-nom">Votre nom *</label>
+                    <input type="text" id="c-nom" placeholder="Marie Dupont" required>
+                </div>
+                <div class="form-group">
+                    <label for="c-email">Votre e-mail *</label>
+                    <input type="email" id="c-email" placeholder="marie@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="c-sujet">Sujet</label>
+                    <select id="c-sujet">
+                        <option value="">— Choisir un sujet —</option>
+                        <option value="formation">Demande de formation</option>
+                        <option value="question">Question sur un cours</option>
+                        <option value="probleme">Problème technique</option>
+                        <option value="autre">Autre</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="c-message">Votre message *</label>
+                    <textarea id="c-message" placeholder="Décrivez votre demande…" required></textarea>
+                </div>
+                <button type="submit" class="btn-envoyer"><i class="fas fa-paper-plane"></i> Envoyer le message</button>
+                <div class="message-envoye" id="msg-envoye">
+                    ✅ Merci ! Votre message a bien été envoyé. Je vous répondrai dans les 24h.
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer><p style="text-align:center;padding:20px;color:#999;">&copy; 2026 Bernard TELLIER — Tous droits réservés.</p></footer>
+
+<script src="script.js"></script>
+<script>
+function envoyerMessage(e) {
+    e.preventDefault();
+    const nom = document.getElementById('c-nom').value.trim();
+    const email = document.getElementById('c-email').value.trim();
+    const message = document.getElementById('c-message').value.trim();
+    if (!nom || !email || !message) return;
+
+    // Simulation envoi (à brancher sur un backend email réel si nécessaire)
+    document.getElementById('form-contact').reset();
+    const msgEl = document.getElementById('msg-envoye');
+    msgEl.style.display = 'block';
+    setTimeout(() => { msgEl.style.display = 'none'; }, 6000);
+}
+</script>
+</body>
+</html>

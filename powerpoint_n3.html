@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerPoint Niveau 3</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <style>
+        .ruban-ppt { background: #c43e1c; color: white; padding: 10px 20px; border-radius: 6px 6px 0 0; display: flex; gap: 16px; align-items: center; max-width: 800px; margin: 0 auto; font-size: 0.9rem; flex-wrap: wrap; }
+        .ruban-ppt button { background: white; color: #c43e1c; border: none; border-radius: 4px; padding: 5px 12px; cursor: pointer; font-size: 0.85rem; font-weight: bold; }
+        .slide-container { max-width: 800px; margin: 0 auto; }
+        .slide {
+            border: 2px solid #ddd; min-height: 240px; display: flex; flex-direction: column; justify-content: center;
+            align-items: center; padding: 30px; position: relative; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: all 0.4s ease; background: white;
+        }
+        .slide.animer { animation: glisser 0.5s ease; }
+        @keyframes glisser { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: translateX(0); } }
+        .slide-titre-s { font-size: 1.8rem; font-weight: bold; color: #c43e1c; text-align: center; margin-bottom: 16px; }
+        .slide-contenu { font-size: 1rem; line-height: 1.8; text-align: center; color: #333; }
+        .slide-contenu ul { text-align: left; }
+        /* Panneau latéral miniatures */
+        .layout-diapos { display: flex; gap: 10px; max-width: 800px; margin: 0 auto; }
+        .panneau-mini { width: 110px; flex-shrink: 0; display: flex; flex-direction: column; gap: 6px; padding-top: 0; max-height: 400px; overflow-y: auto; }
+        .mini-slide { width: 100px; height: 60px; border: 2px solid #ddd; border-radius: 3px; background: #f9f9f9; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; color: #666; text-align: center; padding: 2px; transition: border-color 0.2s; }
+        .mini-slide.active { border-color: #c43e1c; }
+        .main-slide { flex: 1; }
+        /* Barre animations */
+        .anim-toolbar { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin: 10px 0; }
+        .btn-anim { padding: 6px 12px; border-radius: 20px; border: 2px solid #c43e1c; background: white; color: #c43e1c; font-size: 0.82rem; cursor: pointer; transition: all 0.2s; }
+        .btn-anim:hover, .btn-anim.choisi { background: #c43e1c; color: white; }
+        /* Indicateur progression */
+        .barre-prog { max-width: 800px; margin: 8px auto 0; height: 6px; background: #eee; border-radius: 3px; }
+        .barre-prog-inner { height: 100%; background: #c43e1c; border-radius: 3px; transition: width 0.4s; }
+    </style>
+</head>
+<body class="page-cours" onload="demarrerChrono()">
+<header>
+    <nav>
+        <ul>
+            <li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a></li>
+            <li><button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">🌙 Mode Sombre</button></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="contenu-cours">
+    <section class="entete-cours">
+        <h1><i class="fas fa-file-powerpoint" style="color:#c43e1c;"></i> PowerPoint — Niveau 3</h1>
+        <p class="introduction">Animations, transitions et présentation en mode diaporama.</p>
+    </section>
+
+    <section class="section-instruction">
+        <div class="conseil-flash" id="consigne-box" style="margin-bottom:12px;">
+            <p id="consigne-ppt"><strong>Étape 1 :</strong> Choisissez une <strong>animation</strong> pour la diapositive active ci-dessous.</p>
+        </div>
+
+        <!-- Barre animations -->
+        <div class="anim-toolbar" id="anim-toolbar">
+            <span style="font-weight:bold;color:#666;line-height:2.2;">Animation :</span>
+            <button class="btn-anim" onclick="choisirAnim('Apparition')">✨ Apparition</button>
+            <button class="btn-anim" onclick="choisirAnim('Glissement')">➡️ Glissement</button>
+            <button class="btn-anim" onclick="choisirAnim('Zoom')">🔍 Zoom</button>
+            <button class="btn-anim" onclick="choisirAnim('Rotation')">🔄 Rotation</button>
+        </div>
+
+        <div class="ruban-ppt">
+            <i class="fas fa-chalkboard"></i>
+            <span id="slide-label">Diapositive 1 / 4</span>
+            <span id="anim-badge" style="background:rgba(255,255,255,0.2);border-radius:12px;padding:2px 10px;font-size:0.8rem;"></span>
+            <button onclick="diaporamaPrecedent()"><i class="fas fa-chevron-left"></i></button>
+            <button onclick="diaporamaSuivant()"><i class="fas fa-chevron-right"></i></button>
+            <button onclick="lancerDiaporama()" style="background:#ffd700;color:#333;margin-left:auto;"><i class="fas fa-play"></i> Diaporama</button>
+        </div>
+
+        <!-- Progression -->
+        <div class="barre-prog"><div class="barre-prog-inner" id="barre-prog-inner" style="width:25%;"></div></div>
+
+        <!-- Zone principale diapo + miniatures -->
+        <div class="layout-diapos">
+            <div class="panneau-mini" id="panneau-mini"></div>
+            <div class="main-slide">
+                <div class="slide" id="slide-principal">
+                    <div class="slide-titre-s" id="sp-titre"></div>
+                    <div class="slide-contenu" id="sp-contenu"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mode diaporama plein écran simulé -->
+    <div id="mode-diaporama" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:9999;flex-direction:column;justify-content:center;align-items:center;color:white;">
+        <div id="diapo-fullscreen" style="background:white;color:#333;width:80%;max-width:900px;height:60%;display:flex;flex-direction:column;justify-content:center;align-items:center;border-radius:8px;padding:40px;position:relative;">
+            <h2 id="fs-titre" style="color:#c43e1c;font-size:2.5rem;text-align:center;margin-bottom:20px;"></h2>
+            <div id="fs-contenu" style="font-size:1.2rem;text-align:center;"></div>
+        </div>
+        <div style="margin-top:20px;display:flex;gap:20px;align-items:center;">
+            <button onclick="fsPrecedent()" style="background:#c43e1c;color:white;border:none;border-radius:50%;width:44px;height:44px;font-size:1.2rem;cursor:pointer;">‹</button>
+            <span id="fs-compteur" style="color:white;font-size:0.9rem;"></span>
+            <button onclick="fsSuivant()" style="background:#c43e1c;color:white;border:none;border-radius:50%;width:44px;height:44px;font-size:1.2rem;cursor:pointer;">›</button>
+            <button onclick="quitterDiaporama()" style="background:#333;color:white;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;">✕ Quitter</button>
+        </div>
+    </div>
+
+    <div style="text-align:center;margin:30px 0;">
+        <button id="btn-valider-n3" class="btn-card" disabled style="background:#95a5a6;cursor:not-allowed;" onclick="terminerNiveau3()">
+            🏆 Valider PowerPoint Niveau 3
+        </button>
+    </div>
+</main>
+
+<script>
+const consigne = document.getElementById('consigne-ppt');
+const btnValider = document.getElementById('btn-valider-n3');
+let slideActif = 0;
+let diaporamaLance = false;
+let animChoisie = false;
+
+const diapositives = [
+    { titre: 'Ma Présentation', contenu: 'Formation bureautique 2026', anim: null },
+    { titre: 'Les Objectifs', contenu: '• Découvrir les fonctionnalités\n• Pratiquer en autonomie\n• Valider les acquis', anim: null },
+    { titre: 'Organisation', contenu: '• Matin : Théorie\n• Après-midi : Exercices\n• Évaluation finale', anim: null },
+    { titre: 'Conclusion', contenu: 'Merci de votre attention ! 🎉', anim: null }
+];
+
+function rendreMiniatures() {
+    document.getElementById('panneau-mini').innerHTML = diapositives.map((d, i) => `
+        <div class="mini-slide ${i === slideActif ? 'active' : ''}" onclick="aller(${i})" title="${d.titre}">
+            <strong style="color:#c43e1c;">${i + 1}</strong><br>
+            <span style="font-size:0.55rem;">${d.titre}</span>
+            ${d.anim ? '<br><span style="color:green;font-size:0.55rem;">✓ ' + d.anim + '</span>' : ''}
+        </div>`).join('');
+}
+
+function afficherSlide(idx, animate) {
+    const d = diapositives[idx];
+    document.getElementById('sp-titre').textContent = d.titre;
+    document.getElementById('sp-contenu').innerHTML = d.contenu.replace(/\n/g, '<br>');
+    document.getElementById('slide-label').textContent = `Diapositive ${idx + 1} / ${diapositives.length}`;
+    document.getElementById('barre-prog-inner').style.width = ((idx + 1) / diapositives.length * 100) + '%';
+    document.getElementById('anim-badge').textContent = d.anim ? '✨ ' + d.anim : 'Sans animation';
+    if (animate) {
+        const s = document.getElementById('slide-principal');
+        s.classList.remove('animer');
+        void s.offsetWidth;
+        s.classList.add('animer');
+    }
+    rendreMiniatures();
+
+    // Reset des boutons animation
+    document.querySelectorAll('.btn-anim').forEach(b => b.classList.remove('choisi'));
+    if (d.anim) {
+        document.querySelectorAll('.btn-anim').forEach(b => {
+            if (b.textContent.includes(d.anim)) b.classList.add('choisi');
+        });
+    }
+}
+
+function aller(idx) {
+    slideActif = idx;
+    afficherSlide(idx, true);
+}
+
+function diaporamaSuivant() { if (slideActif < diapositives.length - 1) aller(slideActif + 1); }
+function diaporamaPrecedent() { if (slideActif > 0) aller(slideActif - 1); }
+
+function choisirAnim(anim) {
+    diapositives[slideActif].anim = anim;
+    document.querySelectorAll('.btn-anim').forEach(b => b.classList.remove('choisi'));
+    event.currentTarget.classList.add('choisi');
+    document.getElementById('anim-badge').textContent = '✨ ' + anim;
+
+    const nb = diapositives.filter(d => d.anim).length;
+    if (!animChoisie) {
+        animChoisie = true;
+        consigne.innerHTML = "<strong>Étape 2 :</strong> Choisissez une animation pour chacune des 4 diapositives (<strong>" + nb + "/4</strong> faites).";
+    } else if (nb < 4) {
+        consigne.innerHTML = "<strong>Étape 2 :</strong> Encore " + (4 - nb) + " diapositive(s) à animer. Cliquez sur les miniatures pour naviguer.";
+    }
+
+    rendreMiniatures();
+    verifierFin();
+}
+
+function lancerDiaporama() {
+    const allAnim = diapositives.filter(d => d.anim).length;
+    if (allAnim < 4) {
+        consigne.innerHTML = "⚠️ Veuillez d'abord assigner une animation à chaque diapositive (" + allAnim + "/4).";
+        return;
+    }
+    slideActif = 0;
+    afficherFS(0);
+    document.getElementById('mode-diaporama').style.display = 'flex';
+    diaporamaLance = true;
+    verifierFin();
+}
+
+function quitterDiaporama() {
+    document.getElementById('mode-diaporama').style.display = 'none';
+}
+
+function afficherFS(idx) {
+    const d = diapositives[idx];
+    document.getElementById('fs-titre').textContent = d.titre;
+    document.getElementById('fs-contenu').innerHTML = d.contenu.replace(/\n/g, '<br>');
+    document.getElementById('fs-compteur').textContent = (idx + 1) + ' / ' + diapositives.length;
+}
+
+function fsSuivant() { if (slideActif < diapositives.length - 1) { slideActif++; afficherFS(slideActif); } else quitterDiaporama(); }
+function fsPrecedent() { if (slideActif > 0) { slideActif--; afficherFS(slideActif); } }
+
+// Touche Échap pour quitter
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') quitterDiaporama();
+    if (e.key === 'ArrowRight') diaporamaLance ? fsSuivant() : diaporamaSuivant();
+    if (e.key === 'ArrowLeft') diaporamaLance ? fsPrecedent() : diaporamaPrecedent();
+});
+
+function verifierFin() {
+    const allAnim = diapositives.filter(d => d.anim).length;
+    if (allAnim >= 4 && diaporamaLance) {
+        consigne.innerHTML = "🏆 Bravo ! Vous avez animé toutes les diapositives et lancé le diaporama. Vous maîtrisez PowerPoint !";
+        btnValider.disabled = false;
+        btnValider.style.background = '#27ae60';
+        btnValider.style.cursor = 'pointer';
+    } else if (allAnim >= 4) {
+        consigne.innerHTML = "<strong>Étape 3 :</strong> Parfait ! Maintenant <strong>lancez le diaporama</strong> avec le bouton ▶ pour simuler la présentation.";
+    }
+}
+
+async function terminerNiveau3() {
+    await validerCours('powerpoint-n3');
+    window.location.href = 'index.html';
+}
+
+// Init
+afficherSlide(0, false);
+</script>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerPoint Niveau 1</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <style>
+        .ruban-ppt { background: #c43e1c; color: white; padding: 10px 20px; border-radius: 6px 6px 0 0; display: flex; gap: 20px; align-items: center; max-width: 700px; margin: 0 auto; font-size: 0.9rem; }
+        .slide-zone { max-width: 700px; margin: 0 auto; border: 2px solid #ddd; background: white; min-height: 280px; display: flex; flex-direction: column; position: relative; box-shadow: 0 8px 20px rgba(0,0,0,0.1); border-radius: 0 0 6px 6px; }
+        .slide-zone[data-theme="bleu"] { background: linear-gradient(135deg, #e3f2fd 0%, #ffffff 100%); border-color: #1565c0; }
+        .slide-zone[data-theme="vert"] { background: linear-gradient(135deg, #e8f5e9 0%, #ffffff 100%); border-color: #2e7d32; }
+        .slide-zone[data-theme="rouge"] { background: linear-gradient(135deg, #fff3e0 0%, #ffffff 100%); border-color: #c43e1c; }
+        .slide-titre { font-size: 2rem; font-weight: bold; text-align: center; margin: 30px 20px 10px; outline: none; min-height: 50px; color: #333; border-bottom: 2px dashed #ccc; padding-bottom: 8px; }
+        .slide-sous-titre { font-size: 1.1rem; text-align: center; color: #666; margin: 10px 20px; outline: none; min-height: 30px; }
+        .themes-btns { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 10px; }
+        .btn-theme { padding: 7px 14px; border-radius: 20px; border: 2px solid transparent; font-size: 0.85rem; cursor: pointer; font-weight: bold; }
+        .vignette-ppt { width: 120px; height: 75px; border: 2px solid #ddd; border-radius: 4px; background: #f9f9f9; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: #666; cursor: pointer; transition: border-color 0.2s; }
+        .vignette-ppt:hover { border-color: #c43e1c; }
+        .panneau-diapos { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin: 16px 0; }
+    </style>
+</head>
+<body class="page-cours" onload="demarrerChrono()">
+<header>
+    <nav>
+        <ul>
+            <li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a></li>
+            <li><button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">🌙 Mode Sombre</button></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="contenu-cours">
+    <section class="entete-cours">
+        <h1><i class="fas fa-file-powerpoint" style="color:#c43e1c;"></i> PowerPoint — Niveau 1</h1>
+        <p class="introduction">Créer une première diapositive : titre, sous-titre et thème.</p>
+    </section>
+
+    <section class="section-instruction">
+        <div class="conseil-flash" id="consigne-box" style="margin-bottom:12px;">
+            <p id="consigne-ppt"><strong>Étape 1 :</strong> Cliquez sur le titre de la diapositive et saisissez : <strong>Ma Présentation</strong></p>
+        </div>
+
+        <!-- Choix du thème -->
+        <div class="themes-btns">
+            <span style="line-height:2;font-weight:bold;color:#666;">Thème :</span>
+            <button class="btn-theme" style="background:#e3f2fd;color:#1565c0;border-color:#1565c0;" onclick="choisirTheme('bleu')">🔵 Bleu Pro</button>
+            <button class="btn-theme" style="background:#e8f5e9;color:#2e7d32;border-color:#2e7d32;" onclick="choisirTheme('vert')">🟢 Vert Nature</button>
+            <button class="btn-theme" style="background:#fff3e0;color:#c43e1c;border-color:#c43e1c;" onclick="choisirTheme('rouge')">🔴 Rouge Impact</button>
+        </div>
+
+        <!-- Diapositive simulée -->
+        <div class="ruban-ppt"><i class="fas fa-chalkboard"></i> <span>Diapositive 1 / 1</span></div>
+        <div class="slide-zone" id="slide" data-theme="">
+            <div class="slide-titre" id="slide-titre" contenteditable="true" oninput="verifierTitre()" placeholder="Cliquez pour saisir le titre...">
+            </div>
+            <div class="slide-sous-titre" id="slide-sous-titre" contenteditable="true" oninput="verifierSousTitre()" style="display:none;" placeholder="Cliquez pour le sous-titre...">
+            </div>
+            <div id="placeholder-titre" style="font-size:1.5rem;color:#bbb;text-align:center;position:absolute;top:35%;left:0;right:0;pointer-events:none;">
+                ✏️ Cliquez ici pour saisir le titre
+            </div>
+        </div>
+
+        <!-- Panneau vignettes -->
+        <div class="panneau-diapos" id="panneau-diapos">
+            <div class="vignette-ppt" id="vignette-1" title="Diapositive 1">
+                <span id="vignette-titre">Titre...</span>
+            </div>
+        </div>
+    </section>
+
+    <div style="text-align:center;margin:30px 0;">
+        <button id="btn-valider-n1" class="btn-card" disabled style="background:#95a5a6;cursor:not-allowed;" onclick="terminerNiveau1()">
+            ✅ Valider PowerPoint Niveau 1
+        </button>
+    </div>
+</main>
+
+<script>
+const consigne = document.getElementById('consigne-ppt');
+const btnValider = document.getElementById('btn-valider-n1');
+let etape = 1;
+let titreFait = false;
+let sousTitreFait = false;
+let themeFait = false;
+
+document.getElementById('slide-titre').addEventListener('focus', () => {
+    document.getElementById('placeholder-titre').style.display = 'none';
+});
+
+function verifierTitre() {
+    const txt = document.getElementById('slide-titre').innerText.trim().toUpperCase();
+    document.getElementById('vignette-titre').textContent = document.getElementById('slide-titre').innerText.trim() || 'Titre...';
+    if (txt.includes('MA PRÉSENTATION') || txt.includes('MA PRESENTATION') || txt.length >= 5) {
+        if (!titreFait) {
+            titreFait = true;
+            etape = 2;
+            const sousTitre = document.getElementById('slide-sous-titre');
+            sousTitre.style.display = 'block';
+            sousTitre.focus();
+            consigne.innerHTML = "<strong>Étape 2 :</strong> Saisissez un sous-titre, par exemple : <strong>Formation bureautique</strong>";
+        }
+    }
+}
+
+function verifierSousTitre() {
+    const txt = document.getElementById('slide-sous-titre').innerText.trim();
+    if (txt.length >= 5 && !sousTitreFait) {
+        sousTitreFait = true;
+        etape = 3;
+        consigne.innerHTML = "<strong>Étape 3 :</strong> Choisissez un <strong>thème de couleur</strong> pour votre diapositive.";
+    }
+    verifierFin();
+}
+
+function choisirTheme(theme) {
+    document.getElementById('slide').setAttribute('data-theme', theme);
+    if (!themeFait && sousTitreFait) {
+        themeFait = true;
+        verifierFin();
+    } else if (sousTitreFait) {
+        verifierFin();
+    }
+    if (titreFait && !sousTitreFait) {
+        consigne.innerHTML = "<strong>Étape 2 :</strong> Maintenant saisissez un sous-titre.";
+    }
+}
+
+function verifierFin() {
+    if (titreFait && sousTitreFait && document.getElementById('slide').getAttribute('data-theme')) {
+        consigne.innerHTML = "🎉 Bravo ! Votre première diapositive est prête avec un titre, un sous-titre et un thème.";
+        btnValider.disabled = false;
+        btnValider.style.background = '#27ae60';
+        btnValider.style.cursor = 'pointer';
+    }
+}
+
+async function terminerNiveau1() {
+    await validerCours('powerpoint-n1');
+    window.location.href = 'powerpoint_n2.html';
+}
+</script>
+
+<script src="script.js"></script>
+</body>
+</html>

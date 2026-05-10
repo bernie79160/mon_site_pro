@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Niveau 1</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+</head>
+<body class="page-cours" onload="demarrerChrono()">
+<header>
+    <nav>
+        <ul>
+            <li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a></li>
+            <li><button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">🌙 Mode Sombre</button></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="contenu-cours">
+    <section class="entete-cours">
+        <h1><i class="fas fa-file-word" style="color:#2b579a;"></i> Word — Niveau 1</h1>
+        <p class="introduction">Mise en forme guidée: titre, style et liste.</p>
+    </section>
+
+    <section class="section-instruction">
+        <div class="conseil-flash" id="consigne-box" style="margin-bottom:12px;">
+            <p id="consigne-word"><strong>Étape 1:</strong> Écrivez le titre <strong>MON PROFIL</strong>.</p>
+        </div>
+
+        <div style="background:#fff;border:1px solid #ddd;border-radius:8px;padding:10px;margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn-card" style="width:auto;padding:8px 12px;" onclick="appliquer('bold')"><i class="fas fa-bold"></i> Gras</button>
+            <button class="btn-card" style="width:auto;padding:8px 12px;" onclick="appliquer('justifyCenter')"><i class="fas fa-align-center"></i> Centrer</button>
+            <button class="btn-card" style="width:auto;padding:8px 12px;" onclick="appliquer('insertUnorderedList')"><i class="fas fa-list-ul"></i> Puces</button>
+        </div>
+
+        <div id="editeur" contenteditable="true" style="min-height:300px;background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;font-size:1.1rem;line-height:1.5;"></div>
+    </section>
+
+    <div style="text-align:center;margin:30px 0;">
+        <button id="btn-valider-n1" class="btn-card" disabled style="background:#95a5a6;cursor:not-allowed;" onclick="terminerNiveau1()">Valider Word Niveau 1</button>
+    </div>
+</main>
+
+<script>
+const editeur = document.getElementById('editeur');
+const consigne = document.getElementById('consigne-word');
+const btnValider = document.getElementById('btn-valider-n1');
+let etape = 1;
+
+function appliquer(cmd) {
+    document.execCommand(cmd, false, null);
+    editeur.focus();
+
+    if (etape === 2 && cmd === 'bold') {
+        etape = 3;
+        consigne.innerHTML = "<strong>Étape 3:</strong> Cliquez sur <strong>Centrer</strong> pour le titre.";
+    } else if (etape === 3 && cmd === 'justifyCenter') {
+        etape = 4;
+        consigne.innerHTML = "<strong>Étape 4:</strong> Passez à la ligne, cliquez sur <strong>Puces</strong>, puis écrivez: Compétences, Expérience, Formation.";
+    } else if (etape === 4 && cmd === 'insertUnorderedList') {
+        etape = 5;
+    }
+}
+
+editeur.addEventListener('input', () => {
+    const txt = editeur.innerText.toUpperCase();
+
+    if (etape === 1 && txt.includes('MON PROFIL')) {
+        etape = 2;
+        consigne.innerHTML = "<strong>Étape 2:</strong> Sélectionnez le titre puis cliquez sur <strong>Gras</strong>.";
+        return;
+    }
+
+    if (etape >= 5) {
+        const ok = txt.includes('COMPÉTENCES') && txt.includes('EXPÉRIENCE') && txt.includes('FORMATION');
+        if (ok) {
+            consigne.innerHTML = "🎉 Excellent ! Vous maîtrisez les bases de mise en forme.";
+            btnValider.disabled = false;
+            btnValider.style.background = '#27ae60';
+            btnValider.style.cursor = 'pointer';
+        }
+    }
+});
+
+async function terminerNiveau1() {
+    await validerCours('word-n1');
+    window.location.href = 'word_n2.html';
+}
+</script>
+
+<script src="script.js"></script>
+</body>
+</html>

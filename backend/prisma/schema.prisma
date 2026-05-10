@@ -1,0 +1,183 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ELEVE
+  FORMATEUR
+  ADMIN
+}
+
+enum ProgressState {
+  LOCKED
+  IN_PROGRESS
+  DONE
+}
+
+enum TestType {
+  QCM
+  PRATIQUE
+  TOSA
+}
+
+model Eleve {
+  id              String       @id @default(cuid())
+  prenom          String
+  nom             String
+  eleveCode       String?      @unique
+  email           String?      @unique
+  passwordHash    String
+  role            Role         @default(ELEVE)
+  statut          String       @default("actif")
+  visitCount      Int          @default(0)
+  groupeId        String?
+  consentements   Json?
+  archivedAt      DateTime?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  groupe          Groupe?      @relation(fields: [groupeId], references: [id])
+  tentatives      Tentative[]
+  progressions    Progression[]
+  typingSessions  TypingSession[]
+
+  @@map("eleves")
+}
+
+model Groupe {
+  id        String  @id @default(cuid())
+  nom       String
+  inviteCode String @unique
+  formateurId String?
+  session   String?
+  niveauWord Int @default(0)
+  niveauExcel Int @default(0)
+  niveauPowerpoint Int @default(0)
+  actif     Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  eleves    Eleve[]
+
+  @@map("groupes")
+}
+
+model Module {
+  id          String        @id @default(cuid())
+  slug        String        @unique
+  titre       String
+  ordre       Int           @unique
+  niveau      Int           @default(0)
+  categorie   String?
+  sourcePath  String?
+  actif       Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  tests       Test[]
+  progressions Progression[]
+
+  @@map("modules")
+}
+
+model Test {
+  id        String     @id @default(cuid())
+  moduleId  String
+  type      TestType
+  niveau    String?
+  dureeSec  Int?
+  bareme    Int?
+  actif     Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  module    Module     @relation(fields: [moduleId], references: [id])
+  questions Question[]
+  tentatives Tentative[]
+
+  @@index([moduleId])
+  @@map("tests")
+}
+
+model Question {
+  id           String   @id @default(cuid())
+  testId       String
+  ordre        Int
+  intitule     String
+  options      Json?
+  bonneReponse String?
+  points       Int      @default(1)
+  competence   String?
+  test         Test     @relation(fields: [testId], references: [id])
+  reponses     TentativeReponse[]
+
+  @@index([testId])
+  @@unique([testId, ordre])
+  @@map("questions")
+}
+
+model Tentative {
+  id          String              @id @default(cuid())
+  eleveId     String
+  testId      String
+  startedAt   DateTime            @default(now())
+  submittedAt DateTime?
+  score       Float?
+  maxScore    Float?
+  statut      String              @default("started")
+  corrigePar  String?
+  commentaire String?
+  eleve       Eleve               @relation(fields: [eleveId], references: [id])
+  test        Test                @relation(fields: [testId], references: [id])
+  reponses    TentativeReponse[]
+
+  @@index([eleveId])
+  @@index([testId])
+  @@map("tentatives")
+}
+
+model TentativeReponse {
+  id           String    @id @default(cuid())
+  tentativeId  String
+  questionId   String
+  reponse      String?
+  estCorrecte  Boolean?
+  pointsObt    Float     @default(0)
+  tentative    Tentative @relation(fields: [tentativeId], references: [id])
+  question     Question  @relation(fields: [questionId], references: [id])
+
+  @@unique([tentativeId, questionId])
+  @@index([tentativeId])
+  @@map("tentative_reponses")
+}
+
+model Progression {
+  id             String        @id @default(cuid())
+  eleveId        String
+  moduleId       String
+  etat           ProgressState @default(LOCKED)
+  tempsSec       Int           @default(0)
+  lastActivityAt DateTime      @default(now())
+  eleve          Eleve         @relation(fields: [eleveId], references: [id])
+  module         Module        @relation(fields: [moduleId], references: [id])
+
+  @@unique([eleveId, moduleId])
+  @@index([eleveId])
+  @@index([moduleId])
+  @@map("progressions")
+}
+
+model TypingSession {
+  id        String   @id @default(cuid())
+  eleveId   String
+  langue    String   @default("fr")
+  dureeSec  Int
+  wpm       Float
+  accuracy  Float
+  errors    Int
+  createdAt DateTime @default(now())
+  eleve     Eleve    @relation(fields: [eleveId], references: [id])
+
+  @@index([eleveId])
+  @@map("typing_sessions")
+}

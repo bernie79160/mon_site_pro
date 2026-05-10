@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel Niveau 1</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <style>
+        .tableur { width: 100%; max-width: 600px; margin: 16px auto; border-collapse: collapse; font-family: 'Calibri', sans-serif; font-size: 1rem; }
+        .tableur th { background: #217346; color: white; padding: 8px 14px; border: 1px solid #1a5c38; text-align: center; font-weight: normal; min-width: 80px; }
+        .tableur td { border: 1px solid #bbb; padding: 6px 10px; background: #fff; }
+        .tableur td.hdr { background: #e8e8e8; font-weight: bold; text-align: center; color: #333; }
+        .tableur td.result { background: #f0fff4; color: #217346; font-weight: bold; text-align: center; }
+        .cell-edit { width: 90%; border: none; border-bottom: 2px solid #217346; font-size: 1rem; padding: 2px 4px; outline: none; background: transparent; text-align: center; }
+        .barre-formule { display: flex; align-items: center; gap: 8px; background: #f3f3f3; border: 1px solid #ccc; border-radius: 4px; padding: 6px 12px; margin-bottom: 10px; font-family: 'Consolas', monospace; font-size: 0.9rem; }
+        .ref-cell { color: #217346; font-weight: bold; min-width: 30px; }
+    </style>
+</head>
+<body class="page-cours" onload="demarrerChrono()">
+<header>
+    <nav>
+        <ul>
+            <li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a></li>
+            <li><button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">🌙 Mode Sombre</button></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="contenu-cours">
+    <section class="entete-cours">
+        <h1><i class="fas fa-file-excel" style="color:#217346;"></i> Excel — Niveau 1</h1>
+        <p class="introduction">Saisie de données et première formule de calcul.</p>
+    </section>
+
+    <section class="section-instruction">
+        <div class="conseil-flash" id="consigne-box" style="margin-bottom:12px;">
+            <p id="consigne-excel"><strong>Étape 1 :</strong> Cliquez dans la cellule <strong>B2</strong> et saisissez le prix des Poires : <strong>3</strong></p>
+        </div>
+
+        <!-- Barre de formule simulée -->
+        <div class="barre-formule">
+            <span class="ref-cell" id="ref-active">B2</span>
+            <span>fx</span>
+            <span id="barre-contenu" style="color:#333;">_</span>
+        </div>
+
+        <!-- Tableau Excel simulé -->
+        <table class="tableur">
+            <thead>
+                <tr><th></th><th>A</th><th>B</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="hdr">1</td>
+                    <td><strong>Produit</strong></td>
+                    <td style="text-align:center;"><strong>Prix (€)</strong></td>
+                </tr>
+                <tr>
+                    <td class="hdr">2</td>
+                    <td>Pommes</td>
+                    <td style="text-align:center;">2</td>
+                </tr>
+                <tr>
+                    <td class="hdr">3</td>
+                    <td>Poires</td>
+                    <td style="text-align:center;">
+                        <input type="number" id="cell-b3" class="cell-edit" placeholder="?" oninput="verifierB3()" onfocus="activerCellule('B3')">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="hdr">4</td>
+                    <td>Bananes</td>
+                    <td style="text-align:center;">
+                        <input type="number" id="cell-b4" class="cell-edit" placeholder="?" oninput="verifierB4()" onfocus="activerCellule('B4')" disabled>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="hdr">5</td>
+                    <td><strong>TOTAL</strong></td>
+                    <td class="result" id="cell-b5">—</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <div style="text-align:center;margin:30px 0;">
+        <button id="btn-valider-n1" class="btn-card" disabled style="background:#95a5a6;cursor:not-allowed;" onclick="terminerNiveau1()">
+            ✅ Valider Excel Niveau 1
+        </button>
+    </div>
+</main>
+
+<script>
+let etape = 1;
+const consigne = document.getElementById('consigne-excel');
+const barre = document.getElementById('barre-contenu');
+const btnValider = document.getElementById('btn-valider-n1');
+
+function activerCellule(ref) {
+    document.getElementById('ref-active').textContent = ref;
+    barre.textContent = document.getElementById('cell-' + ref.toLowerCase())?.value || '';
+}
+
+function verifierB3() {
+    const v = parseFloat(document.getElementById('cell-b3').value);
+    barre.textContent = isNaN(v) ? '' : v;
+    if (v === 3) {
+        etape = 2;
+        consigne.innerHTML = "<strong>Étape 2 :</strong> Maintenant saisissez le prix des Bananes en <strong>B4</strong> : <strong>1</strong>";
+        document.getElementById('cell-b4').disabled = false;
+        document.getElementById('cell-b4').focus();
+        activerCellule('B4');
+    }
+}
+
+function verifierB4() {
+    const v = parseFloat(document.getElementById('cell-b4').value);
+    barre.textContent = isNaN(v) ? '' : v;
+    if (v === 1 && etape === 2) {
+        etape = 3;
+        const b3 = parseFloat(document.getElementById('cell-b3').value) || 0;
+        const total = 2 + b3 + v;
+        document.getElementById('cell-b5').textContent = total + ' €';
+        document.getElementById('ref-active').textContent = 'B5';
+        barre.textContent = '=B2+B3+B4';
+        consigne.innerHTML = "🎉 Bravo ! La formule <strong>=B2+B3+B4</strong> calcule le total automatiquement : <strong>" + total + " €</strong>.";
+        btnValider.disabled = false;
+        btnValider.style.background = '#27ae60';
+        btnValider.style.cursor = 'pointer';
+    }
+}
+
+async function terminerNiveau1() {
+    await validerCours('excel-n1');
+    window.location.href = 'excel_n2.html';
+}
+</script>
+
+<script src="script.js"></script>
+</body>
+</html>

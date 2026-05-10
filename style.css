@@ -747,3 +747,62 @@ body.dark-mode #user-info {
     margin-bottom: 25px;
 }
 }
+
+/* ==========================================
+   15. AIDE ÉLÈVE
+   ========================================== */
+.btn-aide-eleve {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 9998;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 18px;
+  font-weight: 700;
+  background: #3498db;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(52, 152, 219, 0.35);
+  cursor: pointer;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.btn-aide-eleve:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+}
+
+.aide-bloc {
+  background: #f8fbff;
+  border-left: 4px solid #3498db;
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin: 12px 0;
+}
+
+.aide-bloc h3 {
+  margin: 0 0 6px 0;
+  color: #2c3e50;
+  font-size: 1rem;
+}
+
+.aide-bloc p {
+  margin: 4px 0;
+  color: #34495e;
+}
+
+body.dark-mode .btn-aide-eleve {
+  background: #2980b9;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+}
+
+body.dark-mode .aide-bloc {
+  background: #27313b;
+  border-left-color: #5dade2;
+}
+
+body.dark-mode .aide-bloc h3,
+body.dark-mode .aide-bloc p,
+body.dark-mode #aide-prochain-cours {
+  color: #ecf0f1 !important;
+}

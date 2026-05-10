@@ -249,7 +249,7 @@
                 </div>
 
                 <div class="tresor-cache">
-                    <h3 style="color: #2ecc71;">🎉 Bravo Bernard !</h3>
+                    <h3 style="color: #2ecc71;">🎉 <span id="bravo-identifiant">Bravo !</span></h3>
                     <p>Vous avez réussi à manipuler les ascenseurs.</p>
                     <button class="btn-card" onclick="validerCours('barredefil')" style="background-color: #2ecc71; color: white; width: auto; padding: 15px 30px;">
                         Valider l'exercice et revenir
@@ -261,6 +261,13 @@
 </main>
 
 <script>
+    (function afficherBravoIdentifiant() {
+        var user = JSON.parse(localStorage.getItem('utilisateurActuel') || 'null');
+        var identifiant = (user && (user.id || user.nom)) ? (user.id || user.nom) : 'élève';
+        var el = document.getElementById('bravo-identifiant');
+        if (el) el.innerText = 'Bravo ' + identifiant + ' !';
+    })();
+
     function ouvrirAide() {
         var modal = document.getElementById('videoModal');
         var video = document.getElementById('playerAide');
