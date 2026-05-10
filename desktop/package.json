@@ -38,20 +38,42 @@
     ],
     "extraResources": [
       {
+        "from": "..",
+        "to": "site",
+        "filter": [
+          "index.html",
+          "contact.html",
+          "*.html",
+          "script.js",
+          "style.css",
+          "favicon.png",
+          "images/**/*",
+          "mp4/**/*",
+          "pdf/**/*"
+        ]
+      },
+      {
         "from": "../backend",
         "to": "backend",
         "filter": [
           "src/**/*",
           "prisma/**/*",
+          "scripts/**/*",
+          "docker-compose.yml",
           "package.json",
           "package-lock.json",
-          ".env.example"
+          ".env.example",
+          "node_modules/**/*"
         ]
       }
     ],
     "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true
+      "oneClick": true,
+      "allowToChangeInstallationDirectory": false,
+      "perMachine": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "runAfterFinish": true
     },
     "win": {
       "target": [

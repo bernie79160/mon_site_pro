@@ -46,8 +46,15 @@
             <input type="text" id="login-id" placeholder="Votre ID (ex: BER-1234)" style="width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ddd; text-align:center;">
         </div>
         <div id="register-only-zone" style="display: none;">
-          <p style="color: #27ae60; font-size: 0.9rem;">Bienvenue ! Un identifiant sera généré pour vous.</p>
-          <input type="text" id="register-invite-code" placeholder="Code groupe (optionnel, ex: GRP-AB12CD)" style="width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ddd; text-align:center;">
+          <div id="register-eleve-zone">
+            <p style="color: #27ae60; font-size: 0.9rem;">Bienvenue ! Un identifiant sera généré pour vous.</p>
+            <input type="text" id="register-invite-code" placeholder="Code groupe (optionnel, ex: GRP-AB12CD)" style="width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ddd; text-align:center;">
+          </div>
+          <div id="register-formateur-zone" style="display:none;">
+            <p style="color: #f39c12; font-size: 0.9rem;">Créez le premier compte formateur de ce poste.</p>
+            <input type="text" id="register-formateur-nom" placeholder="Votre nom" style="width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ddd; text-align:center;">
+            <input type="email" id="register-formateur-email" placeholder="Votre email formateur" style="width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ddd; text-align:center;">
+          </div>
         </div>
         <div style="margin-bottom: 10px;">
           <label style="font-size: 0.8rem; cursor: pointer;"><input type="checkbox" id="check-admin" onclick="togglePassword()"> Je suis le formateur</label>

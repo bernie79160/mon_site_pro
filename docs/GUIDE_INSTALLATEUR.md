@@ -18,7 +18,9 @@ L'utilisateur:
 - télécharge un installateur selon son OS
 - installe l'application
 - lance l'app par icône (double-clic)
-- se connecte en formateur dans l'interface
+- laisse l'application démarrer automatiquement le serveur central
+- crée son premier compte formateur depuis l'interface si nécessaire
+- se connecte ensuite en formateur dans l'interface
 
 Il n'a pas besoin de Node.js, Docker, ni accès au code.
 
@@ -120,3 +122,57 @@ Il construit automatiquement:
 - macOS: DMG (`.dmg`)
 
 Dès que les droits GitHub nécessaires sont disponibles, vous pourrez le lancer via **Actions > Desktop Build** ou via un tag `v*`.
+
+## 11) Installation automatique Windows (sans assistant)
+
+L'installateur NSIS est configuré en mode *one-click*.
+
+Pour un déploiement silencieux (script, GPO, outil MDM), utilisez:
+
+```powershell
+MonSitePro-Setup-0.1.0.exe /S
+```
+
+Note importante:
+- si le binaire n'est pas signé, SmartScreen peut encore bloquer l'exécution initiale;
+- pour éviter ce blocage en production, signer l'installateur avec un certificat Authenticode (idéalement EV).
+
+## 12) Créer un compte formateur sur un PC qui a téléchargé l'application
+
+Mode recommandé désormais:
+
+1. installer l'application desktop
+2. ouvrir l'application
+3. vérifier que **Docker Desktop** est démarré
+4. attendre le démarrage automatique du serveur central
+5. dans l'accueil, cliquer sur **Inscription**
+6. cocher **Je suis le formateur**
+7. créer le premier compte formateur directement depuis l'interface
+
+Ce mode évite au formateur d'ouvrir un terminal ou de manipuler le dossier `backend`.
+
+### Mode avancé / maintenance
+
+Pour un compte formateur persistant via terminal, vous pouvez encore utiliser le pack **serveur central** (`dist-launcher`) ou le dépôt complet.
+
+Étapes Windows:
+
+1. Télécharger et décompresser `mon-site-pro-serveur-central-windows-<version>.tar.gz`.
+2. Lancer:
+
+```bash
+launcher\start_formateur_windows.bat
+```
+
+3. Ouvrir un terminal dans le dossier `backend` du pack.
+4. Créer le compte formateur:
+
+```bash
+npm run formateur:create-account -- --prenom "Bernard" --nom "Tellier" --email "bernard@example.com" --password "motdepasse123"
+```
+
+5. Se connecter sur l'accueil avec **Je suis le formateur** + email + mot de passe.
+
+Remarque:
+- l'application desktop seule (`.exe`) sert d'interface utilisateur;
+- le compte formateur backend nécessite le service API démarré côté formateur.

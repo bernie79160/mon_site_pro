@@ -164,22 +164,14 @@ let currentAuthMode = 'login';
 
 function switchAuthMode(mode) {
     currentAuthMode = mode;
-    
-    // --- CORRECTIF : Si on passe en inscription, on décoche et on cache le mode formateur ---
-    const checkAdmin = document.getElementById('check-admin');
-    if (mode === 'register' && checkAdmin) {
-        checkAdmin.checked = false;
-        togglePassword(); // On remet l'affichage à zéro (cache le MDP)
-    }
 
     document.getElementById('tab-login').classList.toggle('active', mode === 'login');
     document.getElementById('tab-register').classList.toggle('active', mode === 'register');
     document.getElementById('login-only-zone').style.display = mode === 'login' ? 'block' : 'none';
     document.getElementById('register-only-zone').style.display = mode === 'register' ? 'block' : 'none';
     document.getElementById('auth-title').innerText = mode === 'login' ? 'Identification' : 'Nouvelle Inscription';
-    
-    const adminLabel = document.getElementById('check-admin').parentElement;
-    if(adminLabel) adminLabel.style.display = mode === 'login' ? 'inline-block' : 'none';
+
+    togglePassword();
 }
 
 async function handleAuth() {
@@ -188,12 +180,37 @@ async function handleAuth() {
     let prenom = document.getElementById('login-nom').value.trim();
 
     if(!prenom) {
-        alert(isFormateur ? "Veuillez entrer votre email formateur" : "Veuillez entrer votre prénom");
+        alert(isFormateur && currentAuthMode === 'login' ? "Veuillez entrer votre email formateur" : "Veuillez compléter les informations demandées");
         return;
     }
 
     // --- MODE INSCRIPTION ---
 if(currentAuthMode === 'register') {
+    if (isFormateur) {
+        const nom = (document.getElementById('register-formateur-nom')?.value || '').trim();
+        const email = (document.getElementById('register-formateur-email')?.value || '').trim();
+        const password = (document.getElementById('login-mdp')?.value || '').trim();
+
+        if (!prenom || !nom || !email || password.length < 8) {
+            alert("Veuillez renseigner prénom, nom, email et un mot de passe d'au moins 8 caractères.");
+            return;
+        }
+
+        try {
+            const response = await apiFetch('/auth/bootstrap-formateur', {
+                method: 'POST',
+                body: JSON.stringify({ prenom, nom, email, password })
+            });
+
+            setSessionUtilisateur(response.token, response.user);
+            alert("✅ Compte formateur créé. Vous êtes maintenant connecté.");
+            location.reload();
+        } catch (e) {
+            alert("Erreur création formateur : " + e.message);
+        }
+        return;
+    }
+
     try {
         const inviteCode = (document.getElementById('register-invite-code')?.value || '').trim().toUpperCase();
         const response = await apiFetch('/auth/register-eleve', {
@@ -936,21 +953,26 @@ function togglePassword() {
     const mdpInput = document.getElementById("login-mdp");
     const loginNom = document.getElementById("login-nom");
     const loginIdZone = document.getElementById("login-only-zone");
+    const registerEleveZone = document.getElementById("register-eleve-zone");
+    const registerFormateurZone = document.getElementById("register-formateur-zone");
+    const authTitle = document.getElementById("auth-title");
 
     if (isChecked) {
-        // Mode Formateur
         mdpInput.style.display = "block";
         loginNom.style.display = "block";
-        loginNom.placeholder = "Votre email formateur";
-        if(loginIdZone) loginIdZone.style.display = "none"; // On cache l'ID
+        loginNom.placeholder = currentAuthMode === 'register' ? "Votre prénom" : "Votre email formateur";
+        if (loginIdZone) loginIdZone.style.display = "none";
+        if (registerEleveZone) registerEleveZone.style.display = currentAuthMode === 'register' ? "none" : "block";
+        if (registerFormateurZone) registerFormateurZone.style.display = currentAuthMode === 'register' ? "block" : "none";
+        if (authTitle && currentAuthMode === 'register') authTitle.innerText = "Créer le compte formateur";
     } else {
-        // Mode Élève
         mdpInput.style.display = "none";
         loginNom.style.display = "block";
         loginNom.placeholder = "Votre prénom";
-        if(currentAuthMode === 'login') {
-            if(loginIdZone) loginIdZone.style.display = "block";
-        }
+        if (loginIdZone) loginIdZone.style.display = currentAuthMode === 'login' ? "block" : "none";
+        if (registerEleveZone) registerEleveZone.style.display = currentAuthMode === 'register' ? "block" : "none";
+        if (registerFormateurZone) registerFormateurZone.style.display = "none";
+        if (authTitle && currentAuthMode === 'register') authTitle.innerText = "Nouvelle Inscription";
     }
 }
 

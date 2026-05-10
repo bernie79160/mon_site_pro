@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*'
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 permissions:
   contents: write
 
@@ -15,27 +18,34 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+
+      - name: Build release files for tag
+        run: |
+          set -euo pipefail
+          chmod +x launcher/publish_distribution_release.sh
+          ./launcher/publish_distribution_release.sh "${GITHUB_REF_NAME}"
 
       - name: Validate release files
         run: |
           set -euo pipefail
           VERSION="${GITHUB_REF_NAME}"
           test -f "dist-launcher/latest.json"
-          ls -1 "dist-launcher/mon-site-pro-serveur-central-linux-${VERSION}.tar.gz"
-          ls -1 "dist-launcher/mon-site-pro-serveur-central-windows-${VERSION}.tar.gz"
-          ls -1 "dist-launcher/mon-site-pro-serveur-central-macos-${VERSION}.tar.gz"
+          ls -1 "dist-launcher/mon-site-pro-serveur-central-linux-${VERSION}."*
+          ls -1 "dist-launcher/mon-site-pro-serveur-central-windows-${VERSION}."*
+          ls -1 "dist-launcher/mon-site-pro-serveur-central-macos-${VERSION}."*
 
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
           generate_release_notes: true
+          fail_on_unmatched_files: false
           files: |
             dist-launcher/latest.json
-            dist-launcher/mon-site-pro-serveur-central-linux-${{ github.ref_name }}.tar.gz
-            dist-launcher/mon-site-pro-serveur-central-windows-${{ github.ref_name }}.tar.gz
-            dist-launcher/mon-site-pro-serveur-central-macos-${{ github.ref_name }}.tar.gz
-            dist-launcher/mon-site-pro-serveur-central-linux-latest.tar.gz
-            dist-launcher/mon-site-pro-serveur-central-windows-latest.tar.gz
-            dist-launcher/mon-site-pro-serveur-central-macos-latest.tar.gz
+            dist-launcher/mon-site-pro-serveur-central-linux-${{ github.ref_name }}.*
+            dist-launcher/mon-site-pro-serveur-central-windows-${{ github.ref_name }}.*
+            dist-launcher/mon-site-pro-serveur-central-macos-${{ github.ref_name }}.*
+            dist-launcher/mon-site-pro-serveur-central-linux-latest.*
+            dist-launcher/mon-site-pro-serveur-central-windows-latest.*
+            dist-launcher/mon-site-pro-serveur-central-macos-latest.*

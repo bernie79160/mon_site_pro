@@ -10,6 +10,13 @@ const registerSchema = z.object({
   inviteCode: z.string().min(4).optional().nullable()
 });
 
+const bootstrapFormateurSchema = z.object({
+  prenom: z.string().min(1),
+  nom: z.string().min(1),
+  email: z.string().email(),
+  password: z.string().min(8)
+});
+
 const loginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8)
@@ -81,6 +88,62 @@ async function resolveGroupeIdFromRequest(app, groupeId, inviteCode) {
 }
 
 module.exports = async function authRoutes(app) {
+  app.post('/bootstrap-formateur', async (request, reply) => {
+    const parsed = bootstrapFormateurSchema.safeParse(request.body);
+
+    if (!parsed.success) {
+      return reply.code(400).send({ message: 'Données invalides', issues: parsed.error.issues });
+    }
+
+    const existingFormateur = await app.prisma.eleve.findFirst({
+      where: {
+        archivedAt: null,
+        role: { in: ['FORMATEUR', 'ADMIN'] }
+      }
+    });
+
+    if (existingFormateur) {
+      return reply.code(409).send({ message: 'Un compte formateur existe déjà. Utilisez la connexion.' });
+    }
+
+    const prenom = formatPrenom(parsed.data.prenom);
+    const nom = parsed.data.nom.trim();
+    const email = parsed.data.email.trim().toLowerCase();
+    const passwordHash = await bcrypt.hash(parsed.data.password, 10);
+
+    const eleve = await app.prisma.eleve.create({
+      data: {
+        prenom,
+        nom,
+        email,
+        passwordHash,
+        role: 'FORMATEUR',
+        statut: 'actif',
+        visitCount: 1,
+        consentements: { bootstrapFormateur: true }
+      }
+    });
+
+    const token = await reply.jwtSign({
+      sub: eleve.id,
+      role: eleve.role,
+      prenom: eleve.prenom,
+      nom: eleve.nom
+    });
+
+    return reply.code(201).send({
+      token,
+      user: {
+        id: eleve.id,
+        prenom: eleve.prenom,
+        nom: eleve.nom,
+        email: eleve.email,
+        visitCount: eleve.visitCount,
+        role: eleve.role
+      }
+    });
+  });
+
   app.post('/register-eleve', async (request, reply) => {
     const parsed = registerEleveSchema.safeParse(request.body);
 
