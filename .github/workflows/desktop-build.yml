@@ -6,6 +6,9 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+
 jobs:
   build:
     name: Build desktop (${{ matrix.os }})
@@ -51,3 +54,30 @@ jobs:
           name: desktop-${{ runner.os }}
           path: desktop/dist/*
           if-no-files-found: error
+
+      - name: Publish Linux binaries to Release
+        if: startsWith(github.ref, 'refs/tags/v') && runner.os == 'Linux'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          fail_on_unmatched_files: false
+          files: |
+            desktop/dist/*.AppImage
+
+      - name: Publish Windows binaries to Release
+        if: startsWith(github.ref, 'refs/tags/v') && runner.os == 'Windows'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          fail_on_unmatched_files: false
+          files: |
+            desktop/dist/*.exe
+
+      - name: Publish macOS binaries to Release
+        if: startsWith(github.ref, 'refs/tags/v') && runner.os == 'macOS'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          fail_on_unmatched_files: false
+          files: |
+            desktop/dist/*.dmg
