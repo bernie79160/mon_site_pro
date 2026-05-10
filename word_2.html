@@ -142,7 +142,9 @@
     editeur.addEventListener('keyup', (e) => {
         if (etape === 5 && editeur.innerText.length > 35) {
             etape = 6;
-            consigne.innerHTML = "🎉 <strong>Bravo Bernard !</strong> Vous savez maintenant créer un document propre et organisé.";
+            const user = JSON.parse(localStorage.getItem('utilisateurActuel') || 'null');
+            const identifiant = user?.id || user?.nom || 'élève';
+            consigne.innerHTML = `🎉 <strong>Bravo ${identifiant} !</strong> Vous savez maintenant créer un document propre et organisé.`;
             boxConsigne.style.background = "#d4edda";
             boxConsigne.style.borderLeftColor = "#28a745";
             btnValider.disabled = false;

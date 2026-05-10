@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel Niveau 3</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <style>
+        .tableur { width: 100%; max-width: 700px; margin: 12px auto; border-collapse: collapse; font-family: 'Calibri', sans-serif; font-size: 1rem; }
+        .tableur th { background: #217346; color: white; padding: 8px 14px; border: 1px solid #1a5c38; text-align: center; font-weight: normal; }
+        .tableur td { border: 1px solid #bbb; padding: 7px 10px; background: #fff; }
+        .tableur td.hdr { background: #e8e8e8; font-weight: bold; text-align: center; color: #333; width: 35px; }
+        .cell-edit { width: 90%; border: none; border-bottom: 2px solid #217346; font-size: 1rem; padding: 2px 4px; outline: none; background: transparent; text-align: center; }
+        .ruban { background: #217346; color: white; padding: 8px 16px; border-radius: 6px 6px 0 0; display: flex; gap: 16px; align-items: center; font-size: 0.9rem; max-width: 700px; margin: 0 auto; }
+        /* Graphique à barres simplifié */
+        .graphique { max-width: 700px; margin: 20px auto; background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 20px; }
+        .graphique h4 { color: #217346; text-align: center; margin-bottom: 16px; }
+        .barre-container { display: flex; align-items: flex-end; gap: 10px; height: 160px; justify-content: center; border-bottom: 2px solid #333; padding-bottom: 4px; }
+        .barre-item { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .barre { width: 50px; background: #217346; border-radius: 3px 3px 0 0; transition: height 0.5s ease; }
+        .barre-label { font-size: 0.75rem; color: #555; text-align: center; width: 60px; }
+        .barre-val { font-size: 0.8rem; font-weight: bold; color: #217346; }
+        .tri-btns { display: flex; gap: 10px; justify-content: center; margin-bottom: 12px; flex-wrap: wrap; }
+    </style>
+</head>
+<body class="page-cours" onload="demarrerChrono()">
+<header>
+    <nav>
+        <ul>
+            <li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a></li>
+            <li><button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">🌙 Mode Sombre</button></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="contenu-cours">
+    <section class="entete-cours">
+        <h1><i class="fas fa-file-excel" style="color:#217346;"></i> Excel — Niveau 3</h1>
+        <p class="introduction">Analyse de données : tri, filtre et graphique à barres.</p>
+    </section>
+
+    <section class="section-instruction">
+        <div class="conseil-flash" id="consigne-box" style="margin-bottom:12px;">
+            <p id="consigne-excel"><strong>Étape 1 :</strong> Complétez les <strong>ventes de janvier</strong> pour les 4 vendeurs, puis cliquez sur <strong>Générer le graphique</strong>.</p>
+        </div>
+
+        <!-- Boutons d'action -->
+        <div class="tri-btns" style="margin-bottom:10px;">
+            <button class="btn-card" style="width:auto;padding:8px 14px;" onclick="trierCroissant()"><i class="fas fa-sort-amount-up"></i> Trier ↑</button>
+            <button class="btn-card" style="width:auto;padding:8px 14px;" onclick="trierDecroissant()"><i class="fas fa-sort-amount-down"></i> Trier ↓</button>
+            <button class="btn-card" style="width:auto;padding:8px 14px;background:#217346;" onclick="genererGraphique()"><i class="fas fa-chart-bar"></i> Générer le graphique</button>
+        </div>
+
+        <div class="ruban"><i class="fas fa-table"></i> Tableau des ventes — Janvier</div>
+        <table class="tableur" id="tableau-ventes">
+            <thead>
+                <tr><th></th><th>A — Vendeur</th><th>B — Ventes (€)</th><th>C — Rang</th></tr>
+            </thead>
+            <tbody id="tbody-ventes">
+                <tr><td class="hdr">2</td><td>Alice</td><td><input type="number" id="v1" class="cell-edit" placeholder="?" min="0" oninput="mettreAJour()"></td><td id="r1">—</td></tr>
+                <tr><td class="hdr">3</td><td>Bruno</td><td><input type="number" id="v2" class="cell-edit" placeholder="?" min="0" oninput="mettreAJour()"></td><td id="r2">—</td></tr>
+                <tr><td class="hdr">4</td><td>Carla</td><td><input type="number" id="v3" class="cell-edit" placeholder="?" min="0" oninput="mettreAJour()"></td><td id="r3">—</td></tr>
+                <tr><td class="hdr">5</td><td>David</td><td><input type="number" id="v4" class="cell-edit" placeholder="?" min="0" oninput="mettreAJour()"></td><td id="r4">—</td></tr>
+                <tr style="background:#e8f5e9;font-weight:bold;">
+                    <td class="hdr">6</td><td><strong>TOTAL</strong></td>
+                    <td id="total-ventes" style="text-align:center;color:#217346;">—</td><td></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Graphique -->
+        <div class="graphique" id="graphique-zone" style="display:none;">
+            <h4><i class="fas fa-chart-bar"></i> Graphique des ventes</h4>
+            <div class="barre-container" id="barres"></div>
+        </div>
+    </section>
+
+    <div style="text-align:center;margin:30px 0;">
+        <button id="btn-valider-n3" class="btn-card" disabled style="background:#95a5a6;cursor:not-allowed;" onclick="terminerNiveau3()">
+            ✅ Valider Excel Niveau 3
+        </button>
+    </div>
+</main>
+
+<script>
+const consigne = document.getElementById('consigne-excel');
+const btnValider = document.getElementById('btn-valider-n3');
+let graphiqueGenere = false;
+
+function getData() {
+    const noms = ['Alice', 'Bruno', 'Carla', 'David'];
+    return noms.map((nom, i) => ({
+        nom,
+        val: parseFloat(document.getElementById('v' + (i + 1)).value) || 0
+    }));
+}
+
+function mettreAJour() {
+    const data = getData();
+    const total = data.reduce((s, d) => s + d.val, 0);
+    document.getElementById('total-ventes').textContent = total > 0 ? total.toLocaleString('fr-FR') + ' €' : '—';
+
+    // Calcul des rangs
+    const sorted = [...data].sort((a, b) => b.val - a.val);
+    data.forEach((d, i) => {
+        const rang = sorted.findIndex(s => s.nom === d.nom) + 1;
+        document.getElementById('r' + (i + 1)).textContent = d.val > 0 ? '🥇🥈🥉🎖️'[rang - 1] || rang : '—';
+    });
+}
+
+function trierCroissant() { trierTableau(1); }
+function trierDecroissant() { trierTableau(-1); }
+
+function trierTableau(dir) {
+    const data = getData();
+    data.sort((a, b) => dir * (a.val - b.val));
+    const ids = ['v1', 'v2', 'v3', 'v4'];
+    const tds = document.querySelectorAll('#tbody-ventes tr:not(:last-child) td:nth-child(2)');
+    data.forEach((d, i) => {
+        tds[i].textContent = d.nom;
+        document.getElementById(ids[i]).value = d.val || '';
+    });
+    mettreAJour();
+}
+
+function genererGraphique() {
+    const data = getData();
+    const complete = data.every(d => d.val > 0);
+    if (!complete) {
+        consigne.innerHTML = "<strong>⚠️</strong> Veuillez remplir les 4 ventes avant de générer le graphique.";
+        return;
+    }
+
+    const maxVal = Math.max(...data.map(d => d.val));
+    const zone = document.getElementById('graphique-zone');
+    const barres = document.getElementById('barres');
+    zone.style.display = 'block';
+
+    barres.innerHTML = data.map(d => {
+        const h = Math.round((d.val / maxVal) * 130);
+        return `<div class="barre-item">
+            <span class="barre-val">${d.val.toLocaleString('fr-FR')} €</span>
+            <div class="barre" style="height:${h}px;"></div>
+            <span class="barre-label">${d.nom}</span>
+        </div>`;
+    }).join('');
+
+    graphiqueGenere = true;
+    consigne.innerHTML = "🎉 Excellent ! Vous savez saisir des données, calculer un total et visualiser un graphique. Félicitations !";
+    btnValider.disabled = false;
+    btnValider.style.background = '#27ae60';
+    btnValider.style.cursor = 'pointer';
+}
+
+async function terminerNiveau3() {
+    await validerCours('excel-n3');
+    window.location.href = 'index.html';
+}
+</script>
+
+<script src="script.js"></script>
+</body>
+</html>

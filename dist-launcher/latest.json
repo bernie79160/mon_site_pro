@@ -1,0 +1,21 @@
+{
+  "version": "v1.0.1",
+  "generatedAt": "2026-05-05T17:18:24+02:00",
+  "artifacts": {
+    "linux": {
+      "versioned": "mon-site-pro-serveur-central-linux-v1.0.1.tar.gz",
+      "latest": "mon-site-pro-serveur-central-linux-latest.tar.gz",
+      "sha256": "9b1e437dfafcbc4722168baea775a7bc9c68bcfdb7faf2a28668c89a0514095e"
+    },
+    "windows": {
+      "versioned": "mon-site-pro-serveur-central-windows-v1.0.1.tar.gz",
+      "latest": "mon-site-pro-serveur-central-windows-latest.tar.gz",
+      "sha256": "1397e52f5e88eb7a7009fce7190becdd325ea84d4b48ee4d478dcc8454e37fec"
+    },
+    "macos": {
+      "versioned": "mon-site-pro-serveur-central-macos-v1.0.1.tar.gz",
+      "latest": "mon-site-pro-serveur-central-macos-latest.tar.gz",
+      "sha256": "bd3d0c304bf6949d22df75ab88429a3b1b9482b8f93c2b5c43c99c69a894e003"
+    }
+  }
+}

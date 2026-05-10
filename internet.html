@@ -268,10 +268,21 @@
         if(isCorrect) { 
             el.classList.add('correct'); 
             vus.admin++; 
-            showCongrats("Bravo Bernard !", "C'est bien un site officiel sécurisé de l'État.");
+            const user = JSON.parse(localStorage.getItem('utilisateurActuel') || 'null');
+            const identifiant = user?.id || user?.nom || 'élève';
+            showCongrats(`Bravo ${identifiant} !`, "C'est bien un site officiel sécurisé de l'État.");
         } else { 
             el.classList.add('wrong'); 
             document.getElementById('admin-feedback').innerHTML = "<span style='color:#e74c3c;'>Attention ! Ce site est frauduleux, regardez l'adresse.</span>";
+            if (typeof window.afficherExplicationErreur === 'function') {
+                window.afficherExplicationErreur({
+                    titre: 'Site suspect détecté',
+                    erreur: 'Vous avez validé un site qui semble frauduleux.',
+                    pourquoi: 'Les escrocs imitent les sites officiels pour voler vos informations.',
+                    correction: 'Vérifiez toujours l\'adresse exacte du site et la présence du cadenas HTTPS.',
+                    astuce: 'Regardez les fautes d\'orthographe, les promotions trop belles et les URL étranges.'
+                });
+            }
         }
         verifierTout();
     }
@@ -286,7 +297,18 @@
     // --- ACHATS ---
     function choisirAchat(type) {
         const fb = document.getElementById('achat-feedback');
-        if(type === 'faux') fb.innerHTML = "<span style='color:#e74c3c;'>Attention : Pas de cadenas + avis négatifs = Danger !</span>";
+        if(type === 'faux') {
+            fb.innerHTML = "<span style='color:#e74c3c;'>Attention : Pas de cadenas + avis négatifs = Danger !</span>";
+            if (typeof window.afficherExplicationErreur === 'function') {
+                window.afficherExplicationErreur({
+                    titre: 'Achat non sécurisé',
+                    erreur: 'Vous avez choisi une boutique risquée.',
+                    pourquoi: 'Sans cadenas HTTPS et avec de mauvais avis, vos données bancaires peuvent être volées.',
+                    correction: 'Choisissez un site avec cadenas, URL claire et avis clients cohérents.',
+                    astuce: 'Avant de payer, comparez le nom du site avec la marque officielle.'
+                });
+            }
+        }
         else { document.getElementById('etape-achat-1').style.display = 'none'; document.getElementById('etape-achat-2').style.display = 'block'; fb.innerHTML = ""; }
     }
     function validerSMS() {
@@ -313,7 +335,18 @@
         if(indexTri >= listeInfos.length) return;
         const fb = document.getElementById('tri-feedback');
         if(choix === listeInfos[indexTri].cat) { fb.innerHTML = "<span style='color:#27ae60;'>Oui !</span>"; indexTri++; setTimeout(chargerInfoTri, 800); }
-        else fb.innerHTML = "<span style='color:#e74c3c;'>Attention, cette info est sensible !</span>";
+        else {
+            fb.innerHTML = "<span style='color:#e74c3c;'>Attention, cette info est sensible !</span>";
+            if (typeof window.afficherExplicationErreur === 'function') {
+                window.afficherExplicationErreur({
+                    titre: 'Info mal classée',
+                    erreur: 'Cette donnée a été placée dans la mauvaise catégorie.',
+                    pourquoi: 'Une donnée sensible diffusée au mauvais endroit peut exposer votre vie privée.',
+                    correction: 'Placez les données personnelles dans la catégorie "perso".',
+                    astuce: 'Dès qu\'il y a mot de passe, carte bancaire ou photo privée : c\'est perso.'
+                });
+            }
+        }
     }
     chargerInfoTri();
 

@@ -1,4 +1,37 @@
 à faire très rapidement :
 
-1 - Page d'inscription avec récupération 'id' pour compteur visite (donc création bdd ident)
-2 - Retirer le "Bravo Bernard" par "Bravo 'id' 
+1 - [OK] Page d'inscription avec récupération 'id' pour compteur visite (BDD + API visitCount)
+2 - [OK] Retirer le "Bravo Bernard" par "Bravo 'id'"
+
+---
+
+Décisions produit validées (mai 2026)
+
+1) Gestion compte élève
+- Ajouter modification du compte élève (prenom, nom, mot de passe)
+- Ajouter suppression douce du compte élève (archivage, pas suppression physique)
+
+2) Parcours par niveaux
+- Le contenu actuel reste le Niveau 0 (socle)
+- Ajouter des niveaux progressifs pour Word / Excel / PowerPoint (N1, N2, N3)
+- Le niveau autorisé sera piloté côté formateur
+
+3) Pilotage formateur recommandé
+- Pilotage par groupe (plus simple en formation) plutôt que par élève unitaire
+- Ajouter un code d'invitation de groupe pour rattacher automatiquement un élève
+- Les modules affichés à l'élève dépendront du niveau autorisé de son groupe
+
+4) TOSA
+- TOSA doit être préparé côté backend
+- TOSA ne doit pas être affiché dans l'interface élève pour le moment
+
+---
+
+État d'avancement (implémenté)
+
+- Gestion compte élève: OK (`PATCH /me`, `DELETE /me` en archivage)
+- Niveaux par groupe: OK (`niveauWord`, `niveauExcel`, `niveauPowerpoint`)
+- Code d'invitation groupe: OK (`inviteCode`, inscription élève via code)
+- Filtrage catalogue par niveaux: OK (`GET /modules` filtré pour les élèves)
+- Aide élève intégrée: OK (bouton Aide + centre d'aide dans l'accueil)
+- Mode intranet prêt: OK (API auto sur `hostname:3001` + override possible)

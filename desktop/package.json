@@ -1,0 +1,77 @@
+{
+  "name": "mon-site-pro-desktop",
+  "version": "0.1.0",
+  "description": "Application desktop installable pour mon_site_pro",
+  "author": {
+    "name": "Bernard Tellier",
+    "email": "admin.tellierbe@gmail.com"
+  },
+  "homepage": "https://github.com/bernie79160/mon_site_pro",
+  "main": "src/main.js",
+  "private": true,
+  "scripts": {
+    "dev": "electron .",
+    "dist": "electron-builder --publish never",
+    "dist:win": "electron-builder --win nsis --publish never",
+    "dist:mac": "electron-builder --mac dmg --publish never",
+    "dist:linux": "electron-builder --linux AppImage --publish never"
+  },
+  "devDependencies": {
+    "electron": "^31.7.7",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.bernard.mon-site-pro",
+    "productName": "Mon Site Pro",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "../*.html",
+      "../script.js",
+      "../style.css",
+      "../favicon.png",
+      "../images/**/*",
+      "../mp4/**/*",
+      "../pdf/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "../backend",
+        "to": "backend",
+        "filter": [
+          "src/**/*",
+          "prisma/**/*",
+          "package.json",
+          "package-lock.json",
+          ".env.example"
+        ]
+      }
+    ],
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "artifactName": "MonSitePro-Setup-${version}.${ext}"
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "artifactName": "MonSitePro-${version}.${ext}"
+    },
+    "linux": {
+      "category": "Education",
+      "maintainer": "Bernard Tellier <admin.tellierbe@gmail.com>",
+      "target": [
+        "AppImage"
+      ],
+      "artifactName": "MonSitePro-${version}-${arch}.${ext}"
+    }
+  }
+}

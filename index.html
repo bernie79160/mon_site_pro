@@ -28,7 +28,7 @@
         <ul>
           <li><a href="#accueil"><i class="fas fa-home"></i> Accueil</a></li>
           <li><a href="#services"><i class="fas fa-graduation-cap"></i> Cours</a></li>
-          <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+          <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
           <li><button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">🌙 Mode Sombre</button></li>
         </ul>
       </nav>
@@ -45,7 +45,10 @@
         <div id="login-only-zone">
             <input type="text" id="login-id" placeholder="Votre ID (ex: BER-1234)" style="width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ddd; text-align:center;">
         </div>
-        <div id="register-only-zone" style="display: none;"><p style="color: #27ae60; font-size: 0.9rem;">Bienvenue ! Un identifiant sera généré pour vous.</p></div>
+        <div id="register-only-zone" style="display: none;">
+          <p style="color: #27ae60; font-size: 0.9rem;">Bienvenue ! Un identifiant sera généré pour vous.</p>
+          <input type="text" id="register-invite-code" placeholder="Code groupe (optionnel, ex: GRP-AB12CD)" style="width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ddd; text-align:center;">
+        </div>
         <div style="margin-bottom: 10px;">
           <label style="font-size: 0.8rem; cursor: pointer;"><input type="checkbox" id="check-admin" onclick="togglePassword()"> Je suis le formateur</label>
         </div>
@@ -58,6 +61,7 @@
       <div class="user-main-line">
         <strong><i class="fas fa-user"></i> <span id="nom-affichage"></span></strong> 
         | <span id="id-affichage" style="font-family:monospace; background:#eee; padding:2px 5px; border-radius:3px;">ID: ---</span>
+        | <span id="visites-affichage" style="font-size:0.9em; color:#555;">Visites: 0</span>
         <button onclick="seDeconnecter()" style="color: #e74c3c; cursor: pointer; border: none; background: none; text-decoration: underline; margin-left: 10px;">Déconnexion</button>
       </div>
 
@@ -167,39 +171,226 @@
             <button class="btn-card" onclick="ouvrirCours('powerpoint')">Découvrir</button>
           </div>
         </div>
+
+        <div id="word-levels-section" style="display:none;max-width:1200px;margin:30px auto 0;padding:0 20px;">
+          <h3 style="font-size:1.4rem;color:#2b579a;margin-bottom:12px;"><i class="fas fa-layer-group"></i> Parcours Word par niveaux</h3>
+          <p id="word-levels-status" style="margin:0 0 12px 0;color:#666;">Chargement des niveaux...</p>
+          <div id="word-levels-grid" class="cours-container"></div>
+        </div>
+
+        <div id="excel-levels-section" style="display:none;max-width:1200px;margin:30px auto 0;padding:0 20px;">
+          <h3 style="font-size:1.4rem;color:#217346;margin-bottom:12px;"><i class="fas fa-layer-group"></i> Parcours Excel par niveaux</h3>
+          <p id="excel-levels-status" style="margin:0 0 12px 0;color:#666;">Chargement des niveaux...</p>
+          <div id="excel-levels-grid" class="cours-container"></div>
+        </div>
+
+        <div id="powerpoint-levels-section" style="display:none;max-width:1200px;margin:30px auto 0;padding:0 20px;">
+          <h3 style="font-size:1.4rem;color:#c43e1c;margin-bottom:12px;"><i class="fas fa-layer-group"></i> Parcours PowerPoint par niveaux</h3>
+          <p id="powerpoint-levels-status" style="margin:0 0 12px 0;color:#666;">Chargement des niveaux...</p>
+          <div id="powerpoint-levels-grid" class="cours-container"></div>
+        </div>
       
       </section>
     </main>
 
-    <section id="contact" style="max-width: 1000px; margin: 50px auto; padding: 20px; text-align: center;">
-      <h2><i class="fas fa-envelope"></i> Me Contacter</h2>
-      <div class="contact-flex-container">
-        <div class="contact-info">
-          <h3>Mes Coordonnées</h3>
-          <div class="info-item"><i class="fas fa-at"></i><div><a href="mailto:admin.tellierbe@gmail.com">admin.tellierbe@gmail.com</a></div></div>
-          <div class="info-item"><i class="fas fa-phone-alt"></i><div><a href="tel:+33600000000">06 00 00 00 00</a></div></div>
-          <div class="info-item"><i class="fas fa-map-marker-alt"></i><div>Poitou-Charentes, France</div></div>
+    <section id="contact" style="max-width: 900px; margin: 50px auto; padding: 20px; text-align: center;">
+      <div style="background: white; border-radius: 16px; padding: 36px; box-shadow: 0 8px 24px rgba(0,0,0,0.07); display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:24px;">
+        <div>
+          <h2 style="margin:0 0 8px 0; color:#2c3e50;"><i class="fas fa-envelope" style="color:#3498db;"></i> Une question ?</h2>
+          <p style="margin:0; color:#7f8c8d;">Contactez directement Bernard TELLIER, formateur bureautique.</p>
         </div>
-        <div class="form-container">
-          <div class="contact-card" style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.05);">
-            <form id="form-contact">
-              <input type="text" placeholder="Ton nom" style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;" />
-              <input type="email" placeholder="ton@email.com" style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;" />
-              <textarea placeholder="Ton message" rows="4" style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;"></textarea>
-              <button type="submit" class="btn-card" style="width: 100%">Envoyer le message</button>
-            </form>
-          </div>
-        </div>
+        <a href="contact.html" class="btn-card" style="width:auto; padding:14px 28px; text-decoration:none; display:inline-block;">
+          <i class="fas fa-paper-plane"></i> Accéder au formulaire de contact
+        </a>
       </div>
     </section>
 
     <footer><p>&copy; 2026 Bernard TELLIER - Tous droits réservés.</p></footer>
+
+    <button id="btn-aide-eleve" class="btn-aide-eleve" onclick="ouvrirAideEleve()" aria-label="Ouvrir l'aide élève">
+      <i class="fas fa-life-ring"></i> Aide
+    </button>
+
+    <div id="modal-aide-eleve" class="custom-confirm-overlay" style="display:none;">
+      <div class="custom-confirm-box" style="max-width:700px;width:92%;max-height:88vh;overflow-y:auto;text-align:left;">
+        <h2 style="margin-top:0;"><i class="fas fa-life-ring"></i> Aide Élève</h2>
+        <p style="margin-bottom:10px;">Bienvenue ! Voici une aide simple pour avancer étape par étape.</p>
+
+        <div class="aide-bloc">
+          <h3>1) Se connecter</h3>
+          <p>Utilisez votre <strong>prénom</strong> et votre <strong>ID élève</strong> (ex: `BER-1234`).</p>
+          <p>Si vous avez un <strong>code de groupe</strong>, saisissez-le lors de l'inscription.</p>
+        </div>
+
+        <div class="aide-bloc">
+          <h3>2) Progression des cours</h3>
+          <p>Validez un cours pour débloquer le suivant. Votre progression est sauvegardée automatiquement.</p>
+          <p id="aide-prochain-cours" style="font-weight:600;color:#2c3e50;">Prochain cours conseillé: —</p>
+        </div>
+
+        <div class="aide-bloc">
+          <h3>3) Quiz et résultats</h3>
+          <p>À la fin d'un module, un quiz peut s'afficher. Répondez puis validez pour voir votre score.</p>
+        </div>
+
+        <div class="aide-bloc">
+          <h3>4) Besoin d'aide humaine ?</h3>
+          <p>Parlez au formateur ou utilisez la zone contact en bas de la page d'accueil.</p>
+        </div>
+
+        <div style="display:flex;justify-content:flex-end;margin-top:16px;">
+          <button class="btn-card" style="width:auto;padding:10px 20px;" onclick="fermerAideEleve()">Fermer</button>
+        </div>
+      </div>
+    </div>
 
     <div id="admin-dashboard" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 9999; justify-content: center; align-items: center;">
       <div class="custom-confirm-box" style="width: 90%; max-width: 900px; max-height: 85vh; overflow-y: auto;">
         <h2 style="color: #f39c12; margin-top: 0; border-bottom: 2px solid #f39c12; padding-bottom: 10px;">
             <i class="fas fa-crown"></i> Espace Formateur
         </h2>
+
+        <!-- ═══ GESTION DES COURS ════════════════════════════════════════ -->
+        <div style="margin-top: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #8e44ad;">
+          <h3 style="margin: 0 0 10px 0; color: #2c3e50;"><i class="fas fa-book-open"></i> Gestion des cours</h3>
+          <div id="form-cours-wrapper" style="background:white;border:1px solid #ddd;border-radius:8px;padding:14px;margin-bottom:12px;">
+            <h4 id="form-cours-titre" style="margin:0 0 10px 0;color:#8e44ad;"><i class="fas fa-plus-circle"></i> Ajouter un cours</h4>
+            <input type="hidden" id="cours-edit-id">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin-bottom:8px;">
+              <div>
+                <label style="font-size:0.75rem;font-weight:bold;color:#555;display:block;margin-bottom:3px;">Slug * (ex: word-n4)</label>
+                <input id="cours-slug" type="text" placeholder="word-n4" style="width:100%;padding:9px;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;">
+              </div>
+              <div>
+                <label style="font-size:0.75rem;font-weight:bold;color:#555;display:block;margin-bottom:3px;">Titre *</label>
+                <input id="cours-titre-input" type="text" placeholder="Word Niveau 4 — …" style="width:100%;padding:9px;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;">
+              </div>
+              <div>
+                <label style="font-size:0.75rem;font-weight:bold;color:#555;display:block;margin-bottom:3px;">Catégorie</label>
+                <select id="cours-categorie" style="width:100%;padding:9px;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;">
+                  <option value="">— Choisir —</option>
+                  <option value="word">Word</option>
+                  <option value="excel">Excel</option>
+                  <option value="powerpoint">PowerPoint</option>
+                  <option value="windows">Windows</option>
+                  <option value="internet">Internet</option>
+                  <option value="bases">Bases</option>
+                  <option value="office">Office</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size:0.75rem;font-weight:bold;color:#555;display:block;margin-bottom:3px;">Niveau (0 = libre)</label>
+                <input id="cours-niveau" type="number" min="0" max="10" value="0" style="width:100%;padding:9px;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;">
+              </div>
+              <div>
+                <label style="font-size:0.75rem;font-weight:bold;color:#555;display:block;margin-bottom:3px;">Ordre d'affichage</label>
+                <input id="cours-ordre" type="number" min="1" value="22" style="width:100%;padding:9px;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;">
+              </div>
+              <div>
+                <label style="font-size:0.75rem;font-weight:bold;color:#555;display:block;margin-bottom:3px;">Fichier HTML (sourcePath)</label>
+                <input id="cours-source" type="text" placeholder="word_n4.html" style="width:100%;padding:9px;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;">
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="btn-card" style="margin:0;width:auto;background:#8e44ad;" onclick="sauvegarderCours()"><i class="fas fa-save"></i> Enregistrer</button>
+              <button class="btn-card" style="margin:0;width:auto;background:#888;" onclick="annulerEditCours()"><i class="fas fa-times"></i> Annuler</button>
+            </div>
+            <p id="cours-form-status" style="margin:6px 0 0;font-size:0.85rem;color:#27ae60;display:none;"></p>
+          </div>
+          <div style="overflow-x:auto;">
+            <table style="width:100%;border-collapse:collapse;min-width:700px;font-size:0.85rem;">
+              <thead>
+                <tr style="background:#eef2f7;color:#2c3e50;">
+                  <th style="padding:8px;text-align:left;">Slug</th>
+                  <th style="padding:8px;text-align:left;">Titre</th>
+                  <th style="padding:8px;">Catégorie</th>
+                  <th style="padding:8px;">Niv.</th>
+                  <th style="padding:8px;">Ordre</th>
+                  <th style="padding:8px;">Actif</th>
+                  <th style="padding:8px;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-cours-admin">
+                <tr><td colspan="7" style="padding:10px;color:#777;">Chargement...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div style="margin-top: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #3498db;">
+          <h3 style="margin: 0 0 8px 0; color: #2c3e50;"><i class="fas fa-users"></i> Gestion des groupes (API)</h3>
+          <p id="admin-groupes-status" style="margin: 0 0 10px 0; color: #666;">Chargement...</p>
+
+          <p style="font-size:0.8rem;color:#888;margin:0 0 8px 0;">💡 Niveau 0 = accès libre à tous les cours. Niveau 1/2/3 = cours progressifs débloqués par le formateur.</p>
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px;">
+            <div>
+              <label style="font-size:0.75rem;font-weight:bold;color:#555;display:block;margin-bottom:3px;">Nom du groupe *</label>
+              <input id="groupe-nom" type="text" placeholder="ex: Groupe A" style="width:100%;padding:10px;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;">
+            </div>
+            <div>
+              <label style="font-size:0.75rem;font-weight:bold;color:#555;display:block;margin-bottom:3px;">Session (optionnel)</label>
+              <input id="groupe-session" type="text" placeholder="ex: Mai 2026" style="width:100%;padding:10px;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;">
+            </div>
+            <div>
+              <label style="font-size:0.75rem;font-weight:bold;color:#2b579a;display:block;margin-bottom:3px;">📄 Niveau Word (0–3)</label>
+              <input id="groupe-niveau-word" type="number" min="0" max="3" value="1" title="0 = libre, 1 = bases, 2 = intermédiaire, 3 = avancé" style="width:100%;padding:10px;border:1px solid #2b579a;border-radius:6px;box-sizing:border-box;">
+            </div>
+            <div>
+              <label style="font-size:0.75rem;font-weight:bold;color:#217346;display:block;margin-bottom:3px;">📊 Niveau Excel (0–3)</label>
+              <input id="groupe-niveau-excel" type="number" min="0" max="3" value="0" title="0 = libre, 1 = bases, 2 = intermédiaire, 3 = avancé" style="width:100%;padding:10px;border:1px solid #217346;border-radius:6px;box-sizing:border-box;">
+            </div>
+            <div>
+              <label style="font-size:0.75rem;font-weight:bold;color:#c43e1c;display:block;margin-bottom:3px;">🎞️ Niveau PowerPoint (0–3)</label>
+              <input id="groupe-niveau-powerpoint" type="number" min="0" max="3" value="0" title="0 = libre, 1 = bases, 2 = intermédiaire, 3 = avancé" style="width:100%;padding:10px;border:1px solid #c43e1c;border-radius:6px;box-sizing:border-box;">
+            </div>
+            <div style="display:flex;align-items:flex-end;">
+              <button class="btn-card" style="margin:0;width:100%;" onclick="creerGroupeDepuisUI()">✚ Créer le groupe</button>
+            </div>
+          </div>
+
+          <div style="overflow-x:auto; margin-top: 12px;">
+            <table style="width:100%; border-collapse: collapse; min-width: 760px;">
+              <thead>
+                <tr style="background:#eef2f7; color:#2c3e50;">
+                  <th style="padding:8px; text-align:left;">Groupe</th>
+                  <th style="padding:8px; text-align:left;">Code</th>
+                  <th style="padding:8px; text-align:left;">Niveaux</th>
+                  <th style="padding:8px; text-align:left;">Effectif</th>
+                  <th style="padding:8px; text-align:left;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-groupes-admin">
+                <tr><td colspan="5" style="padding:10px; color:#777;">Chargement...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div style="margin-top: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #16a085;">
+          <h3 style="margin: 0 0 8px 0; color: #2c3e50;"><i class="fas fa-chart-pie"></i> Statistiques API</h3>
+          <p id="admin-stats-status" style="margin: 0 0 10px 0; color: #666;">Chargement...</p>
+
+          <div id="admin-stats-kpis" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;"></div>
+
+          <div style="overflow-x:auto; margin-top: 12px;">
+            <table style="width:100%; border-collapse: collapse; min-width: 760px;">
+              <thead>
+                <tr style="background:#eef2f7; color:#2c3e50;">
+                  <th style="padding:8px; text-align:left;">Groupe</th>
+                  <th style="padding:8px; text-align:left;">Effectif</th>
+                  <th style="padding:8px; text-align:left;">Progression moyenne</th>
+                  <th style="padding:8px; text-align:left;">Score moyen</th>
+                  <th style="padding:8px; text-align:left;">Taux complétion</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-stats-admin">
+                <tr><td colspan="5" style="padding:10px; color:#777;">Chargement...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <h3 style="margin-top:20px; color:#7f8c8d; border-top:1px solid #eee; padding-top:16px;">Suivi historique Firebase (legacy)</h3>
         <div style="overflow-x: auto; margin-top: 20px">
             <table style="width: 100%; border-collapse: collapse; text-align: left; min-width: 500px;">
                 <thead>

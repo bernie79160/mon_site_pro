@@ -157,7 +157,20 @@
         }
 
         function ouvrirModale() {
-            if (!dossierActuel) { alert("Sélectionnez d'abord un dossier à gauche !"); return; }
+            if (!dossierActuel) {
+                if (typeof window.afficherExplicationErreur === 'function') {
+                    window.afficherExplicationErreur({
+                        titre: 'Choisir le bon dossier',
+                        erreur: 'Vous avez tenté de créer un dossier sans sélectionner d’emplacement.',
+                        pourquoi: 'Dans l’explorateur, toute création se fait dans le dossier actuellement ouvert.',
+                        correction: 'Cliquez d’abord sur un dossier à gauche (Documents, Images, Musique ou Videos), puis recommencez.',
+                        astuce: 'Regardez la barre d’adresse: elle indique où vous êtes.'
+                    });
+                } else {
+                    alert("Sélectionnez d'abord un dossier à gauche !");
+                }
+                return;
+            }
             document.getElementById('menu-nouveau').style.display = 'none';
             document.getElementById('modal-nouveau').style.display = 'flex';
             document.getElementById('modal-input').focus();

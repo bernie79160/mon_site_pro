@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel Niveau 2</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <style>
+        .tableur { width: 100%; max-width: 700px; margin: 16px auto; border-collapse: collapse; font-family: 'Calibri', sans-serif; font-size: 1rem; }
+        .tableur th { background: #217346; color: white; padding: 8px 14px; border: 1px solid #1a5c38; text-align: center; font-weight: normal; min-width: 80px; }
+        .tableur td { border: 1px solid #bbb; padding: 7px 10px; background: #fff; }
+        .tableur td.hdr { background: #e8e8e8; font-weight: bold; text-align: center; color: #333; width: 35px; }
+        .cell-edit { width: 90%; border: none; border-bottom: 2px solid #217346; font-size: 1rem; padding: 2px 4px; outline: none; background: transparent; text-align: center; }
+        .note-cell { background: #fff3cd !important; }
+        .total-row td { background: #e8f5e9 !important; font-weight: bold; color: #217346; }
+        .moyenne-row td { background: #e3f2fd !important; font-weight: bold; color: #1565c0; }
+        .ruban { background: #217346; color: white; padding: 8px 16px; border-radius: 6px 6px 0 0; display: flex; gap: 16px; align-items: center; font-size: 0.9rem; max-width: 700px; margin: 0 auto; }
+    </style>
+</head>
+<body class="page-cours" onload="demarrerChrono()">
+<header>
+    <nav>
+        <ul>
+            <li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a></li>
+            <li><button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">🌙 Mode Sombre</button></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="contenu-cours">
+    <section class="entete-cours">
+        <h1><i class="fas fa-file-excel" style="color:#217346;"></i> Excel — Niveau 2</h1>
+        <p class="introduction">Mise en forme d'un tableau de notes et calcul de moyenne.</p>
+    </section>
+
+    <section class="section-instruction">
+        <div class="conseil-flash" id="consigne-box" style="margin-bottom:12px;">
+            <p id="consigne-excel"><strong>Étape 1 :</strong> Saisissez les <strong>3 notes</strong> de l'élève (entre 0 et 20) dans les cellules <strong>B2, B3, B4</strong>.</p>
+        </div>
+
+        <div class="ruban"><i class="fas fa-table"></i> Tableau des notes — Classe 3ème A</div>
+        <table class="tableur">
+            <thead>
+                <tr><th></th><th>A — Matière</th><th>B — Note /20</th><th>C — Appréciation</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="hdr">1</td>
+                    <td><strong>Matière</strong></td>
+                    <td style="text-align:center;"><strong>Note</strong></td>
+                    <td style="text-align:center;"><strong>Appréciation</strong></td>
+                </tr>
+                <tr>
+                    <td class="hdr">2</td>
+                    <td>Mathématiques</td>
+                    <td class="note-cell"><input type="number" id="n1" class="cell-edit" placeholder="?" min="0" max="20" oninput="mettreAJour()"></td>
+                    <td id="app1" style="text-align:center;color:#888;">—</td>
+                </tr>
+                <tr>
+                    <td class="hdr">3</td>
+                    <td>Français</td>
+                    <td class="note-cell"><input type="number" id="n2" class="cell-edit" placeholder="?" min="0" max="20" oninput="mettreAJour()"></td>
+                    <td id="app2" style="text-align:center;color:#888;">—</td>
+                </tr>
+                <tr>
+                    <td class="hdr">4</td>
+                    <td>Histoire-Géo</td>
+                    <td class="note-cell"><input type="number" id="n3" class="cell-edit" placeholder="?" min="0" max="20" oninput="mettreAJour()"></td>
+                    <td id="app3" style="text-align:center;color:#888;">—</td>
+                </tr>
+                <tr class="total-row">
+                    <td class="hdr">5</td>
+                    <td><strong>TOTAL</strong></td>
+                    <td id="cell-total" style="text-align:center;">—</td>
+                    <td></td>
+                </tr>
+                <tr class="moyenne-row">
+                    <td class="hdr">6</td>
+                    <td><strong>MOYENNE</strong></td>
+                    <td id="cell-moy" style="text-align:center;">—</td>
+                    <td id="cell-mention" style="text-align:center;">—</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <div style="text-align:center;margin:30px 0;">
+        <button id="btn-valider-n2" class="btn-card" disabled style="background:#95a5a6;cursor:not-allowed;" onclick="terminerNiveau2()">
+            ✅ Valider Excel Niveau 2
+        </button>
+    </div>
+</main>
+
+<script>
+const consigne = document.getElementById('consigne-excel');
+const btnValider = document.getElementById('btn-valider-n2');
+let etape = 1;
+
+function appreciation(note) {
+    if (note >= 16) return '🌟 Excellent';
+    if (note >= 14) return '👍 Bien';
+    if (note >= 10) return '✅ Satisfaisant';
+    return '⚠️ À revoir';
+}
+
+function mettreAJour() {
+    const n1 = parseFloat(document.getElementById('n1').value);
+    const n2 = parseFloat(document.getElementById('n2').value);
+    const n3 = parseFloat(document.getElementById('n3').value);
+
+    if (!isNaN(n1) && n1 >= 0 && n1 <= 20) document.getElementById('app1').textContent = appreciation(n1);
+    if (!isNaN(n2) && n2 >= 0 && n2 <= 20) document.getElementById('app2').textContent = appreciation(n2);
+    if (!isNaN(n3) && n3 >= 0 && n3 <= 20) document.getElementById('app3').textContent = appreciation(n3);
+
+    if (!isNaN(n1) && !isNaN(n2) && !isNaN(n3)) {
+        const total = n1 + n2 + n3;
+        const moy = total / 3;
+        document.getElementById('cell-total').textContent = total.toFixed(1);
+        document.getElementById('cell-moy').textContent = moy.toFixed(2) + ' / 20';
+
+        let mention = '';
+        if (moy >= 16) mention = '🏅 Très bien';
+        else if (moy >= 14) mention = '🎖️ Bien';
+        else if (moy >= 12) mention = '✔️ Assez bien';
+        else if (moy >= 10) mention = '✅ Passable';
+        else mention = '❌ Insuffisant';
+
+        document.getElementById('cell-mention').textContent = mention;
+
+        if (etape === 1) {
+            etape = 2;
+            consigne.innerHTML = "🎉 Parfait ! Le tableau calcule le total (<strong>=B2+B3+B4</strong>) et la moyenne (<strong>=B5/3</strong>) automatiquement. Vous pouvez valider.";
+            btnValider.disabled = false;
+            btnValider.style.background = '#27ae60';
+            btnValider.style.cursor = 'pointer';
+        }
+    }
+}
+
+async function terminerNiveau2() {
+    await validerCours('excel-n2');
+    window.location.href = 'excel_n3.html';
+}
+</script>
+
+<script src="script.js"></script>
+</body>
+</html>

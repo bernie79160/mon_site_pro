@@ -1,0 +1,41 @@
+name: Publish Launcher Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    name: Publish dist-launcher assets
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate release files
+        run: |
+          set -euo pipefail
+          VERSION="${GITHUB_REF_NAME}"
+          test -f "dist-launcher/latest.json"
+          ls -1 "dist-launcher/mon-site-pro-serveur-central-linux-${VERSION}.tar.gz"
+          ls -1 "dist-launcher/mon-site-pro-serveur-central-windows-${VERSION}.tar.gz"
+          ls -1 "dist-launcher/mon-site-pro-serveur-central-macos-${VERSION}.tar.gz"
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          generate_release_notes: true
+          files: |
+            dist-launcher/latest.json
+            dist-launcher/mon-site-pro-serveur-central-linux-${{ github.ref_name }}.tar.gz
+            dist-launcher/mon-site-pro-serveur-central-windows-${{ github.ref_name }}.tar.gz
+            dist-launcher/mon-site-pro-serveur-central-macos-${{ github.ref_name }}.tar.gz
+            dist-launcher/mon-site-pro-serveur-central-linux-latest.tar.gz
+            dist-launcher/mon-site-pro-serveur-central-windows-latest.tar.gz
+            dist-launcher/mon-site-pro-serveur-central-macos-latest.tar.gz

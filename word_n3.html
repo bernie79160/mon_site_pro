@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Niveau 3</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+</head>
+<body class="page-cours" onload="demarrerChrono()">
+<header>
+    <nav>
+        <ul>
+            <li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a></li>
+            <li><button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">🌙 Mode Sombre</button></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="contenu-cours">
+    <section class="entete-cours">
+        <h1><i class="fas fa-file-word" style="color:#2b579a;"></i> Word — Niveau 3</h1>
+        <p class="introduction">Produire un document professionnel complet.</p>
+    </section>
+
+    <section class="section-instruction">
+        <div class="conseil-flash" id="consigne-box" style="margin-bottom:12px;">
+            <p id="consigne-word"><strong>Défi:</strong> Rédigez une note interne avec ces éléments: <strong>Objet</strong>, <strong>Contexte</strong>, <strong>Décision</strong>, puis une liste d'actions.</p>
+        </div>
+
+        <div style="background:#fff;border:1px solid #ddd;border-radius:8px;padding:10px;margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn-card" style="width:auto;padding:8px 12px;" onclick="appliquer('bold')"><i class="fas fa-bold"></i> Gras</button>
+            <button class="btn-card" style="width:auto;padding:8px 12px;" onclick="appliquer('insertUnorderedList')"><i class="fas fa-list-ul"></i> Liste à puces</button>
+            <button class="btn-card" style="width:auto;padding:8px 12px;" onclick="appliquer('justifyFull')"><i class="fas fa-align-justify"></i> Justifier</button>
+        </div>
+
+        <div id="editeur" contenteditable="true" style="min-height:340px;background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;font-size:1.1rem;line-height:1.5;"></div>
+    </section>
+
+    <div style="text-align:center;margin:30px 0;">
+        <button id="btn-valider-n3" class="btn-card" disabled style="background:#95a5a6;cursor:not-allowed;" onclick="terminerNiveau3()">Valider Word Niveau 3</button>
+    </div>
+</main>
+
+<script>
+const editeur = document.getElementById('editeur');
+const consigne = document.getElementById('consigne-word');
+const btnValider = document.getElementById('btn-valider-n3');
+let listTouched = false;
+let justifyTouched = false;
+
+function appliquer(cmd) {
+    document.execCommand(cmd, false, null);
+    editeur.focus();
+    if (cmd === 'insertUnorderedList') listTouched = true;
+    if (cmd === 'justifyFull') justifyTouched = true;
+    verifierCompletion();
+}
+
+function verifierCompletion() {
+    const txt = editeur.innerText.toUpperCase();
+    const hasBase = txt.includes('OBJET') && txt.includes('CONTEXTE') && txt.includes('DÉCISION');
+    const hasActions = txt.includes('ACTION') || txt.includes('ACTIONS');
+
+    if (hasBase && hasActions && listTouched && justifyTouched) {
+        consigne.innerHTML = "🏆 Excellent ! Vous avez validé le parcours Word Niveau 3.";
+        btnValider.disabled = false;
+        btnValider.style.background = '#27ae60';
+        btnValider.style.cursor = 'pointer';
+    }
+}
+
+editeur.addEventListener('input', verifierCompletion);
+
+async function terminerNiveau3() {
+    await validerCours('word-n3');
+    window.location.href = 'index.html';
+}
+</script>
+
+<script src="script.js"></script>
+</body>
+</html>

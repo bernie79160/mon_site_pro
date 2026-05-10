@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Niveau 2</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+</head>
+<body class="page-cours" onload="demarrerChrono()">
+<header>
+    <nav>
+        <ul>
+            <li><a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a></li>
+            <li><button onclick="toggleModeSombre()" class="btn-dark-toggle" id="theme-icon">🌙 Mode Sombre</button></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="contenu-cours">
+    <section class="entete-cours">
+        <h1><i class="fas fa-file-word" style="color:#2b579a;"></i> Word — Niveau 2</h1>
+        <p class="introduction">Structurer un document avec titres et alignements.</p>
+    </section>
+
+    <section class="section-instruction">
+        <div class="conseil-flash" id="consigne-box" style="margin-bottom:12px;">
+            <p id="consigne-word"><strong>Étape 1:</strong> Écrivez le titre <strong>COMPTE-RENDU HEBDOMADAIRE</strong>.</p>
+        </div>
+
+        <div style="background:#fff;border:1px solid #ddd;border-radius:8px;padding:10px;margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn-card" style="width:auto;padding:8px 12px;" onclick="appliquer('bold')"><i class="fas fa-bold"></i> Gras</button>
+            <button class="btn-card" style="width:auto;padding:8px 12px;" onclick="appliquer('justifyCenter')"><i class="fas fa-align-center"></i> Centrer</button>
+            <button class="btn-card" style="width:auto;padding:8px 12px;" onclick="appliquer('justifyLeft')"><i class="fas fa-align-left"></i> Aligner à gauche</button>
+            <button class="btn-card" style="width:auto;padding:8px 12px;" onclick="appliquer('insertOrderedList')"><i class="fas fa-list-ol"></i> Liste numérotée</button>
+        </div>
+
+        <div id="editeur" contenteditable="true" style="min-height:320px;background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;font-size:1.1rem;line-height:1.5;"></div>
+    </section>
+
+    <div style="text-align:center;margin:30px 0;">
+        <button id="btn-valider-n2" class="btn-card" disabled style="background:#95a5a6;cursor:not-allowed;" onclick="terminerNiveau2()">Valider Word Niveau 2</button>
+    </div>
+</main>
+
+<script>
+const editeur = document.getElementById('editeur');
+const consigne = document.getElementById('consigne-word');
+const btnValider = document.getElementById('btn-valider-n2');
+let etape = 1;
+let listReady = false;
+
+function appliquer(cmd) {
+    document.execCommand(cmd, false, null);
+    editeur.focus();
+
+    if (etape === 2 && cmd === 'bold') {
+        etape = 3;
+        consigne.innerHTML = "<strong>Étape 3:</strong> Cliquez sur <strong>Centrer</strong> pour le titre.";
+    } else if (etape === 3 && cmd === 'justifyCenter') {
+        etape = 4;
+        consigne.innerHTML = "<strong>Étape 4:</strong> Retournez à la ligne puis cliquez sur <strong>Aligner à gauche</strong>.";
+    } else if (etape === 4 && cmd === 'justifyLeft') {
+        etape = 5;
+        consigne.innerHTML = "<strong>Étape 5:</strong> Cliquez sur <strong>Liste numérotée</strong>, puis ajoutez 3 points: Avancement, Blocages, Actions.";
+    } else if (etape === 5 && cmd === 'insertOrderedList') {
+        listReady = true;
+    }
+}
+
+editeur.addEventListener('input', () => {
+    const txt = editeur.innerText.toUpperCase();
+    if (etape === 1 && txt.includes('COMPTE-RENDU HEBDOMADAIRE')) {
+        etape = 2;
+        consigne.innerHTML = "<strong>Étape 2:</strong> Sélectionnez le titre puis appliquez <strong>Gras</strong>.";
+        return;
+    }
+
+    if (listReady) {
+        const ok = txt.includes('AVANCEMENT') && txt.includes('BLOCAGES') && txt.includes('ACTIONS');
+        if (ok) {
+            consigne.innerHTML = "🎉 Très bien ! Le document est correctement structuré.";
+            btnValider.disabled = false;
+            btnValider.style.background = '#27ae60';
+            btnValider.style.cursor = 'pointer';
+        }
+    }
+});
+
+async function terminerNiveau2() {
+    await validerCours('word-n2');
+    window.location.href = 'word_n3.html';
+}
+</script>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -207,7 +207,17 @@
 
     function appliquerStyle(commande, valeur = null) {
         if ((etape === 2 || etape === 4 || etape === 6)) {
-            alert("Sélectionnez d'abord le texte avec la méthode demandée !");
+            if (typeof window.afficherExplicationErreur === 'function') {
+                window.afficherExplicationErreur({
+                    titre: 'Méthode de sélection attendue',
+                    erreur: 'Vous avez cliqué sur un bouton de mise en forme trop tôt.',
+                    pourquoi: 'Dans cet exercice, il faut d’abord réussir la bonne technique de sélection (balayage, double-clic, triple-clic).',
+                    correction: 'Sélectionnez le texte demandé avec la méthode indiquée, puis cliquez sur le bouton de style (Gras, Italique ou Couleur).',
+                    astuce: 'Le panneau de consigne indique toujours l’action prioritaire.'
+                });
+            } else {
+                alert("Sélectionnez d'abord le texte avec la méthode demandée !");
+            }
             return;
         }
         document.execCommand(commande, false, valeur);
