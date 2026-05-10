@@ -120,3 +120,17 @@ Il construit automatiquement:
 - macOS: DMG (`.dmg`)
 
 Dès que les droits GitHub nécessaires sont disponibles, vous pourrez le lancer via **Actions > Desktop Build** ou via un tag `v*`.
+
+## 11) Installation automatique Windows (sans assistant)
+
+L'installateur NSIS est configuré en mode *one-click*.
+
+Pour un déploiement silencieux (script, GPO, outil MDM), utilisez:
+
+```powershell
+MonSitePro-Setup-0.1.0.exe /S
+```
+
+Note importante:
+- si le binaire n'est pas signé, SmartScreen peut encore bloquer l'exécution initiale;
+- pour éviter ce blocage en production, signer l'installateur avec un certificat Authenticode (idéalement EV).
