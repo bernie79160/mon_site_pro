@@ -38,6 +38,21 @@
     ],
     "extraResources": [
       {
+        "from": "..",
+        "to": "site",
+        "filter": [
+          "index.html",
+          "contact.html",
+          "*.html",
+          "script.js",
+          "style.css",
+          "favicon.png",
+          "images/**/*",
+          "mp4/**/*",
+          "pdf/**/*"
+        ]
+      },
+      {
         "from": "../backend",
         "to": "backend",
         "filter": [

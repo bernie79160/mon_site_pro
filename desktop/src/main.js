@@ -11,6 +11,7 @@ function escapeHtml(value) {
 
 function resolveStartPage() {
   const candidates = [
+    path.join(process.resourcesPath || '', 'site', 'index.html'),
     path.join(app.getAppPath(), 'index.html'),
     path.join(__dirname, '..', 'index.html'),
     path.join(__dirname, '..', '..', 'index.html'),
