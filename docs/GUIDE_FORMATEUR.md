@@ -16,6 +16,28 @@ Ce guide est pensé pour un usage en salle (intranet) avec plusieurs postes él�
 
 ### 2.A Démarrage en un clic (recommandé)
 
+#### Option la plus simple — Application desktop installée
+
+Sur Windows, après installation de l'application desktop:
+
+1. ouvrir **Mon Site Pro**
+2. attendre le message de démarrage automatique
+3. l'application lance elle-même le **serveur central**
+4. l'accueil s'ouvre ensuite automatiquement
+
+Prérequis important:
+- **Docker Desktop** doit être installé et démarré sur le poste formateur.
+
+Dans ce mode, l'application:
+- démarre PostgreSQL (Docker)
+- démarre l'API backend
+- démarre l'interface web locale sur `:8080`
+- ouvre l'accueil dans la fenêtre desktop
+
+Les élèves peuvent ensuite se connecter sur l'adresse du poste formateur (`http://IP_FORMATEUR:8080`).
+
+#### Option technique — Lancement manuel depuis le projet
+
 Sur le poste formateur, utilisez le launcher central:
 
 ```bash
@@ -103,11 +125,63 @@ Résultat dans `dist-launcher/`.
 
 ### 2.0 Créer un compte formateur (si vous n'en avez pas)
 
+Important:
+- le serveur central doit être démarré;
+- avec la nouvelle application desktop, ce démarrage est automatique au lancement si Docker est disponible.
+
+#### Cas recommandé — Depuis l'application installée
+
+Au premier lancement sur le poste formateur:
+
+1. ouvrir l'application
+2. cliquer sur **Inscription**
+3. cocher **Je suis le formateur**
+4. renseigner:
+	- prénom
+	- nom
+	- email formateur
+	- mot de passe
+5. valider
+
+Résultat attendu:
+- le premier compte formateur du poste est créé automatiquement;
+- vous êtes connecté immédiatement;
+- vous pouvez ouvrir le **Dashboard** et créer votre groupe.
+
+Important:
+- cette création simplifiée est réservée au **premier compte formateur**;
+- si un compte formateur existe déjà, utilisez l'écran **Connexion**.
+
+#### Cas avancé A — Vous avez le projet complet
+
 Depuis `site-pro-bernard-office/backend`:
 
 ```bash
 npm run formateur:create-account -- --prenom "Bernard" --nom "Tellier" --email "bernard@example.com" --password "motdepasse123"
 ```
+
+#### Cas avancé B — Vous avez téléchargé un pack formateur (sans dépôt Git)
+
+1. Décompressez `mon-site-pro-serveur-central-windows-*.tar.gz`.
+2. Démarrez les services:
+
+```bash
+launcher\start_formateur_windows.bat
+```
+
+3. Ouvrez un terminal dans le dossier `backend` du pack décompressé.
+4. Créez le compte:
+
+```bash
+npm run formateur:create-account -- --prenom "Bernard" --nom "Tellier" --email "bernard@example.com" --password "motdepasse123"
+```
+
+5. Connectez-vous sur l'accueil:
+   - cocher **Je suis le formateur**
+   - saisir l'**email** + mot de passe
+
+Note (mode secours local):
+- si l'API n'est pas disponible, le mot de passe `1234` active un mode formateur local temporaire (sans persistance backend complète).
 
 Recommandations mot de passe (important sous Linux/bash):
 - éviter `!` dans le mot de passe tapé en terminal (bash peut l'interpréter)

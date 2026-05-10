@@ -58,9 +58,12 @@
         "filter": [
           "src/**/*",
           "prisma/**/*",
+          "scripts/**/*",
+          "docker-compose.yml",
           "package.json",
           "package-lock.json",
-          ".env.example"
+          ".env.example",
+          "node_modules/**/*"
         ]
       }
     ],
